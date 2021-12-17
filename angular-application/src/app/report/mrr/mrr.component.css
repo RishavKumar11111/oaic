@@ -1,0 +1,36 @@
+
+      .underline {
+        border-bottom: 1px solid black;
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+
+
+      .heading {
+        padding: 1%;
+        border-top: 1px solid;
+        border-bottom: 1px solid;
+      }
+      .col-6, .col-4{
+        padding: 0;
+      }
+      .main-page {
+        border: 1px solid;
+      }
+      .body {
+        padding: 1%;
+      }
+      .row {
+        margin-left: 0;
+        margin-right: 0;
+        margin-bottom: 0;
+      }
+      h6, h3 {
+        font-weight: bold;
+      }
+      hr {
+        border-top: 1px solid;
+      }
+      .table th, .table td {
+        padding: 0.35rem;
+      }

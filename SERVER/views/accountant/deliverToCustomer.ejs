@@ -1,0 +1,282 @@
+<%- include('common/header.ejs') -%>
+
+<!-- ====================================== HEADER PART START ====================================== -->
+
+<div class="mybox" ng-show="showTable">
+  <div class="mybox-header">
+    <span>
+      <strong>
+        <label>Deliver to Customer</label>
+      </strong>
+    </span>
+  </div>
+  <div class="middle">
+    <div class="row">
+      <div class="col-lg-3">
+        <label>Financial Year:</label>
+        <select class="form-control" ng-options="x for x in fin_year_list" ng-model="fin_year" ng-change="loadList()">
+          <option value="" disabled>--Select--</option>
+        </select>
+      </div>
+      <div class="col-lg-3"></div>
+      <div class="col-lg-6">
+        <div class="row">
+          <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="background-color: green;border-radius: 10px;height: 20px;"></div>
+          <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9" ><strong>Ready to deliver.</strong></div>
+        </div>
+        <div class="row">
+          <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="background-color: grey;border-radius: 10px;height: 20px;"></div>
+          <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9" ><strong>Farmer payment done. Waiting for Indent generation.</strong></div>
+        </div>
+        <div class="row">
+          <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="background-color: yellow;border-radius: 10px;height: 20px;"></div>
+          <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9" ><strong>Indent generated. Waiting for Invoice generation.</strong></div>
+        </div>
+        <div class="row">
+          <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="background-color: pink;border-radius: 10px;height: 20px;"></div>
+          <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9" ><strong>Invoice generated. Waiting for receive(MRR generation).</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====================================== HEADER PART ENDS ====================================== -->
+
+<!-- ====================================== HEADER PART ENDS ====================================== -->
+
+<div class="loader">
+  <div ng-show="loader" class="spinner-border text-info"></div>
+</div>
+
+<!-- ====================================== HEADER PART ENDS ====================================== -->
+
+<!-- ====================================== ORDER LIST PART START ====================================== -->
+
+<div class="mybox" ng-show="showTable">
+  <div class="mybox-header">
+    <span>
+      <strong>
+        <label>All Orders List</label>
+      </strong>
+    </span>
+  </div>
+  <div>
+    <div class="no-record" ng-show="items.length == 0">
+      No record found on financial year {{ fin_year }}.
+    </div>
+    <div ng-show="items.length != 0">
+      <div class="table-responsive">
+      <table class="table table-bordered table-hover" id="orderListTable">
+        <caption></caption>
+        <thead>
+          <tr>
+            <th scope="col">SL.</th>
+            <th scope="col">Permit no.</th>
+            <th scope="col">Farmer name(ID)</th>
+            <th scope="col">Implement</th>
+            <th scope="col">Make</th>
+            <th scope="col">Model</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="x in items">
+            <td>{{ $index + 1 }}</td>
+            <td>{{ x.permit_no }}</td>
+            <td>{{ x.farmer_name }} <br>({{ x.farmer_id }})</td>
+            <td>{{ x.implement }}</td>
+            <td>{{ x.make }}</td>
+            <td>{{ x.model }}</td>
+            <td>
+              <div class="row">
+                <div class="col-lg-4"><button class="btn btn-outline-info round" ng-click="showDetailes(x)"
+                    data-toggle="modal" data-target="#viewDetails">
+                    <i class="fas fa-bars" aria-hidden="true"></i>
+                  </button></div>
+                <div class="col-lg-6"><button class="btn btn-outline-info round" ng-click="showDelivery(x)" ng-disabled="x.status != 'received'"
+                    data-toggle="modal" data-target="#deliveryModal">Deliver</button></div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====================================== ORDER LIST PART ENDS ====================================== -->
+
+<!-- ====================================== VIEW ORDER DETAIL MODAL PART START ====================================== -->
+
+<div class="container">
+  <div class="modal fade" id="viewDetails">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Details</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div>
+            <div class="row">
+              <div class="col-lg-4">Permit number : </div>
+              <div class="col-lg-8">{{ x.permit_no }}</div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4">Issue date :</div>
+              <div class="col-lg-8"> {{ x.permit_issue_date }} </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4">Permit validity :</div>
+              <div class="col-lg-8"> {{ x.permit_validity }} </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4">Farmer ID : </div>
+              <div class="col-lg-8"> {{ x.farmer_id }} </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4">Farmer name : </div>
+              <div class="col-lg-8"> {{ x.farmer_name }} </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4">Father name : </div>
+              <div class="col-lg-8"> {{ x.farmer_father_name }} </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4">District :</div>
+              <div class="col-lg-8"> {{ x.dist_name }} </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4">Block :</div>
+              <div class="col-lg-8"> {{ x.block_name }} </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4">GP name :</div>
+              <div class="col-lg-8"> {{ x.gp_name }} </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4">Village name :</div>
+              <div class="col-lg-8"> {{ x.village_name }} </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4">Implement :</div>
+              <div class="col-lg-8"> {{ x.implement }} </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4">Make :</div>
+              <div class="col-lg-8"> {{ x.make }} </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4">Model :</div>
+              <div class="col-lg-8"> {{ x.model }} </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-info round" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====================================== VIEW ORDER DETAIL MODAL PART ENDS ====================================== -->
+
+<!-- ====================================== ENTER FEEDBACK MODAL PART START ====================================== -->
+
+<div class="container">
+  <div class="modal fade" id="deliveryModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title center">Enter feedback</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form name="myForm" novalidate>
+              <div class="row">
+                <div class="col-lg-5">Permit number : </div>
+                <div class="col-lg-7"> {{ x.permit_no }} </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-5">Farmer name : </div>
+                <div class="col-lg-7"> {{ x.farmer_name }} </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-5">Farmer id : </div>
+                <div class="col-lg-7"> {{ x.farmer_id }} </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-5">Implement : </div>
+                <div class="col-lg-7"> {{ x.implement }} </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-5">Make : </div>
+                <div class="col-lg-7"> {{ x.make }} </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-5">model : </div>
+                <div class="col-lg-7"> {{ x.model }} </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-5">Remark<span class="asterisk-mark">*</span> :</div>
+                <div class="col-lg-7">
+                    <input type="text" class="form-control" ng-model="remark" placeholder="Enter remark." required>
+                </div>
+              </div>
+              <div class="row" style="margin-top: 5px;">
+                <div class="col-lg-5">Deliver date<span class="asterisk-mark">*</span> :</div>
+                <div class="col-lg-7 ">
+                    <input type="date" class="form-control container" name="date" ng-model="expected_delivery_date" required>
+                </div>
+              </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline-info" ng-click="showInvoice();" data-dismiss="modal" ng-disabled="myForm.$invalid">Deliver</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====================================== ENTER FEEDBACK MODAL PART ENDS ====================================== -->
+
+<!-- ====================================== INVOICE PRINT PART START ====================================== -->
+
+<div ng-show="show_print_page">
+    <button class="btn btn-info btn-sm topBack" ng-click="showTable=true;show_print_page=false;remark='';expected_delivery_date='';"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+    <div class="mybox">
+      <div class="mybox-header">
+        <span>
+          <strong>
+            <label>Farmer Invoice</label>
+          </strong>
+        </span>
+      </div>
+      <div >
+        <%- include('../common/customerInvoice.ejs') -%>
+        <div class="bottomBack">
+          <button class="btn btn-info btn-sm" ng-click="showTable=true;show_print_page=false;remark='';expected_delivery_date='';"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+          <button class="btn btn-info btn-sm" ng-click="deliverPreview()">Deliver</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- ====================================== INVOICE PRINT PART ENDS ====================================== -->
+
+
+<script>
+  var c_fin_year = "<%= c_fin_year %>";
+</script>
+<script>
+  document.getElementById('deliveryLink').classList.add("active");
+  document.getElementById('deliveryDropDown').classList.add("active");
+  document.getElementById('dtcSubItem').classList.add("active");
+</script>
+<script src="/controller/accountant/commonFunctions.js"></script>
+<script src="/controller/accountant/deliverToCustomer.js"></script>
+<%- include('common/footer.ejs') -%>

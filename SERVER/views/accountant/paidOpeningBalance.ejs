@@ -1,0 +1,113 @@
+<%- include('common/header.ejs') -%>
+
+<!-- ====================================== LOADER PART START ====================================== -->
+
+<div class="loader">
+    <div ng-show="loader" class="spinner-border text-info"></div>
+</div>
+
+<!-- ====================================== LOADER PART ENDS ====================================== -->
+
+<!-- ====================================== HEADER PART START ====================================== -->
+
+<div class="mybox" ng-show="enter_detail">
+    <div class="mybox-header">
+        <span>
+            <strong>
+                <label>PAY BACKLOG MONEY</label>
+            </strong>
+        </span>
+    </div>
+    <div class="middle">
+            <form name="myForm">
+                <div class="row">
+                    <div class="col-lg-2">Scheme<span class="asterisk-mark">*</span> :</div>
+                    <div class="col-lg-4">
+                        <select ng-model="system" class="form-control" ng-change="loadOrderNoList();" required>
+                            <option value="" disabled>--select--</option>
+                            <option value="farm_mechanisation">Farm Mechanisation</option>
+                            <option value="jalanidhi">Jalanidhi</option>
+                        </select>
+                    </div>
+                        <div class="col-lg-2">Enter order no.<span class="asterisk-mark">*</span> :</div>
+                        <div class="col-lg-4">
+                            <select ng-model="order_no" class="form-control" ng-options="x.order_no for x in order_no_list" required>
+                                    <option value="" disabled>--select--</option>
+                            </select>
+                        </div>
+                    </div>
+                <div class="row">
+                        <div class="col-lg-2">Head<span class="asterisk-mark">*</span> :</div>
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control" ng-model="head" placeholder="Enter head" required>
+                        </div>
+                        <div class="col-lg-2">Sub-head<span class="asterisk-mark">*</span> :</div>
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control"ng-model="subhead" placeholder="Enter subhead" required>
+                        </div>
+                    </div>
+                <div class="row">
+                    <div class="col-lg-2">Amount<span class="asterisk-mark">*</span> :</div>
+                    <div class="col-lg-4">
+                        <input type="number" class="form-control" ng-model="amount" min="0" maxlength="10" placeholder="Enter amount" required>
+                    </div>
+                    <div class="col-lg-2">Remark<span class="asterisk-mark">*</span> :</div>
+                    <div class="col-lg-4">
+                        <textarea rows="2" class="form-control" ng-model="remark" placeholder="Enter remark" maxlength="500" required></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-2">Pay to<span class="asterisk-mark">*</span> :</div>
+                    <div class="col-lg-4">
+                        <input type="text" class="form-control" ng-model="pay_to" placeholder="Pay to" required>
+                    </div>
+                    <div class="col-lg-2">Payment date<span class="asterisk-mark">*</span> :</div>
+                    <div class="col-lg-4">
+                        <input type="date" class="form-control" ng-model="payment_date" max="{{c_date| date: 'y-MM-dd'}}" required>
+                    </div>
+                </div>
+                <div class="rightSubmit">
+                    <button class="btn btn-outline-info round" ng-disabled="myForm.$invalid" ng-click="receiveOPBalance()">ADD</button>
+                </div>
+            </form>
+    </div>
+</div>
+
+<!-- ====================================== HEADER PART START ====================================== -->
+
+<!-- ====================================== PRINT PAYMENT RECEIPT PART START ====================================== -->
+
+<div ng-show="print_page">
+    <button class="btn btn-info btn-sm topBack" ng-click="back();"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+    <div class="mybox">
+        <div class="mybox-header">
+        <span>
+            <strong>
+                <label>MONEY RECEIPT</label>
+            </strong>
+        </span>
+        </div>
+        <div>
+            <%- include('../common/paid_backlog_receipt.ejs') -%>
+            <div class="bottomBack">
+                <button class="btn btn-info btn-sm" ng-click="back();"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+                <button class="btn btn-info btn-sm" ng-click="submit()">SUBMIT</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ====================================== PRINT PAYMENT RECEIPT PART START ====================================== -->
+
+
+
+<script>
+    var c_date = "<%= cDate %>";
+</script>
+<script>
+    document.getElementById('backlogBalanceLink').classList.add("active");
+    document.getElementById('blbDropDown').classList.add("active");
+    document.getElementById('blbPayMoneySubItem').classList.add("active");
+  </script>
+<script src="/controller/accountant/paidOpeningBalance.js"></script>
+<%- include('common/footer.ejs') -%>

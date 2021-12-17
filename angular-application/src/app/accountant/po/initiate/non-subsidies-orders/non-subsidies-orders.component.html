@@ -1,0 +1,26 @@
+
+        <div class="mybox">
+          <div class="mybox-header">
+            <span>
+              <strong>
+                <label>Enter Purchase Order(P.O.) Details</label>
+              </strong>
+            </span>
+          </div>
+          <div class="middle">
+
+
+            <app-order-entry-form [orderList]="orderList" [customerDetails]="customerDetails" [vendorID]="vendorID" ></app-order-entry-form>
+
+            <br>
+            <app-order-list [orderList]="orderList" *ngIf="orderList.value.length > 0"></app-order-list>
+
+
+            <div style="width: 100;text-align: center;">
+              <button class="btn btn-lg btn-info round" (click)="shwPurchaseOrderForNonSubsidy()"> Initiate P.O.</button>
+            </div>
+
+
+              <br>
+          </div>
+        </div>

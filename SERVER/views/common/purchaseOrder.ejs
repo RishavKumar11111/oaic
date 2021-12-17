@@ -1,0 +1,278 @@
+<div id="indent" class="focusprintpage">
+    <link href="/new/css/sb-admin.css" rel="stylesheet">
+    <div class="card">
+      <div class="card-body">
+
+
+
+        <style>
+          .heading {
+            border-bottom: 1px solid;
+            border-top: 1px solid;
+            padding: 1%;
+          }
+          .col-6, .col-4{
+            padding: 0;
+          }
+          .body {
+            padding: 1%;
+          }
+          .main-page {
+            border: 1px solid;
+          }
+          .row {
+            margin-left: 0;
+            margin-right: 0;
+            margin-bottom: 0;
+          }
+          .dark-background {
+            background-color: #e4e4f7;
+          }
+          h6, h3 {
+            font-weight: bold;
+          }
+        </style>
+
+
+
+        
+        <div class="main-page">
+
+
+            
+          <div class="row">
+            <div class="col-8" style="border-right: 1px solid;">
+                <div class="row">
+                  <div class="col-3 body">
+                    <img src="/images/oaic-new-logo.png" alt="" style="width: 100%;">
+                  </div>
+                  <div class="col-9 body">
+                    <h5 style="text-align: center;font-weight: bold;white-space: nowrap;margin-left: -3%;">THE ODISHA AGRO INDUSTRIES CORPORATION LTD</h5>
+                    <p style="text-align: center;">(A Government of Odisha Undertaking)<br>
+                      Regd. Office: 95, Satyanagar, Bhubaneswar-751007
+                      <br> 
+                      www.orissaagro.com
+                      </p>
+                      <h6 style="text-align: center;">OFFICE OF THE DISTRICT MANAGER, {{ DMDetails.dist_name }}</h6>
+                      <p style="text-align: center;">{{ DMDetails.dm_address }}
+                        <br>Email-ID: {{ DMDetails.EmailID }}, Contact Number: {{ DMDetails.dm_mobile_no }} / {{ AccountantDetails.acc_mobile_no }}
+                        </p>
+                  </div>
+                </div>
+            </div>
+            <div class="col-4">
+              <div style="border-bottom: 1px solid;height: 80px;">
+                <h3 style="text-align: center;">PURCHASE ORDER</h3>
+              </div>
+              <div>
+                <br>
+                <h5 style="text-align: center;">PO No.: {{ indent_no }} <br>
+                  Date: {{ indent_date | date:'dd-MM-yyyy'}}
+              </h5>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-6" style="border-right: 1px solid;">
+              <div class="heading">
+                <h6>VENDOR DETAILS</h6>
+              </div>
+              <div class="body">
+                {{ PODetails.LegalBussinessName }} <br>
+                {{ PODetails.Address }} <br>
+                E-mail: {{ PODetails.EmailID }}<br>
+                Phone No.: {{ PODetails.ContactNumber }}<br>
+                GSTIN: {{ PODetails.GSTN }}<br>
+
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="heading">
+                <h6 ng-show="PODetails.purchasOrderType == 'Subsidy'">FARMER DETAILS</h6>
+                <h6 ng-show="PODetails.purchasOrderType == 'Non-Subsidy'">CUSTOMER DETAILS</h6>
+              </div>
+              <div class="body" ng-show="PODetails.purchasOrderType == 'Subsidy'">
+                Permit No.: {{ PODetails.permit_no }}<br>
+                Name of the Farmer: {{ PODetails.farmer_name }}<br>
+                Son/Daughter/Wife of: {{ PODetails.farmer_father_name }}<br>
+                Village: {{ PODetails.village_name}}<br>
+                GP: {{ PODetails.gp_name }}<br>
+                Block: {{ PODetails.block_name }}<br>
+                District: {{ PODetails.dist_name }}<br>
+
+              </div>
+              <div class="body" ng-show="PODetails.purchasOrderType == 'Non-Subsidy'">
+                Name : {{ PODetails.CustomerName }}<br>
+                Reference No : {{ PODetails.CustomerReferenceNumber }}<br>
+                Mobile No: {{ PODetails.CustomerMobileNumber}}<br>
+                Email-ID: {{ PODetails.CustomerEmailID }}<br>
+                GSTN: {{ PODetails.CustomerGSTN }}
+
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-6" style="border-right: 1px solid;">
+              <div class="heading">
+                <h6>BILL TO</h6>
+              </div>
+              <div class="body">
+                <h6>OFFICE OF THE DISTRICT MANAGER, {{ DMDetails.dist_name }}</h6>
+                <p>
+                  {{ DMDetails.dm_address }}
+                  <br>
+                  GSTIN: 21AABCT5432F2ZT
+
+                </p>
+
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="heading">
+                <h6>SHIP TO / CONSIGNEE</h6>
+              </div>
+              <div class="body">
+                <h6>OFFICE OF THE DISTRICT MANAGER, {{ DMDetails.dist_name }}</h6>
+                <p>
+                  {{ DMDetails.dm_address }}
+                  <br>
+                  GSTIN: 21AABCT5432F2ZT
+                </p>
+
+              </div>
+            </div>
+          </div>
+          <div class="row" style="padding: 1%;">
+            <table class="table table-bordered" id="indentListTable">
+              <caption></caption>
+              <thead>
+                <tr>
+                  <th scope="col">Sl No</th>
+                  <th scope="col">Description of Goods</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Unit</th>
+                  <th>Rate per Unit (&#8377;)</th>
+                  <th>Taxable Value (&#8377;)</th>
+                  <th>GST Rate</th>
+                  <th>CGST (&#8377;)</th>
+                  <th>SGST (&#8377;)</th>
+                  <th>Invoice Value (&#8377;)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr >
+                  <td>1</td>
+                  <td style="text-align: left;">
+                    <div>
+                      Product Category- {{ PODetails.Implement }} <br>
+                      Manufacturer- {{ PODetails.Make }} <br>
+                      Model/Item- {{ PODetails.Model }}
+                    </div>
+                  </td>
+                  <td>{{ PODetails.Quantity }}</td>
+                  <td>{{ PODetails.UnitOfMeasurement }}</td>
+                  <td>{{ PODetails.PurchaseTaxableValue | number }}</td>
+                  <td>{{ PODetails.TotalPurchaseTaxableValue | number }}</td>
+                  <td>{{ PODetails.TaxRate }}%</td>
+                  <td>{{ PODetails.TotalPurchaseCGST | number  }}</td>
+                  <td>{{ PODetails.TotalPurchaseSGST | number  }}</td>
+                  <td>{{ PODetails.TotalPurchaseInvoiceValue | number }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+
+          <div class="row" style="padding: 1%;border-top: 1px solid;">
+            <h5>Terms & Conditions.</h5>
+            <ol style="font-size: medium;">
+              <li>
+                <h6>ACKNOWLEDGEMENT</h6>
+                <p>Acknowledgement of acceptance of the purchase order must be sent to OAIC LTD. within 7 days from the date of receipt of the Order, failing which it shall be deemed that the Order has been accepted by the supplier in full.</p>
+                <p>The	Purchase	Order	No.	and	date	should	be	quoted	in all correspondences including the dispatch documents and invoices.</p>
+              </li>
+              <li>
+                <h6>SUB-LETTING OF THE CONTRACT</h6>
+                <p>No part of the contract nor any share or interest therein shall, in any manner or degree, be transferred, assigned or sub-let by the Seller directly or indirectly to any person, firm or corporation whatsoever without the consent of OAIC LTD. in writing.</p>
+              </li>
+              <li>
+                <h6>PRICE(S):</h6>
+                <p>The Price mentioned in the Purchase Order will remain firm and fixed till complete execution of the Order unless otherwise specified elsewhere in the Order. However statutory variations, if any in taxes, duties and levies during contractual delivery period only, may be considered against documentary evidence. </p>
+              </li>
+              <li>
+                <h6>DELIVERY</h6>
+                <p>Delivery period is the essence of the contract and the materials should be dispatched within this time, failing which, OAIC LTD. without prejudice to its rights under the contract shall have the option to cancel the Order and purchase the materials from alternative source at the risk and cost of the supplier.</p>
+              </li>
+              <li>
+                <h6>ALTERNATIVE ARRANGEMENTS</h6>
+                <p>If the Seller fails to fulfill the terms and conditions of the order, OAIC LTD. shall have the right to procure the materials from any other party for execution/completion of the contract and recover from Seller all charges/expenses/losses/damages suffered by OAIC LTD., at the risk and cost of the Seller after giving prior notice to the seller. This will be without prejudice to the rights of OAIC LTD. for any other action including termination.</p>
+              </li>
+              <li>
+                <h6>TERMINATION</h6>
+                <p>OAIC LTD. shall have the right to terminate the contract by giving prior notice without assigning any reasons thereof. However, in the event of any breach of terms of the contract, OAIC LTD. will have right to terminate the contract by written notice to the Seller. Further OAIC LTD. shall have the right to terminate the contract or any part thereof by written notice to the seller in the event of any direction or restriction imposed by the Govt. of India/State Govt which may affect the Contract.</p>
+              </li>
+              <li>
+                <h6>INSPECTION</h6>
+                <p>Unless and otherwise specified, inspection of materials will be carried out at OAIC LTD. premises and OAIC LTD. decision regarding acceptance or rejection shall be final.</p>
+              </li>
+              <li>
+                <h6>CONSIGNEE</h6>
+                <p>All consignments shall be booked to consignee as specified in the Purchase Order.</p>
+              </li>
+              <li>
+                <h6>TRANSIT RISK:</h6>
+                <p>All supplies are to be duly insured against loss and damage in course of transit and OAIC LTD shall not be responsible for any damage and loss to be caused to the Seller during transit</p>
+              </li>
+              <li>
+                <h6>DESPATCH INTIMATION/BILLING:</h6>
+                <p>Delivery Challan/Invoice shall be sent to the OAIC LTD. so as to reach immediately.</p>
+              </li>
+              <li>
+                <h6>TDS</h6>
+                <p>GST TDS @ 2% (1% CGST+1% SGST) on taxable value shall be deducted wherever applicable as per Section 51 of the CGST Act, 2017.</p>
+                <p>Income Tax TDS @ 0.1% on taxable value shall be deducted wherever applicable as per Section 194Q of the Income Tax Act, 1961.</p>
+              </li>
+              <li>
+                <h6>WARRANTY</h6>
+                <p>The materials shall conform to specifications for satisfactory performance under normal conditions and carry a warranty against any faulty design, wrong specification or defective materials for a period of 12 months or any other period as per manufacturer’s specification from the date of putting into use or from the date of dispatch whichever is earlier. The amount due against this Order can be recovered from or adjusted against any outstanding sums that may be due from OAIC LTD. to the seller on any account and without prejudice to any other rights of OAIC LTD.</p>
+              </li>
+              <li>
+                <h6>ARBITRATION</h6>
+                <p>In case of any dispute or difference arising out of the contract which cannot be resolved mutually between OAIC Ltd. and Seller, it shall be referred to a Sole Arbitrator to be appointed by the MD, OAIC Ltd. The Arbitrator shall give a reasoned and speaking award. The award of the Arbitrator shall be binding on both the parties. The venue of arbitration shall be at Bhubaneswar. The Arbitration and Conciliation Act, 1996 and rules made there under shall apply to the Arbitration Proceedings.</p>
+                <p>The contract shall be governed by and construed according to the laws in force in India and subject to exclusive jurisdiction of the Courts of Bhubaneswar only.</p>
+              </li>
+                        
+            </ol>
+          </div>
+
+
+          <div class="row" style="padding: 1%;border-top: 1px solid;">
+            <h5 style="width: 100%;text-align: right;">For Odisha Agro Industries Corporation Ltd.</h5>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <h6 style="width: 100%;text-align: right;">District Manager/Divisional Head</h6>
+            
+          </div>
+
+
+          
+
+
+
+
+        </div>
+
+
+
+
+
+
+
+      </div>
+    </div>
+  </div>

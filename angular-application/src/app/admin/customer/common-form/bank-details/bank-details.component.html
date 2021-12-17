@@ -1,0 +1,109 @@
+
+       <form [formGroup]= "BankDetailsForm">
+            <h5>Bank Account Details</h5>
+            <div class="wrap-input100 validate-input" data-validate="Enter username">
+                <div class="row" >
+                    <div class="col-lg-6">
+                        <label for="bankAccountNo">Account Number *: </label>
+                        <input type="text" formControlName="bankAccountNo" onkeypress="validateNumber('bankAccountNo');" maxlength="20" id="bankAccountNo" class="form-control" placeholder="48908762189" >
+                    </div>
+                    
+                    <div class="col-lg-6">
+                        <label for="accountType">Type of Account *: </label>
+                        <select formControlName="accountType" id="accountType" class="form-control" >
+                            <option value="" disabled selected>--select--</option>
+                            <option value="Saving Account">Saving Account</option>
+                            <option value="Current Account">Current Account</option>
+                            <option value="Cash Credit Account">Cash Credit Account</option>
+                            <option value="Loan Account">Loan Account</option>
+                        </select>
+                    </div>
+                    
+                    <div class="col-lg-6">
+                        <label for="bankName">Bank Name *: </label>
+                        <select formControlName="bankName" id="bankName" class="form-control">
+                            <option value="" selected disabled>--select--</option>
+                            <option value="State Bank of India ">State Bank of India </option>
+                            <option value="Bank of Baroda ">Bank of Baroda <br> (Including Vijaya Bank and Dena  Bank)</option>
+                            <option value="Bank of India ">Bank of India </option>
+                            <option value="Bank of Maharashtra ">Bank of Maharashtra </option>
+                            <option value="Canara Bank ">Canara Bank <br> (Including Syndicate Bank)</option>
+                            <option value="Central Bank of India ">Central Bank of India </option>
+                            <option value="Indian Bank ">Indian Bank <br> (Including Allahabad Bank)</option>
+                            <option value="Indian Overseas Bank ">Indian Overseas Bank </option>
+                            <option value="Punjab National Bank ">Punjab National Bank <br> (including Oriental Bank of  </option>
+                            <option value="Commerce and United Bank of India)">Commerce and United Bank of India)</option>
+                            <option value="Punjab & Sind Bank ">Punjab & Sind Bank </option>
+                            <option value="Union Bank of India ">Union Bank of India <br> (including Andhra Bank and Corporation Bank)</option>
+                            <option value="UCO Bank ">UCO Bank </option>                                                                            
+                            <option value="Axis Bank Ltd.">Axis Bank Ltd.</option>
+                            <option value="Catholic Syrian Bank Ltd.">Catholic Syrian Bank Ltd.</option>
+                            <option value="City Union Bank Ltd.">City Union Bank Ltd.</option>
+                            <option value="Development Credit Bank Ltd.">Development Credit Bank Ltd.</option>
+                            <option value="Dhanlaxmi Bank Ltd.">Dhanlaxmi Bank Ltd.</option>
+                            <option value="Federal Bank Ltd.">Federal Bank Ltd.</option>
+                            <option value="HDFC Bank Ltd.">HDFC Bank Ltd.</option>
+                            <option value="ICICI Bank Ltd.">ICICI Bank Ltd.</option>
+                            <option value="IndusInd Bank Ltd.">IndusInd Bank Ltd.</option>
+                            <option value="Jammu & Kashmir Bank Ltd.">Jammu & Kashmir Bank Ltd.</option>
+                            <option value="Karnataka Bank Ltd.">Karnataka Bank Ltd.</option>
+                            <option value="Karur Vysya Bank Ltd.">Karur Vysya Bank Ltd.</option>
+                            <option value="Kotak Mahindra Bank Ltd.">Kotak Mahindra Bank Ltd.</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="branchName">Branch Name *: </label>
+                        <input type="text" formControlName="branchName" onkeypress="validateTextAsName('branchName');" id="branchName" class="form-control" placeholder="Bhubaneswar, Main Branch" >
+                    </div>
+                    
+                    <div class="col-lg-6">
+                        <label for="ifscCode">IFSC Code *: </label>
+                        <input type="text" formControlName="ifscCode" style="text-transform: uppercase;" onkeypress="validateTextAndNumber('ifscCode');" id="ifscCode" class="form-control" placeholder="SBIN000876" >
+                    </div>
+                    <!-- <div class="col-lg-6">
+                        <label for="uploadBankDocument">Upload Passbook/Bank Statement/Cancelled Check *: </label>
+                        <input disabled type="file" onchange="checkFile('uploadBankDocument');" accept="application/pdf" id="uploadBankDocument" class="form-control" placeholder="Enter your name">
+                        <span class="note">Note: </span><span class="error">Upload PDF only. Maximum size - 500kb</span>
+                    </div> -->
+                </div>
+                <br>
+                <div class="add-button float-right" >
+                    <button class="btn btn-success" 
+                    disable="bank.AccountNumber == undefined || bank.AccountType == undefined
+                    || bank.BankName == undefined || bank.BranchName == undefined
+                    || bank.IFSCCode == undefined"
+                    (click)="addBankAccount();"><i class="fa fa-plus" aria-hidden="true"></i> Add </button>
+                </div>
+                <br>
+                <div class="">
+                    <table class="table table-hover">
+                        <thead>
+                            <th>SL</th>
+                            <th>Account Number</th>
+                            <th>Account Type</th>
+                            <th>Bank Name</th>
+                            <th>Branch Name</th>
+                            <th>IFSC Code</th>
+                            <th>Action</th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor = " let x of bankAccountsList; let i = index">
+                                <td> {{i+1}} </td>
+                                <td> {{x.bankAccountNo}} </td>
+                                <td> {{x.accountType}} </td>
+                                <td> {{x.bankName}} </td>
+                                <td> {{x.branchName}} </td>
+                                <td> {{x.ifscCode}} </td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-lg-12"><button class="btn btn-outline-primary" (click)="modifyBankAccount(i, x)"><i class="fa fa-edit"></i></button></div>
+                                        <!-- <div class="col-lg-6"><button class="btn btn-outline-danger" (click)="removeBankAccount(i)"><i class="fa fa-trash"></i></button></div> -->
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <br>
+            </div>
+        </form>

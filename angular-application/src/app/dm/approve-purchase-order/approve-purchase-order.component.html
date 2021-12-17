@@ -1,0 +1,124 @@
+<app-normal-card *ngIf="showTable">
+      <ng-container class="card-head">Purchase Order (PO)</ng-container>
+      <ng-container class="card-body">
+                <div class="row">
+                  <div class="col-lg-4 col-sm-12 col-xs-12">
+                      <app-financial-year (newItemEvent)="changeFinancialYear($event)"></app-financial-year>
+                  </div>
+                  <div class="col-lg-4 col-sm-12 col-xs-12">
+                      <label>Type Of Order :</label>
+                      <select class="form-control" [(ngModel)]="indent_type" (change)="loadlist()">
+                        <option value="" disabled>--Select--</option>
+                        <option value="Generate_Indent" >Generate Purchase Order</option>
+                        <option value="Cancel_Indent" >Cancel Purchase Order</option>
+                      </select>
+                    </div>
+                </div>
+      </ng-container>
+</app-normal-card>
+
+  <!-- ------------------------------------------------------------------- -->
+
+  <app-table-card *ngIf="show_generateindent_listtable">
+        <ng-container class="card-head">Generate Orders List</ng-container>
+        <ng-container *ngIf="generated_indent_status.length == 0" class="no-record">No record found on financial year {{ fin_year }}.</ng-container>
+        <ng-container class="card-body" *ngIf="generated_indent_status.length != 0">
+
+              <table class="table table-striped table-bordered table-hover" id="itemListTable">
+                <caption></caption>
+                <thead>
+                  <tr>
+                    <th scope="col">SL</th>
+                    <th scope="col">P.O. Number</th>
+                    <th scope="col">Initiated Date</th>
+                    <th scope="col">Vendor</th>
+                    <th scope="col">No. of Items</th>
+                    <th scope="col">P.O. Amount</th>
+                    <th scope="col">View</th>
+                    <th scope="col">Select</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let x of generated_indent_status; let i = index;">
+                    <td>{{ i + 1}}</td>
+                    <td>{{ x.PONo}}</td>
+                    <td>{{ x.InsertedDate | date: 'dd-MM-yyyy'}}</td>
+                    <td>{{ x.LegalBussinessName }}</td>
+                    <td>{{ x.NoOfItemsInPO }}</td>
+                    <td>{{ x.POAmount | number }}</td>
+                    <td><button class="btn btn-outline-info" (click)="viewPurchaseOrder(x.PONo);"><i class="fas fa-bars"></i></button></td>
+                    <td>
+                      <input type="checkbox" class="form-control" [(ngModel)]="x.status">
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="rightSubmit">
+                <button class="btn btn-danger btn-sm" (click)="cancelindent()"><i class="fas fa-times" aria-hidden="true"></i>&nbsp;Reject</button>&nbsp;
+                <button class="btn btn-info btn-sm" (click)="approveindent()"><i class="fas fa-check" aria-hidden="true"></i> Approve</button>
+              </div>
+              <br>
+        </ng-container>
+  </app-table-card>
+            <!-- ====================================================== -->
+
+  <app-normal-card *ngIf="show_cancelindent_listtable">
+        <ng-container class="card-head">Cancel Order List</ng-container>
+        <ng-container *ngIf="cancelled_indent_status.length == 0" class="no-record">No record found on financial year {{ fin_year }}.</ng-container>
+
+        <ng-container *ngIf="cancelled_indent_status.length != 0" class="card-body">
+
+            <table class="table table-striped table-bordered table-hover" id="itemListTable">
+              <caption></caption>
+              <thead>
+                <tr>
+                  <th scope="col">SL</th>
+                  <th scope="col">P.O. Number</th>
+                  <th scope="col">Initiated Date</th>
+                  <th scope="col">Vendor</th>
+                  <th scope="col">No. of Items</th>
+                  <th scope="col">P.O. Amount</th>
+                  <th scope="col">View</th>
+                  <th scope="col">Select</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let x of cancelled_indent_status;let i = index;">
+                  <td>{{ i + 1}}</td>
+                  <td>{{ x.PONo}}</td>
+                  <td>{{ x.InsertedDate | date: 'dd-MM-yyyy'}}</td>
+                  <td>{{ x.LegalBussinessName }}</td>
+                  <td>{{ x.NoOfItemsInPO }}</td>
+                  <td>{{ x.POAmount | number }}</td>
+                  <td><button class="btn btn-outline-info" (click)="viewPurchaseOrder(x.PONo);"><i class="fas fa-bars"></i></button></td>
+                  <td>
+                    <input type="checkbox" class="form-control" [(ngModel)]="x.status">
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="rightSubmit">
+              <button class="btn btn-info btn-sm" (click)="cancelindent()"><i class="fas fa-check" aria-hidden="true"></i> Approve Cancellation</button>
+            </div>
+
+        </ng-container>
+  </app-normal-card>
+
+
+<!-- ====================================== PRINT APPROVAL PART START ====================================== -->
+
+<ng-container  *ngIf="showPO">
+      <button class="btn btn-info btn-sm topBack" (click)="back()"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+      <app-normal-card>
+          <ng-container class="card-head">Purchase Order</ng-container>
+          <ng-container class="card-body">
+                  <app-po [PODetails]="PODetails" [PONo]="PONo" id="printPage"></app-po>
+          </ng-container>
+          <ng-container class="card-footer">
+                  <button class="btn btn-info btn-sm" (click)="back()"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+          </ng-container>
+      </app-normal-card>
+</ng-container>
+
+<!-- ====================================== PRINT APPROVAL PART ENDS ====================================== -->

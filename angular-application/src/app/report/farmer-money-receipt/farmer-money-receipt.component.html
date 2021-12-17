@@ -1,0 +1,213 @@
+<div id="receipt" class="focusprintpage">
+    <div class="card">
+      <div class="card-body">
+        <div class="card-text">
+          <div class="middle">
+            <div class="row">
+              <div class="col-8" style="border-right: 1px solid;left: -14px;">
+                <div class="row">
+                  <div class="col-3 body">
+                    <img src="assets/images/oaic-new-logo.png" alt="" style="width: 100%;">
+                  </div>
+                  <div class="col-9 body" style="margin-left: -44px;">
+                    <h5 style="text-align: center;font-weight: bold;white-space: nowrap;margin-left: -3%;">THE ODISHA AGRO
+                      INDUSTRIES CORPORATION LTD</h5>
+                    <p style="text-align: center;">(A Government of Odisha Undertaking)<br>
+                      Regd. Office: 95, Satyanagar, Bhubaneswar-751007
+                      <br>
+                      www.orissaagro.com
+                    </p>
+                    <h6 style="text-align: center;">OFFICE OF THE DISTRICT MANAGER, {{ DMDetails.dist_name }}</h6>
+                <p style="text-align: center;">{{ DMDetails.dm_address }}
+                  <br>Email-ID: {{ DMDetails.EmailID }}, Contact Number: {{ DMDetails.dm_mobile_no }}
+                </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div style="border-bottom: 1px solid;height: 80px;">
+                  <h3 style="text-align: center;">MONEY RECEIPT</h3>
+                </div>
+                <div>
+                  <br>
+                  <h5 style="text-align: center;">MR No.: {{ data.receipt_no }}<br>
+                    Date: {{ data.payment_date | date : 'dd/MM/y' }}
+                  </h5>
+                </div>
+              </div>
+            </div>
+            <p style="font-size: larger;">
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              Received with thanks from M/s <label class="underline"> {{ data.farmer_name }} ({{ data.farmer_id }}) </label>
+              of <label > </label>
+              a sum of Rs. <label class="underline" style="border: 3px solid;border-radius: 14px;"> {{ data.full_ammount | number }} </label>
+              Rupees <label class="underline"> {{ data.full_ammount | amountToWord }} </label>
+              by <label class="underline"> {{ data.payment_mode | uppercase }} </label>
+              date <label class="underline"> {{ data.payment_date | date: 'dd/MM/yyyy' }} </label>
+              from bank <label class="underline"> {{ data.source_bank | uppercase }} </label>
+              against permit number <label class="underline"> {{ data.permit_no }} </label>
+              dated <label class="underline"> {{ data.payment_date | date : 'dd/MM/y' }} </label>
+              in full account of <label class="underline"> FARM MECHANISATION
+                ({{ data.implement }})
+              </label></p>
+
+            <div class="row">
+              <label class="col-6">Note : Cheques are subject to realisation</label>
+              <label class="col-6" style="text-align: right;">For The Odisha Agro Industries Corporation
+                Ltd.</label>
+            </div>
+            <br>
+            <br>
+            <br>
+            <div>
+              <table style="width: 100%;">
+                <tr>
+                  <td style="text-align: left;"><strong></strong></td>
+                  <td style="text-align: right;"></td>
+                </tr>
+                <tr>
+                  <td style="text-align: left;"></td>
+                  <td style="text-align: right;">Authorised Officer&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        <hr >
+        <!-- <div class="card-text">
+          <div class="middle">
+            <div class="row">
+              <div class="col-2"><img src="assets/images/oaic-new-logo.png" alt="OAIC" style="width: 130px"></div>
+              <div class="col-8">
+                <h4 style="text-align: center;"><label style="border-bottom: 2px solid;">MONEY RECEIPT</label></h4>
+                <h5 style="text-align: center; margin-top: -10px;">ଓଡିଶା କୃଷି ଶିଳ୍ପ ନିଗମ</h5>
+                <h4 style="text-align: center;">The Odisha Agro Industries Corporation Ltd.</h4>
+                <p style="font-size: larger; text-align: center; margin-top: -10px;">(A Govt. of Odisha Undertaking)
+                </p>
+                <p style="font-size: larger; text-align: center; margin-top: -10px;">Regd. H.O. :
+                  95, Satyanagar, Bhubaneswar
+                  - 751007</p>
+              </div>
+              <div class="col-2" style="text-align: right;"><label>Date : {{ data.payment_date | date : 'dd/MM/y' }}</label></div>
+            </div>
+            <div class="row">
+                <div class="col-6" style="text-align: left;">
+                  <label>Office : {{ data.office }}</label>
+                </div>
+                <div class="col-6" style="text-align: right;">
+                  <label>Receipt No : <strong style="font-size: 17px;">{{ data.receipt_no }}</strong></label>
+                </div>
+              </div>
+            <p style="font-size: larger;">
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              Received with thanks from M/s <label class="underline"> {{ data.farmer_name }} ({{ data.farmer_id }}) </label>
+              of <label > </label>
+              a sum of Rs. <label class="underline" style="border: 3px solid;border-radius: 14px;"> {{ data.full_ammount | number }} </label>
+              Rupees <label class="underline"> {{ data.full_ammount | amountToWord }} </label>
+              by <label class="underline"> {{ data.payment_mode | uppercase }} </label>
+              date <label class="underline"> {{ data.payment_date | date: 'dd/MM/yyyy' }} </label>
+              from bank <label class="underline"> {{ data.source_bank | uppercase }} </label>
+              against permit number <label class="underline"> {{ data.permit_no }} </label>
+              dated <label class="underline"> {{ data.payment_date | date : 'dd/MM/y' }} </label>
+              in full account of <label class="underline"> FARM MECHANISATION
+                ({{ data.implement }})
+              </label></p>
+
+            <div class="row">
+              <label class="col-6">Note : Cheques are subject to realisation</label>
+              <label class="col-6" style="text-align: right;">For The Odisha Agro Industries Corporation
+                Ltd.</label>
+            </div>
+            <br>
+            <br>
+            <br>
+            <div>
+              <table style="width: 100%;">
+                <tr>
+                  <td style="text-align: left;"><strong></strong></td>
+                  <td style="text-align: right;"></td>
+                </tr>
+                <tr>
+                  <td style="text-align: left;"></td>
+                  <td style="text-align: right;">Authorised Officer&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div> -->
+
+        <div class="card-text">
+          <div class="middle">
+            <div class="row">
+              <div class="col-8" style="border-right: 1px solid;left: -14px;">
+                <div class="row">
+                  <div class="col-3 body">
+                    <img src="assets/images/oaic-new-logo.png" alt="" style="width: 100%;">
+                  </div>
+                  <div class="col-9 body" style="margin-left: -44px;">
+                    <h5 style="text-align: center;font-weight: bold;white-space: nowrap;margin-left: -3%;">THE ODISHA AGRO
+                      INDUSTRIES CORPORATION LTD</h5>
+                    <p style="text-align: center;">(A Government of Odisha Undertaking)<br>
+                      Regd. Office: 95, Satyanagar, Bhubaneswar-751007
+                      <br>
+                      www.orissaagro.com
+                    </p>
+                    <h6 style="text-align: center;">OFFICE OF THE DISTRICT MANAGER, {{ DMDetails.dist_name }}</h6>
+                <p style="text-align: center;">{{ DMDetails.dm_address }}
+                  <br>Email-ID: {{ DMDetails.EmailID }}, Contact Number: {{ DMDetails.dm_mobile_no }}
+                </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div style="border-bottom: 1px solid;height: 80px;">
+                  <h3 style="text-align: center;">MONEY RECEIPT</h3>
+                </div>
+                <div>
+                  <br>
+                  <h5 style="text-align: center;">MR No.: {{ data.receipt_no }}<br>
+                    Date: {{ data.payment_date | date : 'dd/MM/y' }}
+                  </h5>
+                </div>
+              </div>
+            </div>
+            <p style="font-size: larger;">
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              Received with thanks from M/s <label class="underline"> {{ data.farmer_name }} ({{ data.farmer_id }}) </label>
+              of <label > </label>
+              a sum of Rs. <label class="underline" style="border: 3px solid;border-radius: 14px;"> {{ data.full_ammount | number }} </label>
+              Rupees <label class="underline"> {{ data.full_ammount | amountToWord }} </label>
+              by <label class="underline"> {{ data.payment_mode | uppercase }} </label>
+              date <label class="underline"> {{ data.payment_date | date: 'dd/MM/yyyy' }} </label>
+              from bank <label class="underline"> {{ data.source_bank | uppercase }} </label>
+              against permit number <label class="underline"> {{ data.permit_no }} </label>
+              dated <label class="underline"> {{ data.payment_date | date : 'dd/MM/y' }} </label>
+              in full account of <label class="underline"> FARM MECHANISATION
+                ({{ data.implement }})
+              </label></p>
+
+            <div class="row">
+              <label class="col-6">Note : Cheques are subject to realisation</label>
+              <label class="col-6" style="text-align: right;">For The Odisha Agro Industries Corporation
+                Ltd.</label>
+            </div>
+            <br>
+            <br>
+            <br>
+            <div>
+              <table style="width: 100%;">
+                <tr>
+                  <td style="text-align: left;"><strong></strong></td>
+                  <td style="text-align: right;"></td>
+                </tr>
+                <tr>
+                  <td style="text-align: left;"></td>
+                  <td style="text-align: right;">Authorised Officer&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

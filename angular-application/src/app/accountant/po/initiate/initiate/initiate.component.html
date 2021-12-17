@@ -1,0 +1,50 @@
+
+
+
+
+<app-search-box  *ngIf="first_card"  [POType]="POType" (changeFinYear)="changeFinancialYear($event)"></app-search-box>
+
+
+<app-subsidies-orders *ngIf="first_card && purchasOrderType == 'Subsidy'" [financialYear]="financialYear" (showPODetais)="showSinglePO($event)"></app-subsidies-orders>
+
+
+<app-non-subsidies-orders *ngIf="first_card && purchasOrderType == 'NonSubsidy'" (showPODetais)="showSinglePO($event)"></app-non-subsidies-orders>
+
+
+
+
+
+
+  <!-- ==================================== LOADER PART START ==================================== -->
+  
+  <div class="loader">
+    <div *ngIf="loadingData" class="spinner-border text-info"></div>
+  </div>
+
+
+
+
+        <div *ngIf="showGIlist">
+          <button class="btn btn-info btn-sm topBack" (click)="back()"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+          <div class="mybox">
+            <div class="mybox-header">
+              <span>
+                <strong>
+                  <label>Purchase Order</label>
+                </strong>
+              </span>
+            </div>
+            <div>
+              <app-po [PODetails]="PODetails" [PONo]="PONo" id="printPage"></app-po>
+              <div class="bottomBack">
+                <button class="btn btn-info btn-sm" (click)="back()"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+                <button class="btn btn-info btn-sm" [disabled]="clicked" (click)="indentGenerated();clicked=true;">Send Approval <i class="fas fa-send" aria-hidden="true"></i></button>
+
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- ==================================== INDENT FOR PRINT PART ENDS ==================================== -->
+  
+  

@@ -1,0 +1,505 @@
+<!-- ====================================== HEADER PART START ====================================== -->
+<app-normal-card *ngIf="first_box">
+    <ng-container class="card-head">Deliver Against Purchase Order(P.O.)</ng-container>
+    <ng-container class="card-body">
+      
+          <div class="row">
+            <div class="col-lg-4 col-sm-12 col-xs-12">
+              <app-financial-year (newItemEvent)="changeFinancialYear($event)"></app-financial-year>
+            </div>
+            <div class="col-lg-3">
+              <label>District :</label><br>
+              <select class="form-control" [(ngModel)]="dist">
+                <option value="">ALL</option>
+                <option [ngValue]="x" *ngFor="let x of districts">{{ x.dist_name }}</option>
+              </select>
+            </div>
+            <div class="col-lg-3">
+              <label>Search P.O. Number :</label>
+              <input type="text" class="form-control" placeholder="Enter P.O. Number" [(ngModel)]="searchPONo" [ngModelOptions]="{standalone: true}">
+            </div>
+          </div>
+          
+    </ng-container>
+</app-normal-card>
+
+<!-- ====================================== HEADER PART ENDS ====================================== -->
+
+<!-- ====================================== LOADER PART START ====================================== -->
+
+<div class="loader">
+  <div *ngIf="loader" class="spinner-border text-info"></div>
+</div>
+
+<!-- ====================================== LOADER PART ENDS ====================================== -->
+
+<!-- ====================================== P.O. LIST PART START ====================================== -->
+
+<app-table-card *ngIf="show_indent_list">
+    <ng-container class="card-head">Purchase Order List</ng-container>
+    <ng-container *ngIf="indent_list.length == 0" class="no-record">No record found on financial year {{ fin_year }}.</ng-container>
+    <ng-container class="card-body" *ngIf="indent_list.length != 0">
+
+      <table class="table table-striped table-bordered table-hover">
+        <caption></caption>
+        <thead>
+          <tr>
+            <th scope="col">SL.</th>
+            <th scope="col">District</th>
+            <th scope="col">Date</th>
+            <th scope="col">P.O. Number</th>
+            <th scope="col">No. of Items</th>
+            <th scope="col">Description of Goods</th>
+            <th scope="col">Cost Involved</th>
+            <!-- <th scope="col">Supply Quantity</th> -->
+            <!-- <th scope="col">Pending Quantity</th> -->
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let x of indent_list | search: dist.dist_id | search: searchPONo; let i = index;">
+            <td>{{ i + 1 }}</td>
+            <td>{{x.DistrictName}}</td>
+            <td>{{ x.ApprovedDate | date: 'dd-MM-y' }}</td>
+            <td>{{ x.PONo}}</td>
+            <td>{{ x.NoOfItemsInPO }}</td>
+            <td>Product Category- {{ x.Implement }} <br>
+              Manufacturer- {{ x.Make }} <br>
+              Model/Item- {{ x.Model }} <br></td>
+            <td>{{ x.POAmount | number: '1.2-2' }}</td>
+            <!-- <td>{{ x.TotalDeliveredQuantity | number: '1.2-2' }}</td> -->
+            <!-- <td>{{ x.TotalPendingQuantity | number: '1.2-2' }}</td> -->
+            <td>
+              <button class="btn btn-outline-info round" (click)="loadList(x)"><i class="fas fa-arrow-right"
+                  aria-hidden="true"></i></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </ng-container>
+</app-table-card>
+
+<!-- ====================================== INDENT LIST PART ENDS ====================================== -->
+
+<!-- ====================================== ORDER LIST OF SELECTED INDENT PART START ====================================== -->
+
+<div *ngIf="show_order_list">
+  <button class="btn btn-info btn-sm topBack" (click)="back1();matchByPermitNo='';matchByFarmerName='';"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+  <strong style="float: right;">Purchase Order number (P.O.): {{ selected_indent }}</strong>
+  <app-table-card>
+      <ng-container class="card-head">Orders for Deliver</ng-container>
+      <ng-container class="card-body">
+          <table class="table table-striped table-bordered table-hover text-left" id="itemsTable">
+            <caption></caption>
+            <thead>
+              <tr>
+                <th scope="col">SL.</th>
+                <th scope="col">Goods</th>
+                <th scope="col">P.O. Details</th>
+                <th scope="col">Supply Details</th>
+                <th scope="col">Taxable Value(&#8377;)</th>
+                <th scope="col">GST(&#8377;)</th>
+                <th scope="col">Invoice Value (&#8377;)</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let x of allData | search: searchPermitNo | search: searchFarmerName; let i = index;" [ngStyle]="x.isDeliveredClass">
+                <td>{{ i + 1 }}</td>
+                <td>
+                  Product Category: {{ x.Implement }} <br>
+                  Manufacturer: {{ x.Make }} <br>
+                  Model/Item: {{ x.Model }}</td>
+                <td>{{ x.ItemQuantity }} {{ x.UnitOfMeasurement }}<br>
+                  <ng-container *ngIf="!(x.Implement == 'Tractor' || x.Implement == 'Power tiller')">
+                    <ng-container *ngIf="x.PackageSize">( {{ x.PackageSize }}  {{ x.PackageUnitOfMeasurement }} * {{ x.PackageQuantity }} )</ng-container>
+                  </ng-container>
+                </td>
+                <td>
+                  <ng-container *ngIf="!(x.Implement == 'Tractor' || x.Implement == 'Power tiller')">
+                      Pending: {{ x.PendingQuantity }} {{ x.UnitOfMeasurement }} <br>
+                      Delivered: {{ x.SupplyQuantity }} {{ x.UnitOfMeasurement }}<br>
+                      <ng-container *ngIf="x.SupplyPackageQuantity">( {{ x.PackageSize }}  {{ x.PackageUnitOfMeasurement }} * {{ x.SupplyPackageQuantity }} )</ng-container>
+                  </ng-container>
+                  <ng-container *ngIf="x.Implement == 'Tractor' || x.Implement == 'Power tiller'">
+                    {{ x.ItemQuantity }} {{ x.UnitOfMeasurement }}
+                  </ng-container>
+                </td>
+                <td>{{ x.TotalPurchaseTaxableValue | number: '1.2-2' }}</td>
+                <td>
+                  Tax Rate: {{ x.TaxRate }}% <br>
+                  CGST: {{ x.TotalPurchaseCGST | number: '1.2-2' }} <br>
+                  SGST: {{ x.TotalPurchaseSGST | number: '1.2-2' }}
+                </td>
+                <td>{{ x.TotalPurchaseInvoiceValue | number: '1.2-2' }}</td>
+                <td>
+                  <button [disabled]="x.isDelivered" class="btn btn-outline-info round" (click)="deliveryDetails(x);"
+                    data-toggle="modal" data-target="#deliver">Deliver</button>
+                </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td colspan="5" style="text-align: right;"><strong>Total P.O. Amount(&#8377;):</strong></td>
+                <td style="text-align: right;"><strong>{{ POAmount | number: '1.2-2' }}</strong></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td colspan="5" style="text-align: right;"><strong>My Bill Amount(&#8377;):</strong></td>
+                <td style="text-align: right;"><strong>{{ my_bill_ammout | number: '1.2-2' }}</strong></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+      </ng-container>
+      <ng-container class="card-footer">
+          <button class="btn btn-info btn-sm" (click)="back1();matchByPermitNo='';matchByFarmerName='';"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+          <button class="btn btn-info btn-sm" (click)="fillExtraFields()" *ngIf="itemsForDeliver.length != 0">Next <i class="fas fa-arrow-right" aria-hidden="true"></i> </button>
+      </ng-container>
+  </app-table-card>
+</div>
+
+<!-- ====================================== ORDER LIST OF SELECTED INDENT PART ENDS ====================================== -->
+
+<!-- ====================================== ENTER EXTRA FIELDS PART START ====================================== -->
+
+<div *ngIf="show_extra_fields">
+  <button class="btn btn-info btn-sm topBack" (click)="back2()"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+
+  <app-normal-card>
+      <ng-container class="card-head">Enter Invoice Information</ng-container>
+      <ng-container class="card-body">
+          
+              <div class="row">
+
+                <div class="col-md-6">
+                      <div class="row">
+                        <label class="col-lg-6">Invoice amount(&#8377;) :</label>
+                        <div class="col-lg-6">
+                            <strong>{{my_bill_ammout | number: '1.2-2' }}</strong>
+                        </div>
+                      </div>
+                </div>
+                
+                <div class="col-md-6">
+                  <div class="row">
+                    <label class="col-lg-6">Purchase Order number :</label>
+                    <div class="col-lg-6">
+                          <strong>{{ selected_indent }}</strong>
+                    </div>
+                  </div>                  
+                </div>
+
+                <div class="col-md-6">
+                      <div class="row">
+                          <label for="discount" class="col-lg-6">Discount / TPTN Rebate / Rebate of Loss or Gain:</label>
+                          <input (keyup)="calculateFinalInvoiceAmount()" [(ngModel)]="discount" [ngModelOptions]="{standalone: true}" class="col-lg-6 form-control" type="number" placeholder="Enter discount money" id="discount">
+                      </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="row">
+                    <label class="col-lg-6">Purchase Order amount :</label>
+                    <div class="col-lg-6">
+                      <strong> &#8377; {{ POAmount | number: '1.2-2' }}</strong>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                      <div class="row">
+                        <label class="col-lg-6">Final Invoice amount(&#8377;) :</label>
+                        <div class="col-lg-6"><strong>{{ finalInvoiceAmount | number: '1.2-2' }}</strong></div>
+                      </div>
+                </div>
+
+
+
+              </div>
+              
+
+      </ng-container>
+  </app-normal-card>
+
+  <app-normal-card>
+      <ng-container class="card-head">Enter Invoice Information</ng-container>
+      <ng-container class="card-body">
+          
+              <div class="row">
+                    <div class="col-lg-4">
+                            <label for="invoice_no">Invoice no.<span class="asterisk-mark">*</span> :</label>
+                            <input class="form-control" type="text" [(ngModel)]="invoice_no" [ngModelOptions]="{standalone: true}" id="invoice_no" (keyup)="checkInvoiceNo();" placeholder="Enter invoice no." required>
+                            <span *ngIf="check_invoice_no" class="asterisk-mark">This invoice no is already generated.</span>
+                    </div>
+                    <div class="col-lg-4">
+                            <label for="invoice_date">Invoice date<span class="asterisk-mark">*</span> :</label>
+                            <input class="form-control" type="date" [(ngModel)]="invoice_date" [ngModelOptions]="{standalone: true}" if="invoice_date" max="{{ c_date | date: 'y-MM-dd' }}" required>
+                    </div>
+                    <div class="col-lg-4">
+                            <label for="invoice">Upload Invoice<span class="asterisk-mark">*</span> :</label>
+                            <input class="form-control" type="file" id="invoice" accept="application/pdf" name="invoice_file">
+                    </div>
+                    <div class="col-lg-4">
+                            <label for="rr_way_bill_no">Way bill no.:</label>
+                            <input class="form-control" type="text" [(ngModel)]="rr_way_bill_no" [ngModelOptions]="{standalone: true}" placeholder="Enter way bill no." id="rr_way_bill_no">
+                          </div>
+                    <div class="col-lg-4">
+                            <label for="rr_way_bill_date">Way bill date:</label>
+                            <input [(ngModel)]="rr_way_bill_date" [ngModelOptions]="{standalone: true}" max="{{ c_date | date: 'y-MM-dd' }}" class="form-control" type="date" id="rr_way_bill_date" required>
+                    </div>
+              </div>
+
+      </ng-container>
+      <ng-container class="card-footer">
+          <button class="btn btn-info btn-sm" (click)="back2()"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+          <button class="btn btn-info btn-sm" (click)="invoicePreview()">Confirm</button>
+      </ng-container>
+  </app-normal-card>
+
+
+</div>
+
+<!-- ====================================== ENTER EXTRA FIELDS PART START ====================================== -->
+
+<!-- ====================================== CONFIRMATION PART START ====================================== -->
+
+<div *ngIf="show_print_page">
+  <button class="btn btn-info btn-sm topBack" (click)="back3()"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+  <div class="row">
+    <div class="col-lg-6">
+
+      <app-table-card>
+            <ng-container class="card-head">Invoice Detail</ng-container>
+            <ng-container class="card-body">
+                          <table class="table table-striped table-bordered table-hover">
+                                <thead>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                      <td>P.O. No.</td>
+                                      <td>{{ selected_indent }}</td>
+                                    </tr>
+                                    <tr>
+                                      <td>Invoice No</td>
+                                      <td>{{ invoice_no }}</td>
+                                    </tr>
+                                    <tr>
+                                      <td>Invoice Date</td>
+                                      <td>{{ invoice_date | date: 'dd/MM/y' }}</td>
+                                    </tr>
+                                    <tr>
+                                      <td>Way Bill No</td>
+                                      <td>{{ rr_way_bill_no || '--' }}</td>
+                                    </tr>
+                                    <tr>
+                                      <td>Way Bill Date</td>
+                                      <td>{{ rr_way_bill_date | date: 'dd-MM-y' }}</td>
+                                    </tr>
+                                </tbody>
+                          </table>
+            </ng-container>
+      </app-table-card>
+      
+    </div>
+    <div class="col-lg-6">
+
+      <app-table-card>
+          <ng-container class="card-head">Receiver Detail (Bill To)</ng-container>
+          <ng-container class="card-body">
+                  <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>District:</td>
+                        <td>{{ dmDetails.dist_name }}</td>
+                      </tr>
+                      <tr>
+                        <td>DM:</td>
+                        <td>{{ dmDetails.dm_name }}</td>
+                      </tr>
+                      <tr>
+                        <td>Address:</td>
+                        <td>{{ dmDetails.dm_address || '--'}}</td>
+                      </tr>
+                      <tr>
+                        <td>Mobile no.:</td>
+                        <td>{{ dmDetails.dm_mobile_no || '--'}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+          </ng-container>
+      </app-table-card>
+      
+    </div>
+    <div class="col-lg-12">
+
+        <app-table-card>
+            <ng-container class="card-head">Item Detail</ng-container>
+            <ng-container class="card-body">
+                        <table class="table table-striped table-bordered text-left">
+                          <caption></caption>
+                          <thead>
+                            <tr>
+                              <th scope="col">SL.</th>
+                              <th scope="col">Description of goods and service</th>
+                              <th scope="col">P.O. Details</th>
+                              <th scope="col">Supply Details</th>
+                              <th scope="col">Taxable Value(&#8377;)</th>
+                              <th scope="col">GST(&#8377;)</th>                
+                              <th scope="col">Invoice value (&#8377;)</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let x of invoiceItems; let i = index;">
+                              <td>{{ i + 1 }}</td>
+                              <td style="text-align: left;">
+                                Implement: {{ x.Implement }} <br>
+                                Make: {{ x.Make }} <br>
+                                Model: {{ x.Model }} <br>
+                                <ng-container *ngIf="order.Implement == 'Tractor' || order.Implement == 'Power tiller'">
+                                  Engine No: {{ x.EngineNumber }} <br>
+                                  Chassic No: {{ x.ChassicNumber }}                                  
+                                </ng-container>
+                              </td>
+                              <td>{{ x.ItemQuantity }} {{ x.UnitOfMeasurement }}<br>
+                                <ng-container *ngIf="!(x.Implement == 'Tractor' || x.Implement == 'Power tiller')">
+                                  <ng-container *ngIf="x.PackageSize">( {{ x.PackageSize }}  {{ x.PackageUnitOfMeasurement }} * {{ x.PackageQuantity }} )</ng-container>
+                                </ng-container>
+                              </td>
+                              <td>
+                                <ng-container *ngIf="!(x.Implement == 'Tractor' || x.Implement == 'Power tiller')">
+                                    Pending: {{ x.PendingQuantity }} {{ x.UnitOfMeasurement }} <br>
+                                    Delivered: {{ x.SupplyQuantity }} {{ x.UnitOfMeasurement }}<br>
+                                    <ng-container *ngIf="x.PackageSize">( {{ x.PackageSize }}  {{ x.PackageUnitOfMeasurement }} * {{ x.SupplyPackageQuantity }} )</ng-container>
+                                </ng-container>
+                                <ng-container *ngIf="x.Implement == 'Tractor' || x.Implement == 'Power tiller'">
+                                  {{ x.ItemQuantity }}
+                                </ng-container>
+                              </td>
+                              <td>{{ x.TotalPurchaseTaxableValue | number: '1.2-2' }}</td>
+                              <td>
+                                Tax Rate: {{ x.TaxRate }}% <br>
+                                CGST: {{ x.TotalPurchaseCGST | number: '1.2-2' }} <br>
+                                SGST: {{ x.TotalPurchaseSGST | number: '1.2-2' }}
+                              </td>
+                              <td>{{ x.TotalPurchaseInvoiceValue | number: '1.2-2' }}</td>
+                            </tr>
+                            <tr>
+                              <td colspan="6" style="text-align: right;">Bill amount (&#8377;) </td>
+                              <td colspan="2" style="text-align: right;">
+                                <strong>{{ my_bill_ammout | number: '1.2-2' }}</strong>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td colspan="6" style="text-align: right;">Discount / TPTN Rebate / Rebate of Loss or Gain </td>
+                              <td colspan="2" style="text-align: right;">
+                                <strong>{{ discount | number: '1.2-2' }}</strong>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td colspan="6" style="text-align: right;">Final Invoice Amount </td>
+                              <td colspan="2" style="text-align: right;">
+                                <strong>{{ finalInvoiceAmount | number: '1.2-2' }}</strong>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td colspan="8" style="text-align: right;">
+                                <strong>{{ finalInvoiceAmount | amountToWord }} rupees only /-</strong>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+            </ng-container>
+            <ng-container class="card-footer">
+                        <button class="btn btn-info btn-sm" (click)="back3()"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+                        <button class="btn btn-info btn-sm" [disabled]="clicked" (click)="generateInvoice();clicked=true;">Confirm</button>
+            </ng-container>
+        </app-table-card>
+
+    </div>
+  </div>
+  
+</div>
+
+<!-- ====================================== CONFIRMATION PART ENDS ====================================== -->
+
+<!-- ====================================== ENTER ITEM DETAIL MODAL PART START ====================================== -->
+
+<div class="container">
+  <div class="modal fade" id="deliver">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title center">Enter item details</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-lg-4">Total amount :</div>
+            <div class="col-lg-8">&#8377; {{ order.TotalPurchaseInvoiceValue | number: '1.2-2' }}</div>
+          </div>
+          <div class="row">
+            <div class="col-lg-4">Product Category :</div>
+            <div class="col-lg-8">{{ order.Implement }}</div>
+          </div>
+          <div class="row">
+            <div class="col-lg-4">Manufacturer :</div>
+            <div class="col-lg-8">{{ order.Make }}</div>
+          </div>
+          <div class="row">
+            <div class="col-lg-4">Model / Item :</div>
+            <div class="col-lg-8">{{ order.Model }}</div>
+          </div>
+          <div class="row">
+            <div class="col-lg-4">Unit :</div>
+            <div class="col-lg-8">{{ order.UnitOfMeasurement }}</div>
+          </div>
+          <div class="row">
+            <div class="col-lg-4">Total Quantity :</div>
+            <div class="col-lg-8">{{ order.ItemQuantity }}</div>
+          </div>
+          <div class="row" *ngIf="!(order.Implement == 'Tractor' || order.Implement == 'Power tiller')">
+            <div class="col-lg-4">Delivered Quantity:</div>
+            <div class="col-lg-8">{{ order.DeliveredQuantity }}</div>
+          </div>
+          <div class="row" *ngIf="!(order.Implement == 'Tractor' || order.Implement == 'Power tiller')">
+            <div class="col-lg-4">Pending Quantity :</div>
+            <div class="col-lg-8">{{ order.PendingQuantity }}</div>
+          </div>
+          <div class="row" *ngIf="!(order.Implement == 'Tractor' || order.Implement == 'Power tiller')">
+            <div class="col-lg-4">Deliver Quantity :</div>
+              <div class="col-lg-8">
+                  <input class="form-control" type="text" [(ngModel)]="deliver_quantity" name="deliver_qty">
+                  <small class="points">
+                    Ordered package size is {{ order.PackageSize }}
+                    <br>
+                    Enter a valid qunaitity which is divisible by {{ order.PackageSize }}
+                  </small>
+              </div>
+          </div>
+          <div class="row" *ngIf="order.Implement == 'Tractor' || order.Implement == 'Power tiller'">
+            <div class="col-lg-4">Engine no.<span class="asterisk-mark">*</span> :</div>
+            <div class="col-lg-8">
+              <input class="form-control" type="text" placeholder="Enter engine no." [(ngModel)]="engine_no"
+                name="engine_no" required>
+            </div>
+          </div>
+          <div class="row" *ngIf="order.Implement == 'Tractor' || order.Implement == 'Power tiller'">
+            <div class="col-lg-4">Chassic no.<span class="asterisk-mark">*</span> :</div>
+            <div class="col-lg-8">
+              <input class="form-control" type="text" placeholder="Enter chassic no." [(ngModel)]="chassic_no"
+                name="chassic_no" required>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-info btn-sm" data-dismiss="modal" (click)="addDeliverItem()">Deliver</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====================================== ENTER ITEM DETAIL MODAL PART ENDS ====================================== -->

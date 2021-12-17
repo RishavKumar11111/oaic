@@ -1,0 +1,56 @@
+<form [formGroup]="receiptDetailsForm">
+
+    <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+        <label >Amount received(&#8377;)<span class="asterisk-mark">*</span> :</label>
+        <div>
+            <input type="number" name="amount_pay_now" formControlName="paymentReceived" class="form-control" min="1" placeholder="Enter amount receive now." required>
+        </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+        <label >Mode<span class="asterisk-mark">*</span>:</label>
+        <div>
+            <select formControlName="paymentType" class="form-control" (change)="changePaymentType()" required>
+            <option value="">--select--</option>
+            <option value="DD">DD</option>
+            <option value="Cash">Cash</option>
+            <option value="Cheque">Cheque</option>
+            <option value="Net_Banking">Net Banking</option>
+            <option value="RTGS">RTGS/NEFT</option>
+            </select>
+        </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+        <div [ngSwitch]="receiptDetailsForm.value.paymentType">
+            <label *ngSwitchCase="'DD'">Enter DD no.<span class="asterisk-mark">*</span> :</label>
+            <label *ngSwitchCase="'Cheque'">Enter Cheque no.<span class="asterisk-mark">*</span> :</label>
+            <label *ngSwitchCase="'Net_Banking'">Enter Transaction ID<span class="asterisk-mark">*</span> :</label>
+            <label *ngSwitchCase="'RTGS'">Enter Transaction ID<span class="asterisk-mark">*</span> :</label>
+            <label *ngSwitchCase="'Cash'">Enter Payment No.<span class="asterisk-mark">*</span> :</label>
+
+        </div>
+        <input type="text" formControlName="paymentNo" class="form-control" placeholder="Enter reference number." required [attr.disabled]="receiptDetailsForm.value.paymentType == 'Cash' ? true : null">
+        </div>
+    </div>
+    <div class="row">
+    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+        <label >Received date<span class="asterisk-mark">*</span> :</label>
+        <input type="date" formControlName="paymentDate" class="form-control" required>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+        <label >Source bank<span class="asterisk-mark">*</span>: </label>
+        <select formControlName="sourceBank" class="form-control" required [attr.disabled]="receiptDetailsForm.value.paymentType == 'Cash' ? true : null">
+                <option value="" disabled>--select--</option>
+                <option *ngFor="let x of bankList" [ngValue]="x.BankName">{{ x.BankName }}</option>
+        </select>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" *ngIf="receiptDetailsForm.value.sourceBank == 'other_bank'">
+        <label >Enter other bank name<span class="asterisk-mark">*</span> :</label>
+        <input type="text" formControlName="otherBankName" class="form-control" placeholder="Enter bank name.">
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+        <label >Remark<span class="asterisk-mark">*</span> :</label>
+        <input type="text" formControlName="remark" class="form-control" placeholder="Enter remark.">
+    </div>
+    </div>
+</form>

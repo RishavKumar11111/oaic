@@ -1,0 +1,90 @@
+
+<!-- ====================================== HEADER PART START ====================================== -->
+
+<div class="mybox">
+    <div class="mybox-header">
+      <span>
+        <strong>
+          <label>Audit Log</label>
+        </strong>
+      </span>
+    </div>
+    <div class="middle">
+      <form name="myForm">
+          <div class="row">
+              <div class="col-lg-4">
+                <label>From date :</label>
+                <input type="date" class="form-control" [(ngModel)]="fromDate" [ngModelOptions]="{standalone: true}" max="{{ toDate | date: 'y-MM-dd' }}" required>
+              </div>
+              <div class="col-lg-4">
+                <label>To date :</label>
+                <input type="date" class="form-control" [(ngModel)]="toDate" [ngModelOptions]="{standalone: true}" max="{{ maxDate | date: 'y-MM-dd' }}" min="{{ fromDate | date: 'y-MM-dd' }}" required>
+              </div>
+              <div class="col-lg-4">
+                <button class="rightSubmit btn btn-outline-info" (click)="loadTable();"><i class="fas fa-search" aria-hidden="true"></i> Search</button>
+              </div>
+            </div>
+      </form>
+    </div>
+  </div>
+  
+  <!-- ====================================== HEADER PART ENDS ====================================== -->
+  
+  <!-- ====================================== LOADER PART START ====================================== -->
+  
+  <div class="loader">
+    <div *ngIf="loader" class="spinner-border text-info"></div>
+  </div>
+  
+  <!-- ====================================== LOADER PART ENDS ====================================== -->
+  
+  <!-- ====================================== AUDIT LOG LIST TABLE PART START ====================================== -->
+  
+  <div class="mybox" *ngIf="ledgerTable">
+    <div class="mybox-header">
+      <span>
+        <strong>
+          <label>LOG LIST</label>
+        </strong>
+      </span>
+    </div>
+    <div >
+      <div *ngIf="auditLogList.length == 0" class="no-record">
+        No record found between these dates.
+      </div>
+      <div *ngIf="auditLogList.length != 0">
+        <div class="table-responsive fixed-height-table">
+        <table class="table table-striped table-bordered table-hover table-head-fixed">
+          <caption></caption>
+          <thead>
+            <tr>
+              <th scope="col">SL.</th>
+              <th scope="col">Date/Time</th>
+              <th scope="col">User ID</th>
+              <th scope="col">Action</th>
+              <th scope="col">Status</th>
+              <th scope="col">Remark</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let x of auditLogList;let i = index;">
+              <td>{{ i + 1 }}</td>
+              <td>
+                  {{ x.date_time | date: 'dd-MM-yyyy' }} <br>
+                  {{ x.date_time | date: 'mediumTime' }}
+              </td>
+              <td>{{ x.user_id }}</td>
+              <td>{{ x.action }}</td>
+              <td>{{ x.status }}</td>
+              <td>{{ x.remark }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- ====================================== AUDIT LOG LIST TABLE PART ENDS ====================================== -->
+  
+  

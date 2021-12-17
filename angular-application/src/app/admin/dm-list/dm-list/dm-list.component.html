@@ -1,0 +1,173 @@
+
+      <!--====== ALL DISTRICTS LIST START ======-->
+
+      <div class="mybox">
+        <div class="mybox-header">
+          <span>
+            <strong>
+              <label>All District Managers List</label>
+            </strong>
+          </span>
+        </div>
+        <div class="table-responsive fixed-height-table">
+          <table class="table table-head-fixed table-striped table-hover" style="text-align: left;">
+            <thead>
+              <tr>
+                <th>SL</th>
+                <th>Name</th>
+                <th>Contact</th>
+                <th>DM address</th>
+                <th style="width: 25%;">Bank Details</th>
+                <th>Edit</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let x of dmList;let i = index;">
+                <td>{{ i + 1 }}</td>
+                <td>
+                  District: {{ x.dist_name }} <br>
+                  DM Name: {{ x.dm_name || '--'}}</td>
+                <td>
+                  Email-ID: {{ x.EmailID || '--' }} <br>
+                  Mobile: {{ x.dm_mobile_no || '--'}}
+                </td>
+                <td>{{ x.dm_address || '--'}}</td>
+                <td>
+                  Name: {{ x.BankName || '--' }} <br>
+                  Branch: {{ x.BranchName || '--'}} <br>
+                  Account Number: {{ x.AccountNumber || '--'}} <br>
+                  IFSC Code: {{ x.IFSCCode || '--'}}
+                </td>
+                <td>
+                  <button class="btn btn-outline-info" data-toggle="modal" data-target="#editDetail" (click)="showModifyModal(x);"> <i class="fas fa-edit" aria-hidden="true"></i></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      
+        <!-- LOADER -->
+        <div class="loader">
+          <div *ngIf="loadingData" class="spinner-border text-info"></div>
+        </div>
+      
+        <br>
+        <br>
+    </div>
+
+    <!--====== ALL DISTRICTS LIST ENDS ======-->
+
+    <!--====== MODIFY DM DETAIL MODAL START ======-->
+
+    <div class="container">
+      <div class="modal fade" id="editDetail">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Modify DM detail of {{ s_dist_name}} district</h5>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 0;">
+              <form name="myModifyFrom">
+                <table class="table table-hover" style="line-height: 0.8; text-align: left;">
+                <caption></caption>
+                <tbody>
+                  <tr>
+                    <td>District name :</td>
+                    <td>{{ s_dist_name }}</td>
+                  </tr>
+                  <tr>
+                    <td>DM User-ID :</td>
+                    <td>{{ s_dm_user_id }}</td>
+                  </tr>
+                  <tr>
+                    <td>Name<span class="asterisk-mark">*</span>:</td>
+                    <td>
+                      <input type="text" class="form-control" [(ngModel)]="s_dm_name"[ngModelOptions]="{standalone: true}" placeholder="Enter DM name." name="dm_name" required>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Email-ID:</td>
+                    <td>
+                      <input type="email" class="form-control" [(ngModel)]="EmailID"[ngModelOptions]="{standalone: true}" placeholder="Enter Email-ID of District Manager">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Mobile Number:</td>
+                    <td>
+                      <input type="number" class="form-control" minlength="10" maxlength="10" [(ngModel)]="s_dm_mobile_no"[ngModelOptions]="{standalone: true}" placeholder="Enter DM mobile no.">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Address:</td>
+                    <td>
+                      <textarea class="form-control" [(ngModel)]="s_dm_address"[ngModelOptions]="{standalone: true}" placeholder="Enter address of District Manager." id="DMAddress" cols="30" rows="5"></textarea>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="BankName">Bank Name:</label></td>
+                    <td>
+                      <select id="BankName" class="form-control" [(ngModel)]="BankName"[ngModelOptions]="{standalone: true}">
+                        <option value="" selected disabled>--select--</option>
+                        <option value="State Bank of India ">State Bank of India </option>
+                                      <option value="Bank of Baroda ">Bank of Baroda <br> (Including Vijaya Bank and Dena  Bank)</option>
+                                      <option value="Bank of India ">Bank of India </option>
+                                      <option value="Bank of Maharashtra ">Bank of Maharashtra </option>
+                                      <option value="Canara Bank ">Canara Bank <br> (Including Syndicate Bank)</option>
+                                      <option value="Central Bank of India ">Central Bank of India </option>
+                                      <option value="Indian Bank ">Indian Bank <br> (Including Allahabad Bank)</option>
+                                      <option value="Indian Overseas Bank ">Indian Overseas Bank </option>
+                                      <option value="Punjab National Bank ">Punjab National Bank <br> (including Oriental Bank of  </option>
+                                      <option value="Commerce and United Bank of India)">Commerce and United Bank of India)</option>
+                                      <option value="Punjab & Sind Bank ">Punjab & Sind Bank </option>
+                                      <option value="Union Bank of India ">Union Bank of India <br> (including Andhra Bank and Corporation Bank)</option>
+                                      <option value="UCO Bank ">UCO Bank </option>                                                                            
+                                      <option value="Axis Bank Ltd.">Axis Bank Ltd.</option>
+                                      <option value="Catholic Syrian Bank Ltd.">Catholic Syrian Bank Ltd.</option>
+                                      <option value="City Union Bank Ltd.">City Union Bank Ltd.</option>
+                                      <option value="Development Credit Bank Ltd.">Development Credit Bank Ltd.</option>
+                                      <option value="Dhanlaxmi Bank Ltd.">Dhanlaxmi Bank Ltd.</option>
+                                      <option value="Federal Bank Ltd.">Federal Bank Ltd.</option>
+                                      <option value="HDFC Bank Ltd.">HDFC Bank Ltd.</option>
+                                      <option value="ICICI Bank Ltd.">ICICI Bank Ltd.</option>
+                                      <option value="IndusInd Bank Ltd.">IndusInd Bank Ltd.</option>
+                                      <option value="Jammu & Kashmir Bank Ltd.">Jammu & Kashmir Bank Ltd.</option>
+                                      <option value="Karnataka Bank Ltd.">Karnataka Bank Ltd.</option>
+                                      <option value="Karur Vysya Bank Ltd.">Karur Vysya Bank Ltd.</option>
+                                      <option value="Kotak Mahindra Bank Ltd.">Kotak Mahindra Bank Ltd.</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="BankAccountNumber">Bank Account Number:</label></td>
+                    <td>
+                      <input type="number" class="form-control" [(ngModel)]="AccountNumber"[ngModelOptions]="{standalone: true}" placeholder="Enter Account Number" id="BankAccountNumber">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td> <label for="BankBranchName">Enter Branch:</label></td>
+                    <td>
+                      <input type="text" class="form-control" [(ngModel)]="BranchName"[ngModelOptions]="{standalone: true}" placeholder="Enter Branch Name." id="BankBranchName">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td> <label for="ifscCode">Enter Bank IFSC Code:</label></td>
+                    <td>
+                      <input type="text" class="form-control" [(ngModel)]="IFSCCode"[ngModelOptions]="{standalone: true}" placeholder="Enter IFSC Code." id="ifscCode" >
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-outline-info" data-dismiss="modal" (click)="modifyDMDetail();" >Modify</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--====== MODIFY DM DETAIL MODAL ENDS ======-->
+

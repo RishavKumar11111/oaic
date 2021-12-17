@@ -1,0 +1,101 @@
+<form [formGroup]="ItemDetailsForm">
+
+
+
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    <label >Division<span class="asterisk-mark">*</span>:</label>
+                    <select formControlName="DivisionID" class="form-control">
+                          <option value="">--select--</option>
+                          <option [ngValue]="x.DivisionID" *ngFor="let x of divisionList;">{{ x.DivisionName }}</option>
+                    </select>
+                  
+                  
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                  <label >Product Category<span class="asterisk-mark">*</span>:</label>
+                  <div *ngIf="!isNewImplement">
+                    <select class="form-control" formControlName="Implement" (change)="loadAvlMakes();">
+                      <option value="">--select--</option>
+                      <option [ngValue]="x" *ngFor="let x of impList;">{{ x }}</option>
+                    </select>
+                  </div>
+                  <div *ngIf="isNewImplement">
+                    <div class="input-group mb-3">
+                      <input type="text" class="form-control" formControlName="Implement" placeholder="Enter new Product Category name.">
+                      <div class="input-group-append">
+                        <span class="input-group-text" id="basic-addon2" (click)="undoToImplementDropDown();"><i class="fas fa-arrow-up" aria-hidden="true"></i></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                  <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    <label >Manufacturer<span class="asterisk-mark">*</span>:</label>
+                    <div *ngIf="!isNewMake">
+                      <select class="form-control" formControlName="Make" (change)="changeMake();">
+                          <option value="" disabled>--select--</option>
+                          <option [ngValue]="x" *ngFor="let x of makeList;">{{ x }}</option>
+                      </select>
+                    </div>
+                    <div *ngIf="isNewMake">
+                      <div class="input-group mb-3">
+                        <input type="text" class="form-control" formControlName="Make" placeholder="Enter new Manufacturer name.">
+                        <div class="input-group-append" *ngIf="!isNewImplement">
+                          <span class="input-group-text" id="basic-addon2" (click)="undoToMakeDropDown();"><i class="fas fa-arrow-up" aria-hidden="true"></i></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    <label >Item / Model<span class="asterisk-mark">*</span>:</label>
+                    <input type="text" class="form-control" formControlName="Model" placeholder="Enter Item or Model name." required>
+                  </div>
+                  <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                      <label >HSN<span class="asterisk-mark">*</span>:</label>
+                      <input formControlName="HSN" type="text" class="form-control" placeholder="Enter HSN." maxlength="8" required>
+                  </div>
+                  <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                      <label for="unitOfMeasurement">Unit of Measurement <span class="asterisk-mark">*</span>:</label>
+                      <select formControlName="UnitOfMeasurement" id="unitOfMeasurement" class="form-control">
+                        <option value="" disabled selected>--select--</option>
+                        <option value="Bags">Bags</option>
+                        <option value="Kilograms">Kilograms</option>
+                        <option value="Kilometers">Kilometers</option>
+                        <option value="Kiloliter">Kiloliter</option>
+                        <option value="Meter">Meter</option>
+                        <option value="Metric Ton">Metric Ton</option>
+                        <option value="Numbers">Numbers</option>
+                        <option value="Packs">Packs</option>
+                        <option value="Pieces">Pieces</option>
+                        <option value="Pairs">Pairs</option>
+                        <option value="Quintal">Quintal</option>
+                        <option value="Sets">Sets</option>
+                        <option value="Tonnes">Tonnes</option>
+                        <option value="Foots">Foots</option>
+                        <option value="Liter">Liter</option>
+                      </select>
+                  </div>
+                  <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                      <label for="taxability">Taxability <span class="asterisk-mark">*</span>:</label>
+                      <select formControlName="Taxability" id="taxability" class="form-control">
+                        <option value="" disabled selected>--select--</option>
+                        <option value="Except">Except</option>
+                        <option value="Nill Raised">Nill Raised</option>
+                        <option value="Taxable">Taxable</option>
+                      </select>
+                  </div>
+                  <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" *ngIf="Taxability.value == 'Taxable'">
+                      <label for="taxRate">Tax Rate <span class="asterisk-mark">*</span>:</label>
+                      <select formControlName="TaxRate" id="taxRate" class="form-control">
+                        <option value="" disabled selected>--select--</option>
+                        <option value="5">5%</option>
+                        <option value="12">12%</option>
+                        <option value="18">18%</option>
+                        <option value="28">28%</option>
+                      </select>
+                  </div>
+              </div>
+    
+
+
+</form>

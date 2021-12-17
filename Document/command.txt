@@ -1,0 +1,19 @@
+ANGULAR
+-------
+ng build --base-href /user-login/ --deploy-url /user-login/ --configuration=production --outputPath=
+
+
+
+GIT
+---
+git add .
+git commit -m "Your message"
+git push / git push origin branch-name
+git pull
+
+
+VSCode Extensions
+-----------------
+TODOS:TREE
+Import Cost = Calculate module size
+Bracket Pair Colorizer

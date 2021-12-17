@@ -1,0 +1,18 @@
+ .nav-link{
+    border-radius: 7px;
+    border: solid 1mm;
+    padding: 0 0.5rem;
+ }
+ .nav-link:hover{
+    border: solid 1mm #1f8a8e;
+    color: white !important;
+ }
+ .user-text {
+    font-size: 10px !important;
+    font-weight: 800;
+ }
+ .user-icon {
+    font-size: 25px;
+    color: white;
+    padding-top: 0.1rem;
+ }

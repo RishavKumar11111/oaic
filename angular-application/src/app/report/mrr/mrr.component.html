@@ -1,0 +1,162 @@
+<div id="MRR" class="focusprintpage">
+    <div class="card">
+      <div class="card-body">
+        <div class="card-text">
+
+
+          <div class="container">
+
+
+        <div class="main-page">
+
+
+            
+          <div class="row">
+            <div class="col-8" style="border-right: 1px solid;">
+                <div class="row">
+                  <div class="col-3 body">
+                    <img src="assets/images/oaic-new-logo.png" alt="" style="width: 100%;">
+                  </div>
+                  <div class="col-9 body">
+                    <h5 style="text-align: center;font-weight: bold;white-space: nowrap;margin-left: -4%;">THE ODISHA AGRO INDUSTRIES CORPORATION LTD</h5>
+                    <p style="text-align: center;">(A Government of Odisha Undertaking)<br>
+                      Regd. Office: 95, Satyanagar, Bhubaneswar-751007  <br> www.orissaagro.com <br>
+                      GSTIN: 21AABCT5432F2ZT</p>
+                      <h6 style="text-align: center;">OFFICE OF THE DISTRICT MANAGER, {{ DMDetails.dist_name }}</h6>
+                      <p style="text-align: center;">{{ DMDetails.dm_address }}
+                        <br> Email-ID: {{ DMDetails.EmailID }}, Contact Number: {{ DMDetails.dm_mobile_no }} / {{ AccountantDetails.acc_mobile_no }}
+                        </p>
+                  </div>
+                </div>
+            </div>
+            <div class="col-4">
+              <div style="border-bottom: 1px solid;height: 80px;">
+                <h3 style="text-align: center;">MATERIAL RECEIPT REPORT</h3>
+              </div>
+              <div>
+                <br>
+                <h5 style="text-align: center;">MRR No: {{ mrr.MRRNo }} <br>
+                  <!-- MRR number format - SLR/PO/2021-22/001 -->
+                  Date: {{ received_date | date: 'd-MM-y' }}
+              </h5>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-6">
+              <div class="heading">
+                <h5 style="font-weight: bold;">VENDOR DETAILS</h5>
+              </div>
+              <div class="body">
+                {{ vendorDetails.LegalBussinessName }} <br>
+                {{ vendorDetails.Address }} <br>
+                E-mail: {{ vendorDetails.EmailID }}<br>
+                Phone No.: {{ vendorDetails.ContactNumber }}<br>
+                GSTIN: {{ vendorDetails.GSTN }}<br>
+
+              </div>
+            </div>
+            <div class="col-6" style="border-left: 1px solid;">
+              <div style="border-top: 1px solid;padding: 1%;">
+                <h6>Supplier Invoice No.: {{ invoice.InvoiceNo }} </h6>
+                <h6>Supplier Invoice Date: {{ invoice.InvoiceDate | date: 'dd-MM-yyyy' }} </h6>
+                <hr>
+                <h6>PO Number  : {{ invoice.PONo }} </h6>
+                <h6>PO Date: {{ invoice.ApprovedDate | date: 'dd-MM-yyyy' }} </h6>
+              </div>
+            </div>
+          </div>
+
+
+
+
+
+          <div class="row">
+              <div class="col-lg-12 table-responsive">
+                    
+                  <table class="table table-bordered">
+                    <caption></caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">SL</th>
+                        <th scope="col">Description of Goods</th>
+                        <th scope="col">Quantity as per PO</th>
+                        <th scope="col">Actual Quantity Received</th>
+                        <th scope="col">Rate per Unit (&#8377;)</th>
+                        <th scope="col">Taxable Value (&#8377;)</th>
+                        <th scope="col">GST Rate</th>
+                        <th scope="col">CGST (&#8377;)</th>
+                        <th scope="col">SGST (&#8377;)</th>
+                        <th scope="col">Invoice Value (&#8377;)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let x of printData;let i = index;">
+                        <td>{{ i + 1 }}</td>
+                        <td style="text-align: left;">
+                          Product Category : {{ x.Implement}} <br>
+                          Manufacturer : {{ x.Make}} <br>
+                          Model/Item : {{ x.Model }} <br>
+                          <div *ngIf="x.ChassicNumber">
+                              Engine No. {{ x.EngineNumber }} <br>
+                              Chassic No.   {{ x.ChassicNumber }}
+                          </div>
+                        </td>
+                        <td>{{ x.POItemQuantity }} {{ x.UnitOfMeasurement }} </td>
+                        <td>{{ x.ReceivedQuantity }} {{ x.UnitOfMeasurement }}</td>
+                        <td>{{ x.PurchaseTaxableValue | number: '1.2-2' }}</td>
+                        <td>{{ x.TotalPurchaseTaxableValue | number: '1.2-2' }}</td>
+                        <td>{{ x.TaxRate }}%</td>
+                        <td>{{ x.TotalPurchaseCGST | number: '1.2-2' }}</td>
+                        <td>{{ x.TotalPurchaseSGST | number: '1.2-2' }}</td>
+                        <td>{{ x.TotalPurchaseInvoiceValue | number: '1.2-2' }}</td>
+                      </tr>
+                      <tr>
+                        <td colspan="8" class="text-right"><strong>Total(&#8377;)</strong> </td>
+                        <td colspan="2" class="text-right">{{ totalPriceInTable | number: '1.2-2'}}</td>
+                      </tr>
+                      <tr>
+                        <td colspan="8" class="text-right"><strong>Discount / TPTN Rebate / Rebate of Loss or Gain(&#8377;)</strong> </td>
+                        <td colspan="2" class="text-right">{{ invoice.Discount | number: '1.2-2' }}</td>
+                      </tr>
+                      <tr>
+                        <td colspan="8" class="text-right"><strong>Final amount(&#8377;)</strong> </td>
+                        <td colspan="2" class="text-right">{{ finalAmount | number: '1.2-2'}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+              </div>
+          </div>
+
+          
+          <div class="row body">
+            <div class="col-12">
+              <h6 style="text-align: center;">For Odisha Agro Industries Corporation Ltd.</h6>
+            </div>
+            <div class="col-4" style="text-align: left;margin-top: 60px;">
+              <h5>Store Keeper</h5>
+            </div>
+            <div class="col-4" style="text-align: center;margin-top: 60px;">
+              <h5>Accountant</h5>
+            </div>
+            <div class="col-4" style="text-align: right;margin-top: 60px;">
+              <h5>Project/District/Factory Manager</h5>
+            </div>
+          </div>
+          
+
+        </div>
+
+
+
+          </div>
+
+
+
+
+
+        </div>
+      </div>
+    </div>
+  </div>

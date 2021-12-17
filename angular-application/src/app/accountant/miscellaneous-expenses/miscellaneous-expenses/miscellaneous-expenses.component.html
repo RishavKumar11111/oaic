@@ -1,0 +1,81 @@
+
+<!-- ====================================== HEADER PART START ====================================== -->
+
+<div class="mybox">
+    <div class="mybox-header">
+            <span>
+                    <strong>
+                            <label>Expenditure On Additional Head</label>
+                    </strong>
+            </span>
+    </div>
+    <div class="middle">
+            <form name="myForm">
+                    <div class="row">
+                            <div class="col-lg-2">Scheme<span class="asterisk-mark">*</span> :</div>
+                            <div class="col-lg-10">
+                                    <select class="form-control" [(ngModel)]="schem" [ngModelOptions]="{standalone: true}" (change)="loadReferenceNos()" required>
+                                            <option value="" disabled>--select--</option>
+                                            <option [ngValue]="x" *ngFor="let x of schem_list">{{ x.schem_name }}</option>
+                                    </select>
+                            </div>
+                    </div>
+                    <div class="row">
+                            <div class="col-lg-2">Reference no<span class="asterisk-mark">*</span> :</div>
+                            <div class="col-lg-4">
+                                    <select class="form-control" [(ngModel)]="ref_no" [ngModelOptions]="{standalone: true}" required>
+                                            <option value="" disabled>--select--</option>
+                                            <option [ngValue]="x" *ngFor="let x of ref_no_list">{{ x.reference_no }}</option>
+                                        </select>
+                            </div>
+                            <div class="col-lg-2">Upload supportive document<span class="asterisk-mark">*</span> :</div>
+                            <div class="col-lg-4">
+                                    <input type="file" class="form-control" id="supportiveDoc"
+                                            accept="application/pdf" required>
+                            </div>
+                    </div>
+                    <div class="row">
+                            <div class="col-lg-2">Head<span class="asterisk-mark">*</span> :</div>
+                            <div class="col-lg-4">
+                                    <select class="form-control" [(ngModel)]="head" [ngModelOptions]="{standalone: true}" (change)="loadSubheads()"
+                                            required>
+                                            <option value="" disabled>--select--</option>
+                                            <option value="{{x.head_id}}" *ngFor="let x of heads">
+                                                    {{x.head_name}}</option>
+                                    </select>
+                            </div>
+                            <div class="col-lg-2">Sub Head<span class="asterisk-mark">*</span> :</div>
+                            <div class="col-lg-4">
+                                    <select class="form-control" [(ngModel)]="subhead" [ngModelOptions]="{standalone: true}" required>
+                                            <option value="" disabled>--select--</option>
+                                            <option value="{{x.subhead_id}}" *ngFor="let x of subheads">
+                                                    {{x.subhead_name}}
+                                            </option>
+                                    </select>
+                            </div>
+                    </div>
+                    <div class="row">
+                            <div class="col-lg-2">Amount<span class="asterisk-mark">*</span> :</div>
+                            <div class="col-lg-4"><input type="number" class="form-control" [(ngModel)]="ammount" [ngModelOptions]="{standalone: true}"
+                                            min="0" maxlength="10" placeholder="Enter Amount" required></div>
+                            <div class="col-lg-2">Voucher no :</div>
+                            <div class="col-lg-4"><input type="text" class="form-control" [(ngModel)]="voucherNo" [ngModelOptions]="{standalone: true}"
+                                            placeholder="Voucher No..." required>
+                            </div>
+                    </div>
+                    <div class="row">
+                            <div class="col-lg-2">To<span class="asterisk-mark">*</span> :</div>
+                            <div class="col-lg-4"><input type="text" class="form-control" [(ngModel)]="to" [ngModelOptions]="{standalone: true}"
+                                            placeholder="To..." required></div>
+                            <div class="col-lg-2">Remark<span class="asterisk-mark">*</span> :</div>
+                            <div class="col-lg-4"><input type="text" class="form-control" [(ngModel)]="remark" [ngModelOptions]="{standalone: true}"
+                                            placeholder="Remark..." required></div>
+                    </div>
+                    <div class="rightSubmit">
+                            <button class="btn btn-outline-info round" (click)="Pay()">ADD</button>
+                    </div>
+            </form>
+    </div>
+</div>
+
+<!-- ====================================== HEADER PART START ====================================== -->

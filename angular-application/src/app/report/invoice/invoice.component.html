@@ -1,0 +1,213 @@
+
+    <div id="invoice">
+        <div class="card">
+            <div class="card-body">
+              <h5 class="card-title" align="center"></h5>
+              <div class="card-text">
+        
+        <div>
+
+          <div class="row" style="border: 1px solid;margin-bottom: 0;">
+            <div class="col-8" style="border-right: 1px solid;">
+                <div class="row">
+                  <div class="col-3">
+                    <img src="assets/images/oaic-new-logo.png" alt="" style="width: 100%;">
+                  </div>
+                  <div class="col-9">
+                    <h5 style="text-align: center;font-weight: bold;white-space: nowrap;margin-left: -6%;">THE ODISHA AGRO INDUSTRIES CORPORATION LTD</h5>
+                    <p style="text-align: center;">(A Government of Odisha Undertaking)
+                      Regd. Office: 95, Satyanagar, Bhubaneswar-751007 <br>
+                      www.orissaagro.com
+                      </p>
+                      <br>
+                      <h6 style="text-align: center;">OFFICE OF THE DISTRICT MANAGER, {{ DMDetails.dist_name }}</h6>
+                      <p style="text-align: center;">{{ DMDetails.dm_address }}
+                        <br> Email-ID: {{ DMDetails.EmailID }}, Contact Number: {{ DMDetails.dm_mobile_no }} / {{ AccountantDetails.acc_mobile_no }}
+                        </p>
+                  </div>
+                </div>
+            </div>
+            <div class="col-4">
+              <div style="border-bottom: 1px solid;height: 80px;">
+                <h3 style="text-align: center;">INVOICE</h3>
+              </div>
+              <div style="padding: 2%;">
+                <br>
+                <h6 >Invoice No. : {{ invoicedata.CustomerInvoiceNo }}<br>
+                  Invoice Date: {{ invoicedata.InsertedDate | date:'dd-MM-yyyy' }}
+                </h6>
+                <hr style="border-top: 1px solid;">
+                <h6 >Buyer’s Order No.:<br>
+                  Order Date:: 
+              </h6>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" style="border-left: 1px solid;border-bottom: 1px solid;border-right: 1px solid;margin-bottom: 0;">
+            <div class="col-6" style="border-right: 1px solid;">
+              <div class="heading">
+                <h6>BUYER/BILL TO</h6>
+              </div>
+              <div class="body" *ngIf="(POType.value == 'Subsidy')">
+                {{ x.farmer_name }} <br>
+                FARMER ID: SAM/80214, <br>
+                {{x.dist_name}}, {{x.block_name}}, {{x.gp_name}}, {{x.village_name }}<br>
+                E-mail:<br>
+                Phone No.:<br>
+                GSTIN: {{receiverGstin}}
+                  <br>
+              </div>
+
+              <div class="body" *ngIf="(POType.value == 'NonSubsidy')">
+                Legal Name of Customer: {{CustomerDetails.LegalCustomerName}} <br>
+                Trade Name: {{CustomerDetails.TradeName}} <br>
+                Contact Number: {{CustomerDetails.ContactNumber}} <br>
+                E-MailID: {{CustomerDetails.EmailID}}
+
+                <!-- {{ x.farmer_name }} <br>
+                FARMER ID: SAM/80214, <br>
+                {{x.dist_name}}, {{x.block_name}}, {{x.gp_name}}, {{x.village_name }}<br>
+                E-mail:<br>
+                Phone No.:<br>
+                GSTIN: {{receiverGstin}}
+                  <br> -->
+
+              </div>
+
+            </div>
+            <div class="col-6">
+              <div class="heading">
+                <h6>CONSIGNEE/SHIP TO</h6>
+              </div>
+              <div class="body" *ngIf="(POType.value == 'Subsidy')">
+                {{ x.farmer_name }} <br>
+                FARMER ID: SAM/80214, <br>
+                {{x.dist_name}}, {{x.block_name}}, {{x.gp_name}}, {{x.village_name }}<br>
+                E-mail:<br>
+                Phone No.:<br>
+                GSTIN: {{receiverGstin}}
+              </div>
+
+
+              <div class="body" *ngIf="(POType.value == 'NonSubsidy')">
+                Legal Name of Customer: {{CustomerDetails.LegalCustomerName}} <br>
+                Trade Name: {{CustomerDetails.TradeName}} <br>
+                Contact Number: {{CustomerDetails.ContactNumber}} <br>
+                E-MailID: {{CustomerDetails.EmailID}}
+
+              </div>
+
+            </div>
+          </div>
+
+
+          <div class="row" style="border-left: 1px solid;border-bottom: 1px solid;border-right: 1px solid;margin-bottom: 0;">
+            <table class="table table-bordered table-hover" id="indentListTable">
+              <caption></caption>
+              <thead>
+                <tr>
+                  <th scope="col">Sl No</th>
+                  <th scope="col">Description of Goods</th>
+                  <th scope="col">HSN</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Unit</th>
+                  <th scope="col">Rate per Unit (&#8377;)</th>
+                  <th scope="col">Taxable Value (&#8377;)</th>
+                  <th scope="col">GST Rate</th>
+                  <th scope="col">CGST (&#8377;)</th>
+                  <th scope="col">SGST (&#8377;)</th>
+                  <th scope="col">Invoice Value (&#8377;)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let x of orderList; let i = index;">
+                  <td> {{ i + 1 }} </td>
+                  <td style="text-align: left;">
+                    Product Category: {{ x.Implement }} <br>
+                    Manufacturer: {{ x.Make }} <br>
+                    Model/Item: {{ x.Model }} <br>
+                    <ng-container *ngIf="x.EngineNumber"> 
+                      Engine No.: {{ x.EngineNumber }} <br>
+                      Chasis No.:   {{ x.ChassicNumber }}
+                    </ng-container>
+                  </td>
+                  <td> {{ x.HSN }} </td>
+                  <td> {{ x.ItemQuantity }} </td>
+                  <td> {{ x.UnitOfMeasurement }} </td>
+                  <td> {{ x.TotalSellTaxableValue | number: '1.2-2' }} </td>
+                  <td> {{ x.TotalSellTaxableValue | number: '1.2-2' }} </td>
+                  <td> {{ x.TaxRate }}% </td>
+                  <td> {{ x.TotalSellCGST | number: '1.2-2'  }} </td>
+                  <td> {{ x.TotalSellSGST | number: '1.2-2'  }} </td>
+                  <td> {{ x.TotalSellInvoiceValue | number: '1.2-2' }} </td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td><strong>Total(&#8377;)</strong> </td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>{{ totalAmount | number: '1.2-2' }}</td>
+                  
+                </tr>
+              </tbody>
+
+            </table>
+          </div>
+
+          <div class="row" style="border-left: 1px solid;border-bottom: 1px solid;border-right: 1px solid;margin-bottom: 0;">
+            <div class="col-6" style="border-right: 1px solid;">
+              <div>
+                <h6>BANK DETAILS</h6>
+              </div>
+              <div class="body">
+                Account No.: {{ DMDetails.AccountNumber }} <br>
+                Bank Name: {{ DMDetails.BankName }} <br> 
+                Branch: {{ DMDetails.BranchName }} <br>
+                IFSC: {{ DMDetails.IFSCCode }}
+                  <br>
+
+              </div>
+            </div>
+            <div class="col-6">
+              <div>
+                <h5 style="font-weight: bold;">{{ totalAmount | amountToWord }} Only /-</h5>
+              </div>
+            </div>
+          </div>
+          
+
+          <div class="row" style="border-left: 1px solid;border-bottom: 1px solid;border-right: 1px solid;margin-bottom: 0;">
+            <h5>Terms & Conditions.</h5>
+            <ol style="font-size: large;">
+              <li>Title and Risk to Goods shall pass on to the Buyer upon Delivery at Delivery Point.</li>
+              <li>The Seller shall not be responsible for delay in dispatch of the goods on account of any reason whatsoever
+                unless otherwise confirmed by the authorised officer of the seller in writing.</li>
+              <li>The seller shall not be liable to the original purchaser or any third party for incidental, indirect,
+                consequential or special damages due to the failure on the part of the Buyer.</li>
+              <li>No guarantee, express or implied is given that the materials supplied is suitable for use under any
+                specified conditions or for any specific purposes although such conditions or such purpose may be known
+                to the Seller nor is any guarantee given as to the life or wear of the materials.</li>
+              <li>No cancellation, suspension or modification of orders by the Buyer can be accepted unless special
+                circumstances exist.</li>
+              <li>The Buyer shall be deemed to have accepted Goods on Delivery and it shall not reject the Goods thereafter. Provided it shall be duty of the Buyer to inform to the Seller about the defects in the delivered Goods within three days from the Delivery, else the Seller shall be discharged from all liabilities related to supply of the Goods.</li>
+              <li>The Buyer shall pay to the Seller by means of Cheques / Demand Drafts /Pay Orders or by electronic transfer of funds.</li>
+              <li>The Buyer shall be held responsible for all expenses, loss, damages or any other expenses, whatsoever incurred by the Seller due to the failure on the part of the Buyer to clear the documents forwarded through bank or take delivery of the goods from the carriers or failure to perform any of the terms or the order.</li>
+            </ol>
+          </div>
+
+        </div>
+
+
+              </div>
+            </div>
+          </div>
+          <br>
+          <br>
+    </div>

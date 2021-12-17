@@ -1,0 +1,162 @@
+<%- include('common/header.ejs') -%>
+
+<!-- ====================================== HEADER PART START ====================================== -->
+
+<div class="mybox" ng-show="enter_detail1">
+    <div class="mybox-header">
+        <span>
+            <strong>
+                <label>RECEIVE BACKLOG MONEY</label>
+            </strong>
+        </span>
+    </div>
+    <div class="middle">
+        <div class="row">
+            <div class="col-lg-4">
+              <label>Scheme<span class="asterisk-mark">*</span> : </label>
+              <select ng-model="system" class="form-control" required>
+                <option value="" disabled>--select--</option>
+                <option value="farm_mechanisation">Farm Mechanisation</option>
+                <option value="jalanidhi">Jalanidhi</option>
+            </select>
+            </div>
+            <div class="col-lg-4">
+                <label>Choose order type<span class="asterisk-mark">*</span> : </label>
+                <select class="form-control" ng-model="type" ng-change="loadOrderNoList();enter_detail2=true;" ng-disabled="!system">
+                      <option value="" disabled>--select--</option>
+                      <option value="new_order">New order</option>
+                      <option value="old_order">Existing order</option>
+                </select>
+              </div>
+          </div>
+    </div>
+</div>
+
+<!-- ====================================== HEADER PART ENDS ====================================== -->
+
+<!-- ====================================== LOADER PART START ====================================== -->
+
+<div class="loader">
+    <div ng-show="loader" class="spinner-border text-info"></div>
+</div>
+
+<!-- ====================================== LOADER PART ENDS ====================================== -->
+
+<!-- ====================================== ENTER DETAIL PART START ====================================== -->
+
+<div class="mybox" ng-show="enter_detail2">
+    <div class="mybox-header">
+        <span>
+            <strong>
+                <label>Enter detail</label>
+            </strong>
+        </span>
+    </div>
+    <div class="middle">
+        <form name="myForm">
+            <div class="row">
+                <div class="col-lg-2">Enter order no.<span class="asterisk-mark">*</span> :</div>
+                <div class="col-lg-4" ng-if="type == 'new_order'">
+                    <input type="text" class="form-control" ng-model="$parent.order_no" placeholder="Enter order no." required>
+                </div>
+                <div class="col-lg-4" ng-if="type == 'old_order'">
+                    <select ng-model="$parent.old_order_no" class="form-control" ng-options="x.order_no for x in order_no_list" >
+                        <option value="" disabled>--select--</option>
+                    </select>
+                </div>
+                <div class="col-lg-2">Receive from<span class="asterisk-mark">*</span> :</div>
+                <div class="col-lg-4">
+                    <input type="text" class="form-control" ng-model="receive_from" placeholder="Enter receive from" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2">Head<span class="asterisk-mark">*</span> :</div>
+                <div class="col-lg-4">
+                    <input type="text" class="form-control" ng-model="head" placeholder="Enter head" required>
+                </div>
+                <div class="col-lg-2">Sub-head<span class="asterisk-mark">*</span> :</div>
+                <div class="col-lg-4">
+                    <input type="text" class="form-control"ng-model="subhead" placeholder="Enter sub-head" required>
+                </div>
+            </div>
+        <div class="row">
+            <div class="col-lg-2">Amount<span class="asterisk-mark">*</span> :</div>
+            <div class="col-lg-4">
+                <input type="number" class="form-control" ng-model="amount" min="0" maxlength="14" placeholder="Enter amount" required>
+            </div>
+            <div class="col-lg-2">Payment date<span class="asterisk-mark">*</span> :</div>
+            <div class="col-lg-4">
+                <input type="date" class="form-control" ng-model="payment_date" max="{{c_date | date: 'y-MM-dd' }}" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-2">Payment type<span class="asterisk-mark">*</span> :</div>
+            <div class="col-lg-4">
+                <select ng-model="payment_type" class="form-control" ng-change="payment_no = ''" required>
+                    <option value="" disabled>--select--</option>
+                    <option value="DD">DD</option>
+                    <option value="Cash">Cash</option>
+                    <option value="Cheque">Cheque</option>
+                    <option value="Net_Banking">Net Banking</option>
+                </select>
+            </div>
+            <div class="col-lg-2" ng-switch="payment_type">
+                <label ng-switch-when="DD" >Enter DD no<span class="asterisk-mark">*</span> :</label>
+                <label ng-switch-when="Cheque" >Enter cheque no<span class="asterisk-mark">*</span> :</label>
+                <label ng-switch-when="Net_Banking" >Enter transaction ID<span class="asterisk-mark">*</span> :</label>
+            </div>
+            <div class="col-lg-4" ng-show="payment_type">
+                <input type="text" class="form-control" ng-if="payment_type != 'Cash'" ng-model="$parent.payment_no" placeholder="Enter payment number." required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-2">Remark<span class="asterisk-mark">*</span> :</div>
+            <div class="col-lg-4">
+                <textarea rows="4" class="form-control" ng-model="remark" minlength="0" maxlength="500" placeholder="Enter remark within 500 word." required></textarea>
+            </div>
+        </div>
+        <div style="text-align: right;">
+            <button class="btn btn-outline-info round" ng-disabled="myForm.$invalid" ng-click="receiveOPBalance()">ADD</button>
+        </div>
+        </form>
+    </div>
+</div>
+
+<!-- ====================================== ENTER DETAIL PART ENDS ====================================== -->
+
+<!-- ====================================== PRINT PAYMENT RECEIPT PART START ====================================== -->
+
+<div ng-show="print_page">
+    <button class="btn btn-info btn-sm topBack" ng-click="back();"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+    <div class="mybox">
+        <div class="mybox-header">
+            <span>
+                <strong>
+                <label>MONEY RECEIPT</label>
+                </strong>
+            </span>
+        </div>
+        <div>
+            <%- include('../common/receive_backlog_receipt.ejs') -%>
+            <div class="bottomBack">
+                <button class="btn btn-info btn-sm" ng-click="back();"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+                <button class="btn btn-info btn-sm" ng-click="submit()">SUBMIT</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ====================================== PRINT PAYMENT RECEIPT PART ENDS ====================================== -->
+
+
+
+<script>
+    var cDate = "<%= cDate %>";
+</script>
+<script>
+    document.getElementById('backlogBalanceLink').classList.add("active");
+    document.getElementById('blbDropDown').classList.add("active");
+    document.getElementById('blbReceiveMoneySubItem').classList.add("active");
+  </script>
+<script src="/controller/accountant/receiveOpeningBalance.js"></script>
+<%- include('common/footer.ejs') -%>

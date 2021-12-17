@@ -1,0 +1,21 @@
+
+    .col-lg-6, .col-3 {
+        margin-top: 20px;
+    }
+    .add-button {
+        margin: 10px 0 15px 0;
+    }
+    .error-msg {
+        color: red;
+    }
+    .error {
+        font-size: 12px;
+        font-weight: bold;
+        color: #ff3f3f
+    }
+    .note {
+        font-size: 12px;
+    }
+    .bold-head {
+        font-weight: bold;
+    }

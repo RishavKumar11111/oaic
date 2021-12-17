@@ -1,0 +1,73 @@
+<div id="receipt">
+    <style>
+      .underline {
+    border-bottom: 1px solid black;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+    </style>
+    <link href="../../new/css/sb-admin.css" rel="stylesheet">
+    <div class="card">
+      <div class="card-body">
+        <div class="card-text">
+          <div class="middle">
+            <div class="row">
+              <div class="col-md-2"><img src="../../images/navbar_logo.png" alt="OAIC" style="width: 130px"></div>
+              <div class="col-md-8">
+                <h4 style="text-align: center;"><label style="border-bottom: 2px solid;">MONEY RECEIPT</label></h4>
+                <h5 style="text-align: center; margin-top: -10px;">ଓଡିଶା କୃଷି ଶିଳ୍ପ ନିଗମ</h5>
+                <h4 style="text-align: center;">The Odisha Agro Industries Corporation Ltd.</h4>
+                <p style="font-size: larger; text-align: center; margin-top: -10px;">(A Govt. of Odisha Undertaking)
+                </p>
+                <p style="font-size: larger; text-align: center; margin-top: -10px;">Regd. H.O. :
+                  95, Satyanagar, Bhubaneswar
+                  - 751007</p>
+              </div>
+              <div class="col-md-2" style="text-align: right;"><label>Date :
+                  {{ c_date | date : 'dd-MM-y' }}</label></div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 col-xs-6" style="text-align: left;">
+                <label>Office : {{ dist_name }}</label>
+              </div>
+              <div class="col-md-6 col-xs-6" style="text-align: right;">
+                <label>Receipt No : <strong style="font-size: 17px;">{{ receipt_no }}</strong></label>
+              </div>
+            </div>
+            <p>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+              Received with thanks from <label class="underline"> {{ receive_from }} </label>
+              of a sum of Rs. <label class="underline" style="border: 3px solid;border-radius: 14px;"> {{ amount | number:'2' }} /- only </label>
+              rupees <label class="underline"> {{ amount | convertToWord }} </label>
+              by <label class="underline"> {{ payment_type | uppercase}} </label>
+              date <label class="underline"> {{ payment_date | date: 'dd-MM-y' }} </label>
+              against our Order no. <label class="underline"> {{ type == 'new_order' ? order_no : old_order_no.order_no }} </label>
+              dated <label class="underline"> {{ c_date | date : 'dd-MM-y' }} </label>
+              in full account of <label class="underline"> {{ system }}.
+              </label></p>
+
+            <div class="row">
+              <label class="col-md-6">Note : Cheques are subject to realisation</label>
+              <label class="col-md-6" style="text-align: right;">For The Odisha Agro Industries Corporation
+                Ltd.</label>
+            </div>
+            <br>
+            <br>
+            <br>
+            <div>
+              <table style="width: 100%;">
+                <tr>
+                  <td style="text-align: left;"><strong>{{ acc_name }}</strong></td>
+                  <td style="text-align: right;"></td>
+                </tr>
+                <tr>
+                  <td style="text-align: left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Accountant</td>
+                  <td style="text-align: right;">Authorised Officer&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

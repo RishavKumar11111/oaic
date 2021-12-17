@@ -1,0 +1,126 @@
+
+<!-- ==================================== HEADER FINANCIAL YEAR PART START ==================================== -->
+
+<div class="mybox" *ngIf="first_box" style="border-color: #ea4f4f;">
+    <div class="mybox-header" style="background-color: #ea4f4f;">
+      <span>
+        <strong>
+          <label >All Cancelled Purchase Orders</label>
+        </strong>
+      </span>
+    </div>
+    <br>
+    <div class="container row">
+        <div class="col-lg-4 col-sm-12 col-xs-12">
+            <app-financial-year (newItemEvent)="changeFinancialYear($event)"></app-financial-year>
+        </div>
+    </div>
+    <br>
+  </div>
+  
+  <!-- ==================================== HEADER FINANCIAL YEAR PART ENDS ==================================== -->
+  
+  <!-- ==================================== LOADER PART START ==================================== -->
+  
+  <div class="loader">
+    <div *ngIf="loadingData" class="spinner-border text-info"></div>
+  </div>
+  
+  <!-- ==================================== LOADER PART ENDS ==================================== -->
+  
+  <!-- ==================================== CANCELLED INDENT LIST PART START ==================================== -->
+  
+  <div class="mybox" *ngIf="indentsTable" style="border-color: #ea4f4f;">
+    <div class="mybox-header" style="background-color: #ea4f4f;">
+      <div class="row">
+        <div class="col-3">
+            <div class="input-group mb-3 input-group-sm">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <input type="text" class="form-control" placeholder="Enter Vendor name" [(ngModel)]="search_dealer_name">
+            </div>
+        </div>
+        <div class="col-6">
+        <strong>
+          <label>Cancelled P.O. List</label>
+        </strong>
+        </div>
+        <div class="col-3">
+            <div class="input-group mb-3 input-group-sm">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <input type="text" class="form-control" placeholder="Enter P.O. Number" [(ngModel)]="search_indent_no">
+            </div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align: center;">
+      <div class="no-record" *ngIf="paidListData.length == 0">
+        No record found on financial year {{ fin_year }}.
+      </div>
+      <div *ngIf="paidListData.length != 0">
+        <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover" id="indentListTable">
+          <caption></caption>
+          <thead>
+            <tr>
+              <th scope="col">SL.</th>
+              <th scope="col">P.O. Number</th>
+              <th scope="col">P.O. Date</th>
+              <th scope="col">Vendor</th>
+              <th scope="col">No of Items</th>
+              <th scope="col">Total Cost in P.O.(&#8377;)</th>
+              <th scope="col">View</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let x of paidListData | search: search_indent_no | search: search_dealer_name;let i = index; ">
+              <td>{{ i + 1 }}</td>
+              <td>{{ x.indent_no }}</td>
+              <td> {{ x.indent_date | date: 'dd/MM/y'}}</td>
+              <td>{{ x.LegalBussinessName }}</td>
+              <td>{{ x.items }}</td>
+              <td>{{ x.indent_ammount | number }}</td>
+              <td>
+                <button class="btn btn-outline-info round" (click)="showDetails(x.indent_no)"><i class="fas fa-bars" aria-hidden="true"></i></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- ==================================== CANCELLED INDENT LIST PART ENDS ==================================== -->
+  
+  <!-- ==================================== PRINT INDENT PART START ==================================== -->
+  
+  <div *ngIf="printIndent">
+    <button class="btn btn-info btn-sm topBack" (click)="back()"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+    <div class="mybox" style="border-color: #ea4f4f;">
+      <div class="mybox-header" style="background-color: #ea4f4f;">
+        <span>
+          <strong>
+            <label >Purchase Order</label>
+          </strong>
+        </span>
+      </div>
+      <div >
+        <app-po [PODetails]="PODetails" [PONo]="PONo" id="printPage"></app-po>
+
+        <div class="bottomBack">
+          <button class="btn btn-info btn-sm" (click)="back()"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- ==================================== PRINT INDENT PART ENDS ==================================== -->
+  

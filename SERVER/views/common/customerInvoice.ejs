@@ -1,0 +1,340 @@
+
+    <div id="invoice">
+        <link href="/new/css/sb-admin.css" rel="stylesheet">
+        <div class="card">
+            <div class="card-body">
+              <h5 class="card-title" align="center"></h5>
+              <div class="card-text">
+
+
+
+
+                
+        <style>
+          .heading {
+            padding: 1%;
+            border-bottom: 1px solid;
+          }
+          h6, h3 {
+            font-weight: bold;
+          }
+          .col-6, .col-4{
+            padding: 0;
+          }
+          .body {
+            padding: 1%;
+          }
+        </style>
+
+
+
+        
+        <div>
+
+
+            
+          <div class="row" style="border: 1px solid;margin-bottom: 0;">
+            <div class="col-8" style="border-right: 1px solid;">
+                <div class="row">
+                  <div class="col-3">
+                    <img src="/images/oaic-new-logo.png" alt="" style="width: 100%;">
+                  </div>
+                  <div class="col-9">
+                    <h5 style="text-align: center;font-weight: bold;white-space: nowrap;margin-left: -4%;">THE ODISHA AGRO INDUSTRIES CORPORATION LTD</h5>
+                    <p style="text-align: center;">(A Government of Odisha Undertaking)
+                      Regd. Office: 95, Satyanagar, Bhubaneswar-751007 <br>
+                      www.orissaagro.com
+                      </p>
+                      <br>
+                      <h6 style="text-align: center;">OFFICE OF THE DISTRICT MANAGER, {{ DMDetails.dist_name }}</h6>
+                      <p style="text-align: center;">{{ DMDetails.dm_address }}
+                        <br> Email-ID: {{ DMDetails.EmailID }}, Contact Number: {{ DMDetails.dm_mobile_no }} / {{ AccountantDetails.acc_mobile_no }}
+                        </p>
+                  </div>
+                </div>
+            </div>
+            <div class="col-4">
+              <div style="border-bottom: 1px solid;height: 80px;">
+                <h3 style="text-align: center;">INVOICE</h3>
+              </div>
+              <div style="padding: 2%;">
+                <br>
+                <h6 >Invoice No. : {{ invoice_no }}<br>
+                  Invoice Date: {{ invoice_date | date:'dd-MM-yyyy' }}
+                </h6>
+                <hr style="border-top: 1px solid;">
+                <h6 >Buyer’s Order No.:<br>
+                  Order Date:: 
+              </h6>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" style="border-left: 1px solid;border-bottom: 1px solid;border-right: 1px solid;margin-bottom: 0;">
+            <div class="col-6" style="border-right: 1px solid;">
+              <div class="heading">
+                <h6>BUYER/BILL TO</h6>
+              </div>
+              <div class="body">
+                {{ x.farmer_name }} <br>
+                FARMER ID: SAM/80214, <br>
+                {{x.dist_name}}, {{x.block_name}}, {{x.gp_name}}, {{x.village_name }}<br>
+                E-mail:<br>
+                Phone No.:<br>
+                GSTIN: {{receiverGstin}}
+                  <br>
+
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="heading">
+                <h6>CONSIGNEE/SHIP TO</h6>
+              </div>
+              <div class="body">
+                {{ x.farmer_name }} <br>
+                FARMER ID: SAM/80214, <br>
+                {{x.dist_name}}, {{x.block_name}}, {{x.gp_name}}, {{x.village_name }}<br>
+                E-mail:<br>
+                Phone No.:<br>
+                GSTIN: {{receiverGstin}}
+
+
+              </div>
+            </div>
+          </div>
+
+
+          <div class="row" style="border-left: 1px solid;border-bottom: 1px solid;border-right: 1px solid;margin-bottom: 0;">
+            <table class="table table-bordered table-hover" id="indentListTable">
+              <caption></caption>
+              <thead>
+                <tr>
+                  <th scope="col">Sl No</th>
+                  <th scope="col">Description of Goods</th>
+                  <th scope="col">HSN</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Unit</th>
+                  <th scope="col">Rate per Unit (&#8377;)</th>
+                  <th scope="col">Taxable Value (&#8377;)</th>
+                  <th scope="col">GST Rate</th>
+                  <th scope="col">CGST (&#8377;)</th>
+                  <th scope="col">SGST (&#8377;)</th>
+                  <th scope="col">Invoice Value (`)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr >
+                  <td> 1 </td>
+                  <td style="text-align: left;">
+                    Implement- {{ x.implement }} <br>
+                    Make- {{ x.make }} <br>
+                    Model- {{ x.model }} <br>
+                    Engine No. {{ x.engine_no }} <br>
+                    Chasis No.   {{ x.chassic_no }}
+                  </td>
+                  <td> {{ x.HSN }} </td>
+                  <td>1</td>
+                  <td> {{ x.UnitOfMeasurement }} </td>
+                  <td>{{ x.PurchaseTaxableValue | number }}</td>
+                  <td>{{ x.PurchaseTaxableValue | number }}</td>
+                  <td>{{ x.TaxRate }}</td>
+                  <td>{{ x.PurchaseCGST | number  }}</td>
+                  <td>{{ x.PurchaseSGST | number  }}</td>
+                  <td>{{ x.PurchaseInvoiceValue | number }}</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td><strong>Total(&#8377;)</strong> </td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>{{ subTotal | number: '2'}}</td>
+                  
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          
+          <div class="row" style="border-left: 1px solid;border-bottom: 1px solid;border-right: 1px solid;margin-bottom: 0;">
+            <div class="col-6" style="border-right: 1px solid;">
+              <div>
+                <h6>BANK DETAILS</h6>
+              </div>
+              <div class="body">
+                Account No.: {{ DMDetails.AccountNumber }} <br>
+                Bank Name: {{ DMDetails.BankName }} <br> 
+                Branch: {{ DMDetails.BranchName }} <br>
+                IFSC: {{ DMDetails.IFSCCode }}
+                  <br>
+
+              </div>
+            </div>
+            <div class="col-6">
+              <div>
+                <h5 style="font-weight: bold;">Rupees {{subTotal | convertToWord }} Only</h5>
+              </div>
+            </div>
+          </div>
+          
+
+          <div class="row" style="border-left: 1px solid;border-bottom: 1px solid;border-right: 1px solid;margin-bottom: 0;">
+            <h5>Terms & Conditions.</h5>
+            <ol style="font-size: large;">
+              <li>Title and Risk to Goods shall pass on to the Buyer upon Delivery at Delivery Point.</li>
+              <li>The Seller shall not be responsible for delay in dispatch of the goods on account of any reason whatsoever
+                unless otherwise confirmed by the authorised officer of the seller in writing.</li>
+              <li>The seller shall not be liable to the original purchaser or any third party for incidental, indirect,
+                consequential or special damages due to the failure on the part of the Buyer.</li>
+              <li>No guarantee, express or implied is given that the materials supplied is suitable for use under any
+                specified conditions or for any specific purposes although such conditions or such purpose may be known
+                to the Seller nor is any guarantee given as to the life or wear of the materials.</li>
+              <li>No cancellation, suspension or modification of orders by the Buyer can be accepted unless special
+                circumstances exist.</li>
+              <li>The Buyer shall be deemed to have accepted Goods on Delivery and it shall not reject the Goods thereafter. Provided it shall be duty of the Buyer to inform to the Seller about the defects in the delivered Goods within three days from the Delivery, else the Seller shall be discharged from all liabilities related to supply of the Goods.</li>
+              <li>The Buyer shall pay to the Seller by means of Cheques / Demand Drafts /Pay Orders or by electronic transfer of funds.</li>
+              <li>The Buyer shall be held responsible for all expenses, loss, damages or any other expenses, whatsoever incurred by the Seller due to the failure on the part of the Buyer to clear the documents forwarded through bank or take delivery of the goods from the carriers or failure to perform any of the terms or the order.</li>
+            </ol>
+          </div>
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <!-- <div class="container">
+                  <h3 style="text-align: center;">THE ODISHA AGRO INDUSTRIES CORPORATION LIMITED</h3>
+                  <p style="font-size: larger; text-align: center; margin-top: -10px;">(A Govt. of Odisha Undertaking)</p>
+                  <P style="font-size: larger; text-align: center; margin-top: -10px;"> Regd. H.O. : 95,Satyanagar,Bhubaneswar - 751007</P>
+                  <h4 style="text-align: center;">TAX INVOICE</h4>
+                  <br>
+                  <br>
+
+                  <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 table-bordered">
+                      <P style="font-size: larger;">GSTIN : <label> {{gstin}}</label>
+                      </P>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 table-bordered">
+                        <label>UNIT : </label><label style="border-bottom: 1px solid black;"> {{unit}} </label>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                      <div class="col-lg-7 col-md-7 table-bordered">
+                        <p>Details of Receiver:</p>
+                        <p style="font-size: larger;">
+                          Name : <label > {{ x.farmer_name }} </label><br>
+                          Address : <label > {{x.dist_name}}, {{x.block_name}}, {{x.gp_name}}, {{x.village_name }} </label><br>
+                          GSTIN : <label  > {{receiverGstin}} </label><br>
+                        </p>
+                      </div>
+                      <div class="col-lg-5 col-md-5 table-bordered">
+                          <p style="font-size: larger;">
+
+                          <label>Indent No : </label><label> {{indent_no}} </label><br>
+                          <label>Date of Indent :</label><label > {{indent_date | date: 'dd-MM-y'}} </label><br>
+
+                          <label>Invoice No : </label><label> {{invoice_no}} </label><br>
+                          <label>Date of Invoice :</label><label > {{invoice_date | date: 'dd-MM-y'}} </label><br>
+
+                          <label>Mrr No : </label><label> {{mrr_no}} </label><br>
+                          <label>Date of Receive :</label><label > {{mrr_date | date: 'dd-MM-y'}} </label><br>
+                          </p>
+                      </div>
+                    </div>
+                   
+                    <br>
+                    <br>
+                    <div>
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                              <tr>
+                                <th scope="col">SL.</th>
+                                <th scope="col">Description of goods and service</th>
+                                <th scope="col">HSN/ACS code</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Rate per quanity (&#8377;)</th>
+                                <th scope="col">Taxable value (&#8377;)</th>
+                                <th scope="col">CGST(&#8377;)</th>
+                                <th scope="col">SGST(&#8377;)</th>
+                                <th scope="col">Invoice Value (&#8377;)</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                  <tr>
+                                    <td>1</td>
+                                    <td style="text-align: left;">
+                                      Implement : {{x.implement}} <br>
+                                      Make : {{x.make}} <br>
+                                      Model : {{x.model}}
+                                    </td>
+                                    <td>{{}}</td>
+                                    <td>1</td>
+                                    <td>{{x.p_taxable_value | number :'2' }}</td>
+                                    <td>{{x.p_taxable_value | number:'2' }}</td>
+                                    <td>{{x.p_cgst_6 | number }}</td>
+                                    <td>{{x.p_sgst_6 | number }}</td>
+                                    <td>{{x.invoiceValue | number }}</td>
+                                  </tr>
+                                  <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td><strong>Total(&#8377;)</strong> </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>{{ subTotal | number: '2'}}</td>
+                                    
+                                  </tr>
+                            </tbody>
+                        </table>
+                      </div>
+                    <br>
+                    <br>
+                    <div class="table-bordered">
+                      <p style="font-size: larger;">Sub Total (Rs.) : {{subTotal | number : '2' }}</p>
+                    </div>
+                    <div class="table-bordered">
+                      <p style="font-size: larger;">Total Invoice Value in Word : {{subTotal | convertToWord }} rupees onlt /-</p>
+                    </div>
+                    
+                    <br>
+                    <br>
+                   
+                    <div class="row">
+                      <div class="col-lg-6 col-md-6 col-sm-6 table-bordered">
+                        <br><br><br>
+                        <P style="font-size: larger;">Goods once sold can't be returned
+                        </P>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-6 table-bordered">
+                        <br><br><br>
+                        <P style="font-size: larger;text-align: right;">Authorised Signatory : </P>
+                      </div>
+                    </div>
+                  
+
+                </div> -->
+              </div>
+            </div>
+          </div>
+          <br>
+          <br>
+    </div>

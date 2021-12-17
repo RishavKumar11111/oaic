@@ -1,0 +1,264 @@
+<!-- ====================================== HEADER PART START ====================================== -->
+
+<div class="mybox" *ngIf="first_box">
+    <div class="mybox-header">
+      <span>
+        <strong>
+            <label >Generated Invoice List</label>
+        </strong>
+      </span>
+    </div>
+    <div class="middle">
+      <div class="row">
+        <div class="col-lg-4 col-sm-12 col-xs-12">
+            <app-financial-year (newItemEvent)="changeFinancialYear($event)"></app-financial-year>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- ====================================== HEADER PART ENDS ====================================== -->
+  
+  <!-- ====================================== LOADER PART START ====================================== -->
+  
+  <div class="loader">
+    <div *ngIf="loader" class="spinner-border text-info"></div>
+  </div>
+  
+  <!-- ====================================== LOADER PART ENDS ====================================== -->
+  
+  <!-- ====================================== GENERATED INVOICE LIST PART START ====================================== -->
+  
+  <div class="mybox" *ngIf="show_invoice_list">
+    <div class="mybox-header">
+      <div class="row">
+        <div class="col-md-3 col-sm-3 col-lg-3 col-xs-0"></div>
+        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-10">
+          <strong>
+            <label >Generated Invoice List</label>
+        </strong>
+        </div>
+        <div class="col-md-3 col-sm-3 col-lg-3 col-xs-2">
+            <div class="input-group mb-3 input-group-sm">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <input type="text" class="form-control" placeholder="Enter Invoice no." [(ngModel)]="searchInvoiceNo">
+            </div>
+        </div>
+      </div>
+    </div>
+  <div >
+    <div class="no-record" *ngIf="invoice_list.length == 0">
+      No record found on financial year {{ fin_year }}.
+    </div>
+    <div *ngIf="invoice_list.length != 0">    
+      <div class="table-responsive">
+      <table class="table table-striped table-bordered table-hover" style="text-align: center;">
+        <caption></caption>
+        <thead>
+          <tr>
+            <th scope="col">SL</th>
+            <th scope="col">Invoice date</th>
+            <th scope="col">Invoice no.</th>
+            <th scope="col">No. of items</th>
+            <th scope="col">Status</th>
+            <th scope="col">View</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let x of invoice_list | search: searchInvoiceNo;let i = index;">
+            <td>{{ i + 1 }}</td>
+            <td>{{ x.InvoiceDate | date: 'dd-MM-y' }}</td>
+            <td>{{ x.InvoiceNo }}</td>
+            <td>{{ x.NoOfOrderDeliver }}</td>
+            <td>{{ x.Status | uppercase }}</td>
+            <td><button class="btn btn-outline-info round" (click)="showInvoice(x.InvoiceNo)"><i class="fas fa-bars" aria-hidden="true"></i></button></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+  <!-- INVOICE LIST TABLE  END -->
+  <br>
+  </div>
+  
+  <!-- ====================================== GENERATED INVOICE LIST PART ENDS ====================================== -->
+  
+  <!-- ====================================== PREVIEW INVOICE DETAIL PART START ====================================== -->
+  
+  <div *ngIf="printPage">
+    <button class="btn btn-info btn-sm topBack" (click)="back()"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+    <div class="row" >
+      <div class=" col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="mybox " style="height: 450px;">
+          <div class="mybox-inner-header">
+            <div class="row">
+              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"></div>
+              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <strong>
+                  <h5>Invoice Detail</h5>
+                </strong>
+              </div>
+              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"></div>
+            </div>
+          </div>
+          <form>
+            <div class="table-responsive">
+              <table class="table table-striped table-bordered table-hover" style="text-align: center;">
+                <caption></caption>
+                <thead>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>P.O. No</td>
+                    <td>{{ invoice_data.PONo }}</td>
+                  </tr>
+                  <tr>
+                    <td>P.O. Date</td>
+                    <td>{{ invoice_data.ApprovedDate | date: 'dd/MM/y' }}</td>
+                  </tr>
+                  <tr>
+                    <td>Invoice No</td>
+                    <td>{{ invoice_no }}</td>
+                  </tr>
+                  <tr>
+                    <td>Invoice Date</td>
+                    <td>{{ invoice_data.InvoiceDate | date: 'dd/MM/y' }}</td>
+                  </tr>
+                  <tr>
+                    <td>View Invoice</td>
+                    <td>
+                      <a href="{{invoice_data.invoice_path}}" target="_blank">
+                      <i class="fas fa-file-pdf" aria-hidden="true"></i>
+                    </a>
+                  </td>
+                  </tr>
+                  <tr>
+                    <td>Way Bill No :</td>
+                    <td>{{ invoice_data.WayBillNo }}</td>
+                  </tr>
+                  <tr>
+                    <td>Way Bill Date :</td>
+                    <td>{{ invoice_data.WayBillDate | date: 'dd/MM/y' }}</td>
+                  </tr>
+                  <tr>
+                    <td>Wagon / Truck No :</td>
+                    <td>{{ invoice_data.TruckNo }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class=" col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="mybox" style="height: 450px;">
+          <div class="mybox-inner-header">
+            <div class="row">
+              <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
+              <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                <strong>
+                  <h5>Receiver Detail (Bill To)</h5>
+                </strong>
+              </div>
+              <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
+            </div>
+          </div>
+          <form >
+            <div class="table-responsive">
+              <table class="table table-striped table-bordered table-hover">
+                <caption></caption>
+                <thead>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>District Name :</td>
+                    <td>{{ invoice_data.dist_name }}</td>
+                  </tr>
+                  <tr>
+                    <td>District Manager Name :</td>
+                    <td>{{ invoice_data.dm_name }}</td>
+                  </tr>
+                  <tr>
+                    <td>Address :</td>
+                    <td>{{ invoice_data.dm_address || '--' }}</td>
+                  </tr>
+                  <tr>
+                    <td>Mobile Number :</td>
+                    <td>{{ invoice_data.dm_mobile_no }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="mybox">
+      <div class="mybox-inner-header">
+        <div class="row">
+          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"></div>
+          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+            <strong>
+              <h5>Item Detail</h5>
+            </strong>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"></div>
+        </div>
+      </div>
+      <div class="table-responsive">
+          <table class="table table-striped table-bordered">
+            <caption></caption>
+            <thead>
+              <tr>
+                <th scope="col">SL.</th>
+                <th scope="col">Description of goods and service</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Rate per quanity (&#8377;)</th>
+                <th scope="col">Taxable value (&#8377;)</th>
+                <th scope="col">CGST(&#8377;)</th>
+                <th scope="col">SGST(&#8377;)</th>
+                <th scope="col">Invoice value (&#8377;)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let x of invoiceItems;let i = index;">
+                <td>{{ i + 1 }}</td>
+                <td style="text-align: left;">
+                  Implement : {{x.Implement}} <br>
+                  Make : {{x.Make}} <br>
+                  Model : {{x.Model}}
+                </td>
+                <td>{{ x.quantity }}</td>
+                <td>{{ x.PurchaseTaxableValue | number }}</td>
+                <td>{{ x.TotalPurchaseTaxableValue | number }}</td>
+                <td>{{ x.TotalPurchaseCGST | number  }}</td>
+                <td>{{ x.TotalPurchaseSGST | number }}</td>
+                <td>{{ x.TotalPurchaseInvoiceValue | number }}</td>
+              </tr>
+              <tr>
+                <td colspan="5" style="text-align: right;">Sub Total (&#8377;) </td>
+                <td colspan="4" style="text-align: left;">
+                  <strong >{{ total | number }}</strong></td>
+              </tr>
+              <tr>
+                <td colspan="5" style="text-align: right;">Total Invoice value in word </td>
+                <td colspan="4" style="text-align: left;">
+                  <strong >{{ total | amountToWord }} rupees only /-</strong>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+      </div>
+      <div class="middle">
+        <button class="btn btn-info btn-sm topBack" (click)="back()"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+      </div>    
+    </div>
+  </div>
+  
+  <!-- ====================================== PREVIEW INVOICE DETAIL PART START ====================================== -->
+  

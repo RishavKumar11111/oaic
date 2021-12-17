@@ -1,0 +1,199 @@
+
+<div class="mybox">
+    <div class="mybox-header">
+      <span>
+        <strong>
+          <label>JOB BOOK</label>
+        </strong>
+      </span>
+    </div>
+    <div class="middle">
+      <div class="row">
+        <div class="col-lg-4 col-sm-12 col-xs-12">
+            <app-financial-year (newItemEvent)="changeFinancialYear($event)"></app-financial-year>
+        </div>
+        <div class="col-lg-4">
+          <label>Cluster ID :</label>
+          <select class="form-control" [(ngModel)]="cluster_id" (change)="loadFarmerPayments()">
+            <option value="">--Select--</option>
+            <option [ngValue]="x" *ngFor="let x of cluster_id_list" >{{ x.cluster_id }}</option>
+          </select>
+        </div>
+        <div class="col-lg-4">
+          <table *ngIf="fin_year" class="table">
+            <tr>
+              <td style="text-align: left;"><label>Total Received Balance: </label></td>
+              <td style="text-align: right;font-weight: bold;"><label>&#8377;{{ total_receive_balance | number }} </label></td >
+            </tr>
+            <tr>
+              <td style="text-align: left;"><label>Debit Balanace: <br>(To Farmers) </label></td>
+              <td style="text-align: right;font-weight: bold;"><label>&#8377;{{ debit_balance | number }} </label></td>
+            </tr>
+            <tr>
+              <td style="text-align: left;"><label>Available Balanace: </label></td>
+              <td style="text-align: right;font-weight: bold;"><label>&#8377;{{ total_receive_balance - debit_balance | number }} </label></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  
+  
+    <div class="loader">
+      <div *ngIf="loader" class="spinner-border text-info"></div>
+    </div>
+    <!-- ALL DATA TABLE START -->
+    <div class="middle" *ngIf="show_farmers_list">
+      <div *ngIf="farmer_list.length == 0" style="text-align: center;">
+        <br>
+        All Farmers Payment Is Still Pending....
+      </div>
+      <br>
+      <div class="mybox" *ngIf="farmer_list.length != 0">
+        <div class="mybox-inner-header">
+          <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"></div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+              <strong>
+                <h5>Farmers List ( {{ cluster_id.cluster_id }} )</h5>
+              </strong>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"></div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered table-hover" id="orderListTable" style="text-align: center;">
+            <caption></caption>
+            <thead>
+              <tr>
+                <th scope="col">SL</th>
+                <th scope="col">Farmer Name</th>
+                <th scope="col">Farmer ID</th>
+                <th scope="col">Amount(&#8377;)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let x of farmer_list;let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ x.farmer_name}}</td>
+                <td>{{ x.farmer_id }}</td>
+                <td>{{ x.ammount | number }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <br>
+      <!-- DepartMent Payment List -->
+      <div class="mybox" *ngIf="farmer_list.length != 0">
+        <div class="mybox-inner-header">
+          <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"></div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+              <strong>
+                <h5>Jalanidhi Department Payments To Farmer</h5>
+              </strong>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"></div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered table-hover" id="orderListTable" style="text-align: center;">
+            <caption></caption>
+            <thead>
+              <tr>
+                <th scope="col">SL</th>
+                <th scope="col">Farmer Name</th>
+                <th scope="col">Farmer ID</th>
+                <th scope="col">Amount(&#8377;)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let x of farmer_list;let i = index;">
+                <td>{{ i + 1 }}</td>
+                <td>{{ x.farmer_name }}</td>
+                <td>{{ x.farmer_id }}</td>
+                <td>{{ gs_ammount | number}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <br>
+      <!-- Expenditure On Head Payments -->
+      <div class="mybox" *ngIf="farmer_list.length != 0">
+        <div class="mybox-inner-header">
+          <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"></div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+              <strong>
+                <h5>Expenditure Payments</h5>
+              </strong>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"></div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered table-hover" id="orderListTable" style="text-align: center;">
+            <caption></caption>
+            <thead>
+              <tr>
+                <th scope="col">SL</th>
+                <th scope="col">Schem</th>
+                <th scope="col">Head</th>
+                <th scope="col">Sub Head</th>
+                <th scope="col">Amount(&#8377;)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngfor="let x of expenditure_ammount_list;let i = index;">
+                <td>{{ i + 1 }}</td>
+                <td>{{ x.schem_name }}</td>
+                <td>{{ x.head_name }}</td>
+                <td>{{ x.subhead_name }}</td>
+                <td>{{ x.ammount | number }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <br>
+      <!-- miscellaneous Payments -->
+      <div class="mybox" *ngIf="farmer_list.length != 0">
+        <div class="mybox-inner-header">
+          <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"></div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+              <strong>
+                <h5>Miscellaneous Payments</h5>
+              </strong>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"></div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered table-hover" id="orderListTable" style="text-align: center;">
+            <caption></caption>
+            <thead>
+              <tr>
+                <th scope="col">SL</th>
+                <th scope="col">System</th>
+                <th scope="col">Head</th>
+                <th scope="col">Amount(&#8377;)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let x of miscellaneous_payments;let i = index;">
+                <td>{{ i + 1 }}</td>
+                <td>{{ x.schem_name }}</td>
+                <td>{{ x.head_name }}</td>
+                <td>{{ x.ammount | number}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <br>
+  </div>
+  

@@ -1,0 +1,160 @@
+
+<!-- ====================================== HEADER PART START ====================================== -->
+
+<div class="mybox" *ngIf="showTable">
+    <div class="mybox-header">
+      <span>
+        <strong>
+          <label>Confirm Payments</label>
+        </strong>
+      </span>
+    </div>
+    <div class="middle">
+      <div class="row">
+        <div class="col-lg-4 col-sm-12 col-xs-12">
+            <app-financial-year (newItemEvent)="changeFinancialYear($event)"></app-financial-year>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- ====================================== HEADER PART ENDS ====================================== -->
+  
+  <!-- ====================================== LOADER PART START ====================================== -->
+  
+  <div class="loader">
+    <div *ngIf="loadingData" class="spinner-border text-info"></div>
+  </div>
+  
+  <!-- ====================================== LOADER PART ENDS ====================================== -->
+  
+
+<!-- ====================================== PENDING PAYMENTS LIST PART START ====================================== -->
+
+<div class="mybox" *ngIf="showTable">
+    <div class="mybox-header">
+      <span>
+        <strong>
+          <label>Pending Payments</label>
+        </strong>
+      </span>
+    </div>
+    <div>
+      <div *ngIf="pendingPaymentList.length == 0" class="no-record">
+        No record found on financial year {{ fin_year }}.
+      </div>
+      <div *ngIf="pendingPaymentList.length != 0">
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered table-hover" id="itemListTable">
+            <caption></caption>
+            <thead>
+              <tr>
+                <th scope="col">SL.</th>
+                <th scope="col">Approval ID</th>
+                <th scope="col">Part payment ID</th>
+                <th scope="col">Approval date</th>
+                <th scope="col">Amount</th>
+                <th scope="col">View Approval</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let x of pendingPaymentList; let i = index;">
+                <td>{{ i + 1 }}</td>
+                <td>{{ x.approval_id}}</td>
+                <td>{{ x.pp_id }}</td>
+                <td>{{ x.approval_date | date: 'dd-MM-yyyy'}}</td>
+                <td>{{ x.pay_now_amount | number }}</td>
+                <td>
+                  <button class="btn btn-outline-info round" (click)="viewDetails(x)" data-toggle="modal"
+                    data-target="#viewDetails"><i class="fas fa-bars" aria-hidden="true"></i></button>
+                </td>
+                <td>
+                  <input type="checkbox" class="form-control" [(ngModel)]="x.checkbox">
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="rightSubmit">
+          <!-- <button class="btn btn-info round" ng-click="showApprovePayments()">Reject</button> -->
+          <button class="btn btn-info btn-sm" (click)="showApprovePayments()">Proceed</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- ====================================== PENDING PAYMENTS LIST PART ENDS ====================================== -->
+  
+
+<!-- ====================================== CONFIRMATION PART START ====================================== -->
+
+<div *ngIf="approve">
+  <button class="topBack btn btn-info btn-sm" (click)="back()"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+  <div class="mybox">
+    <div class="mybox-header">
+      <span>
+        <strong>
+          <label>Confirm</label>
+        </strong>
+      </span>
+    </div>
+    <div>
+      <div>
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered table-hover" id="itemListTable">
+            <caption></caption>
+            <thead>
+              <tr>
+                <th scope="col">SL.</th>
+                <th scope="col">Approval ID</th>
+                <th scope="col">Part payment ID</th>
+                <th scope="col">Approval Date</th>
+                <th scope="col">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let x of selected_items; let i = index;">
+                <td>{{ i + 1 }}</td>
+                <td>{{ x.approval_id }}</td>
+                <td>{{ x.pp_id }}</td>
+                <td>{{ x.approval_date | date: 'dd/MM/yyyy'}}</td>
+                <td>{{ x.pay_now_amount | number }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="bottomBack">
+              <button class="btn btn-info btn-sm" (click)="back()"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+              <button class="btn btn-info btn-sm" (click)="approvePayments()">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====================================== CONFIRMATION PART ENDS ====================================== -->
+
+  
+<!-- ====================================== PRINT APPROVAL PART START ====================================== -->
+
+<div *ngIf="paymentInvoice">
+    <button class="btn btn-info btn-sm topBack" (click)="back()"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+    <div class="mybox">
+      <div class="mybox-header">
+        <span>
+          <strong>
+            <label>APPROVAL</label>
+          </strong>
+        </span>
+      </div>
+      <div>
+        <app-vendor-payment-approval [selectedApproval]="selectedApproval"></app-vendor-payment-approval>
+        <div class="bottomBack">
+          <button class="btn btn-info btn-sm" (click)="back()"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- ====================================== PRINT APPROVAL PART ENDS ====================================== -->

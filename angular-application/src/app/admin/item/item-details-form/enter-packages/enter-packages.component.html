@@ -1,0 +1,131 @@
+<form [formGroup]="packagingForm">
+
+
+
+    <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <label for="packging">Select Packaging Size<span class="asterisk-mark">*</span>:</label>
+            <select formControlName="PackageSize" class="form-control" id="packging">
+                  <option value="null" selected disabled>--select--</option>
+                  <option [ngValue]="x.PackageSize" *ngFor="let x of packageSizeList">{{ x.PackageSize }}</option>
+                </select>
+        </div>
+          <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+              <label for="unitOfMeasurement">Unit of Measurement <span class="asterisk-mark">*</span>:</label>
+              <select formControlName="UnitOfMeasurement" id="unitOfMeasurement" class="form-control">
+                <option value="null" disabled selected>--select--</option>
+                <option value="Gram">Gram</option>
+                <option value="Kilograms">Kilograms</option>
+                <option value="Mililiter">Mililiter</option>
+                <option value="Leter">Leter</option>
+                <option value="Lure">Lure</option>
+              </select>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col-lg-5">
+              <div class="row">
+                      <div class="col-lg-12">
+                          <label >Purchase Price(Invoice value) <span class="asterisk-mark">*</span>:</label>
+                          <input formControlName="PurchaseInvoiceValue" (keyup)="calculatePTax();" type="number" class="form-control" placeholder="0" required>
+                      </div>
+              </div>
+              <table class="table table-hover text-left" *ngIf="PurchaseTaxableValue.value">
+              <thead>
+                  <tr>
+                  <th>Taxable Value (&#8377;) :</th>
+                  <th>{{ PurchaseTaxableValue.value | number }}</th>
+                  </tr>
+                  <tr>
+                  <th>CGST (&#8377;) :</th>
+                  <th>{{ PurchaseCGST.value | number }}</th>
+                  </tr>
+                  <tr>
+                  <th>SGST (&#8377;) :</th>
+                  <th>{{ PurchaseSGST.value | number }}</th>
+                  </tr>
+                  <tr>
+                  <th>IGST (&#8377;) :</th>
+                  <th>{{ PurchaseIGST.value | number }}</th>
+                  </tr>
+              </thead>
+              </table>
+          </div>
+          <div class="col-lg-5">
+          
+              <div class="row">
+                  <div class="col-lg-12">
+                      <label >Selling Price (Invoice value) <span class="asterisk-mark">*</span>:</label>
+                      <input formControlName="SellInvoiceValue" (keyup)="calculateSTax();"  type="number" class="form-control" placeholder="0" required>
+                  </div>
+              </div>
+              <table class="table table-hover text-left" *ngIf="SellTaxableValue.value">
+                  <thead>
+                  <tr>
+                      <th>Taxable Value (&#8377;) :</th>
+                      <th>{{ SellTaxableValue.value | number }}</th>
+                  </tr>
+                  <tr>
+                      <th>CGST (&#8377;) :</th>
+                      <th>{{ SellCGST.value | number }}</th>
+                  </tr>
+                  <tr>
+                      <th>SGST (&#8377;) :</th>
+                      <th>{{ SellSGST.value | number }}</th>
+                  </tr>
+                  <tr>
+                      <th>IGST (&#8377;) :</th>
+                      <th>{{ SellIGST.value | number }}</th>
+                  </tr>
+                  </thead>
+              </table>
+          </div>
+          <div class="col-lg-2">
+              <br>
+                <button class="btn btn-info float-right" (click)="addPackage()"><i class="fa fa-plus"></i> Add Package</button>
+          </div>
+      </div>
+      <hr>
+      <div>
+          <div class="table-responsive">
+            <table class="table table-hover text-left">
+                <thead>
+                    <th>SL</th>
+                    <th>Package Size</th>
+                    <th>Unit of Measurement</th>
+                    <th>Purchase Price</th>
+                    <th>Sell Price</th>
+                    <th>Action</th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let x of packagesList.value;let i = index;">
+                      <td > {{ i + 1 }} </td>
+                      <td >{{ x.PackageSize }} </td>
+                      <td>{{ x.UnitOfMeasurement }}</td>
+                      <td>
+                        Invoice Value: {{ x.PurchaseInvoiceValue }} <br>
+                        Taxable Value: {{ x.PurchaseTaxableValue }} <br>
+                        CGST: {{ x.PurchaseCGST }} <br>
+                        SGST: {{ x.PurchaseSGST }} <br>
+                        IGST: {{ x.PurchaseIGST }} <br>
+                      </td>
+                      <td>
+                        Invoice Value: {{ x.SellInvoiceValue }} <br>
+                        Taxable Value: {{ x.SellTaxableValue }} <br>
+                        CGST: {{ x.SellCGST }} <br>
+                        SGST: {{ x.SellSGST }} <br>
+                        IGST: {{ x.SellIGST }} <br>
+                      </td>
+                      <td>
+                          <button class="btn btn-outline-info" (click)="editPackageDetails(x, i);"><i class="fa fa-edit"></i></button>&nbsp;&nbsp;
+                          <button class="btn btn-outline-danger" (click)="removePackage(i)"><i class="fa fa-trash"></i></button>
+                      </td>
+                  </tr>
+                </tbody>
+              </table>
+          </div>
+      </div>
+
+
+
+</form>

@@ -1,0 +1,100 @@
+<!-- ====================================== LOADER PART START ====================================== -->
+
+<!-- <div class="loader">
+    <div *ngIf="loader" class="spinner-border text-info"></div>
+</div> -->
+
+<!-- ====================================== LOADER PART ENDS ====================================== -->
+
+<!-- ====================================== HEADER PART START ====================================== -->
+
+<div class="mybox" *ngIf="enter_detail">
+    <div class="mybox-header">
+        <span>
+            <strong>
+                <label>PAY BACKLOG MONEY</label>
+            </strong>
+        </span>
+    </div>
+    <div class="middle">
+            <form name="myForm">
+                <div class="row">
+                    <div class="col-lg-2">Scheme<span class="asterisk-mark">*</span> :</div>
+                    <div class="col-lg-4">
+                        <select [(ngModel)]="system" [ngModelOptions]="{standalone: true}" class="form-control" (change)="loadOrderNoList();"  required>
+                            <option value="" disabled>--select--</option>
+                            <option value="farm_mechanisation">Farm Mechanisation</option>
+                            <option value="jalanidhi">Jalanidhi</option>
+                        </select>
+                    </div>
+                        <div class="col-lg-2">Enter order no.<span class="asterisk-mark">*</span> :</div>
+                        <div class="col-lg-4">
+                            <select [(ngModel)]="order_no" [ngModelOptions]="{standalone: true}" class="form-control" required>
+                                    <option value="" disabled>--select--</option>
+                                    <option [ngValue]="x" *ngFor = 'let x of order_no_list'> {{ x.order_no}} </option>
+                            </select>
+                        </div>
+                    </div>
+                <div class="row">
+                        <div class="col-lg-2">Head<span class="asterisk-mark">*</span> :</div>
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control" [(ngModel)]="head" [ngModelOptions]="{standalone: true}" placeholder="Enter head" required>
+                        </div>
+                        <div class="col-lg-2">Sub-head<span class="asterisk-mark">*</span> :</div>
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control"[(ngModel)]="subhead" [ngModelOptions]="{standalone: true}" placeholder="Enter subhead" required>
+                        </div>
+                    </div>
+                <div class="row">
+                    <div class="col-lg-2">Amount<span class="asterisk-mark">*</span> :</div>
+                    <div class="col-lg-4">
+                        <input type="number" class="form-control" [(ngModel)]="amount" [ngModelOptions]="{standalone: true}" min="0" maxlength="10" placeholder="Enter amount" required>
+                    </div>
+                    <div class="col-lg-2">Remark<span class="asterisk-mark">*</span> :</div>
+                    <div class="col-lg-4">
+                        <textarea rows="2" class="form-control" [(ngModel)]="remark" [ngModelOptions]="{standalone: true}" placeholder="Enter remark" maxlength="500" required></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-2">Pay to<span class="asterisk-mark">*</span> :</div>
+                    <div class="col-lg-4">
+                        <input type="text" class="form-control" [(ngModel)]="pay_to" [ngModelOptions]="{standalone: true}" placeholder="Pay to" required>
+                    </div>
+                    <div class="col-lg-2">Payment date<span class="asterisk-mark">*</span> :</div>
+                    <div class="col-lg-4">
+                        <input type="date" class="form-control" [(ngModel)]="payment_date" [ngModelOptions]="{standalone: true}" max="{{c_date| date: 'y-MM-dd'}}" required>
+                    </div>
+                </div>
+                <div class="rightSubmit">
+                    <button class="btn btn-outline-info round" (click)="receiveOPBalance()">ADD</button>
+                </div>
+            </form>
+    </div>
+</div>
+
+<!-- ====================================== HEADER PART START ====================================== -->
+
+<!-- ====================================== PRINT PAYMENT RECEIPT PART START ====================================== -->
+
+<div *ngIf="print_page">
+    <button class="btn btn-info btn-sm topBack" (click)="back();"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+    <div class="mybox">
+        <div class="mybox-header">
+        <span>
+            <strong>
+                <label>MONEY RECEIPT</label>
+            </strong>
+        </span>
+        </div>
+        <div>
+            <%- include('../common/paid_backlog_receipt.ejs') -%>
+            <div class="bottomBack">
+                <button class="btn btn-info btn-sm" (click)="back();"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+                <button class="btn btn-info btn-sm" (click)="submit();">SUBMIT</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ====================================== PRINT PAYMENT RECEIPT PART START ====================================== -->
+

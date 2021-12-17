@@ -1,0 +1,156 @@
+
+<!-- ==================================== HEADER FINANCIAL YEAR PART START ==================================== -->
+
+<div class="mybox" *ngIf="first_box">
+    <div class="mybox-header">
+      <span>
+        <strong>
+          <label>Re-Print Purchase Order</label>
+        </strong>
+      </span>
+    </div>
+    <div class="middle">
+      <div class="row">
+        <div class="col-lg-4 col-sm-12 col-xs-12">
+            <app-financial-year (newItemEvent)="changeFinancialYear($event)"></app-financial-year>
+        </div>
+        <div class="col-lg-3">
+          <label>From date:</label>
+          <input type="date" class="form-control" [(ngModel)]="fromDate">
+        </div>
+        <div class="col-lg-3">
+          <label>To date:</label>
+          <input type="date" class="form-control" [(ngModel)]="toDate">
+        </div>
+        <div class="col-lg-2">
+          <button class="btn btn-info" style="margin-top: 13%;"><i class="fa fa-search"></i> Search</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- ==================================== HEADER FINANCIAL YEAR PART ENDS ==================================== -->
+  
+  <!-- ==================================== LOADER PART START ==================================== -->
+  
+  <div class="loader">
+    <div *ngIf="loadingData" class="spinner-border text-info"></div>
+  </div>
+  
+  <!-- ==================================== LOADER PART ENDS ==================================== -->
+  
+  <!-- ==================================== INDENT LIST PART START ==================================== -->
+  
+  <div class="mybox" *ngIf="indentsTable">
+    <div class="mybox-header">
+      <div class="row">
+        <div class="col-3">
+            <div class="input-group mb-3 input-group-sm">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <input type="text" class="form-control" placeholder="Search Vendor Name" [(ngModel)]="search_dealer_name" >
+            </div>
+        </div>
+        <div class="col-6">
+        <strong>
+          <label>Generated Purchase Orders List</label>
+        </strong>
+        </div>
+        <div class="col-3">
+            <div class="input-group mb-3 input-group-sm">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <input type="text" class="form-control" placeholder="Search Purchase Order Number" [(ngModel)]="search_indent_no">
+            </div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align: center;">
+      <div class="no-record" *ngIf="paidListData.length == 0">
+        No record found on financial year {{ fin_year }}.
+      </div>
+      <div *ngIf="paidListData.length != 0">
+        <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover" id="indentListTable" style="text-align: left;">
+          <caption></caption>
+          <thead>
+            <tr>
+              <th scope="col">SL.</th>
+              <th scope="col">Purchase Order</th>
+              <th scope="col">Vendor</th>
+              <th scope="col">Approval Status</th>
+              <th scope="col">P.O. Status</th>
+              <th scope="col">Total cost in P.O.(&#8377;)</th>
+              <th scope="col">View</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let x of paidListData | search: search_indent_no | search: search_dealer_name;let i= index;">
+              <td>{{ i + 1 }}</td>
+              <td>
+                No. : {{ x.PONo }}
+                <br>
+                Date: {{ x.InsertedDate | date: 'dd-MM-y'}}
+              </td>
+              <td>
+                Name: {{ x.LegalBussinessName }}  <br>
+                ID: {{ x.VendorID }}
+              </td>
+              <td>
+                {{ x.ApprovalStatus }}
+                <br>
+                Date: {{ x.ApprovedDate | date: 'dd-MM-y' }}
+              </td>
+              <td>
+                {{ x.Status }}
+              </td>
+              <td>{{ x.POAmount | number }}</td>
+              <td>
+                <button class="btn btn-outline-info round" (click)="showDetails(x.PONo)"><i class="fas fa-bars" aria-hidden="true"></i></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- ==================================== INDENT LIST PART ENDS ==================================== -->
+  
+  <!-- ==================================== PRINT INDENT PART START ==================================== -->
+  
+  <div *ngIf="printIndent">
+    <button class="btn btn-info btn-sm topBack" (click)="back()"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+    <div class="mybox">
+      <div class="mybox-header">
+        <span>
+          <strong>
+            <label>Purchase Order</label>
+          </strong>
+        </span>
+      </div>
+      <div>
+        <app-po [PODetails]="PODetails" [PONo]="PONo" id="printPage"></app-po>
+        <div class="bottomBack">
+          <button class="btn btn-info btn-sm" (click)="back()"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+          <button class="btn btn-info btn-sm" 
+              printTitle="PO" 
+              [useExistingCss]="true" 
+              printSectionId="printPage"
+              ngxPrint
+              >Print <i class="fas fa-print" aria-hidden="true"></i>
+            </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- ==================================== PRINT INDENT PART ENDS ==================================== -->
+  

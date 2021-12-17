@@ -1,0 +1,200 @@
+<%- include('common/header.ejs') -%>
+
+<!-- ====================================== HEADER PART START ====================================== -->
+
+<div class="mybox">
+  <div class="mybox-header">
+    <span>
+      <strong>
+          <label >WITHHELD LIST</label>
+      </strong>
+    </span>
+  </div>
+  <div class="middle">
+    <div class="row">
+      <div class="col-lg-3">
+        <label>Financial Year:</label>
+        <select class="form-control" ng-options="x for x in fin_year_list" ng-model="fin_year" ng-change="loadInvoices()">
+          <option value="" disabled>--Select--</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====================================== HEADER PART ENDS ====================================== -->
+
+<!-- ====================================== LOADER PART START ====================================== -->
+
+<div class="loader">
+  <div ng-show="loader" class="spinner-border text-info"></div>
+</div>
+
+<!-- ====================================== LOADER PART ENDS ====================================== -->
+
+<!-- ====================================== WITHHELD LIST PART START ====================================== -->
+
+<div class="mybox" ng-show="show_invoice_list">
+  <div class="mybox-header">
+    <div class="row">
+      <div class="col-md-3 col-sm-3 col-lg-3 col-xs-0">
+        <form>
+          <div class="input-group mb-3 input-group-sm">
+              <div class="input-group-prepend">
+                  <span class="input-group-text">
+                      <i class="fas fa-search" aria-hidden="true"></i>
+                  </span>
+              </div>
+              <input type="text" class="form-control" placeholder="Enter approval id" data-ng-model="search_approval_id">
+          </div>
+      </form>
+      </div>
+      <div class="col-md-6 col-sm-6 col-lg-6 col-xs-10">
+        <strong>
+          <label >ALL LIST</label>
+        </strong>
+      </div>
+      <div class="col-md-3 col-sm-3 col-lg-3 col-xs-2">
+        <form>
+          <div class="input-group mb-3 input-group-sm">
+              <div class="input-group-prepend">
+                  <span class="input-group-text">
+                      <i class="fas fa-search" aria-hidden="true"></i>
+                  </span>
+              </div>
+              <input type="text" class="form-control" placeholder="Enter Invoice no." data-ng-model="search_invoice_no">
+          </div>
+      </form>
+      </div>
+    </div>
+  </div>
+<div >
+  <div class="no-record" ng-show="invoice_list.length == 0">
+    No record found
+  </div>
+  <div ng-show="invoice_list.length != 0">    
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover">
+          <caption></caption>
+          <thead>
+            <tr>
+              <th scope="col">SL.</th>
+              <th scope="col">Indent no.</th>
+              <th scope="col">Invoice no.</th>
+              <th scope="col">Approval ID</th>
+              <th scope="col">Indent amount</th>
+              <th scope="col">Invoice amount</th>
+              <th scope="col">Initiated amount(Approval)</th>
+              <th scope="col">Paid amount</th>
+              <th scope="col">Pending amount</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="x in invoice_list | filter: { dl_id: dealer.dl_id, invoice_no : search_invoice_no, approval_id : search_approval_id } | orderBy : '-approval_date' ">
+              <td>{{ $index + 1 }}</td>
+              <td>{{ x.indent_no }}</td>
+              <td>{{ x.invoice_no }}</td>
+              <td>{{ x.approval_id }}</td>
+              <td>{{ x.indent_ammount | number: '2' }}</td>
+              <td>{{ x.invoice_ammount | number: '2' }}</td>
+              <td>{{ x.ammount | number: '2' }}</td>
+              <td>{{ x.ammount - x.deduction_amount | number: '2' }}</td>
+              <td>{{ x.deduction_amount | number: '2' }}</td>
+              <!-- ng-disabled="x.status != 'paid'" -->
+              <td><button class="btn btn-outline-info round" data-toggle="modal" data-target="#confirmResolve" ng-click="loadDetail(x)">Resolve</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  </div>
+</div>
+</div>
+
+<!-- ====================================== WITHHELD LIST PART ENDS ====================================== -->
+
+<!-- ====================================== RESOLVE MODAL PART START ====================================== -->
+
+<div class="middle">
+    <div class="modal" id="confirmResolve">
+      <div class="modal-dialog">
+        <div class="modal-content" style="width: 600px;">
+          <div class="modal-header">
+            <h4 class="modal-title">Confirm</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body">
+            <form name="myForm">
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">Indent no. : </div>
+                    <div class="col-lg-8 col-md-8 col-sm-12 col-sm-12">
+                      <strong >{{ indent_no }}</strong>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">Invoice no. :</div>
+                    <div class="col-lg-8 col-md-8 col-sm-12 col-sm-12">
+                      <strong >{{ invoice_no }}</strong>
+                    </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">Indent amount (&#8377;) :</div>
+                  <div class="col-lg-8 col-md-8 col-sm-12 col-sm-12">
+                    <strong >{{ indent_amount | number: '2' }}</strong>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">Invoice amount (&#8377;) :</div>
+                  <div class="col-lg-8 col-md-8 col-sm-12 col-sm-12">
+                    <strong >{{ invoice_amount | number: '2' }}</strong>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">Initited amount(&#8377;) :</div>
+                  <div class="col-lg-8 col-md-8 col-sm-12 col-sm-12">
+                    <strong >{{ subTotal | number: '2' }}</strong>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">Paid amount (&#8377;) :</div>
+                  <div class="col-lg-8 col-md-8 col-sm-12 col-sm-12">
+                    <strong >{{ paid_amount | number: '2' }}</strong>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">Pending amount (&#8377;) :</div>
+                  <div class="col-lg-8 col-md-8 col-sm-12 col-sm-12">
+                    <strong >{{ pending_amount | number: '2' }}</strong>
+                  </div>
+                </div>
+                <div class="row" style="margin-top: 5px;">
+                  <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">Accountant Remark :</div>
+                  <div class="col-lg-8 col-md-8 col-sm-12 col-sm-12">
+                    <strong>{{remark}}</strong>
+                  </div>
+                </div>
+                <div class="row" style="margin-top: 5px;">
+                  <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">My Remark :</div>
+                  <div class="col-lg-8 col-md-8 col-sm-12 col-sm-12">
+                    <textarea class="form-control" cols="30" rows="4" ng-model="dl_remark" maxlength="500" placeholder="Enter your remark." required></textarea>
+                  </div>
+                </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-info" data-dismiss="modal" ng-click="resolveIssue();" >Confirm</button>
+          </div>  
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- ====================================== RESOLVE MODAL PART ENDS ====================================== -->
+
+  
+<script>
+  var c_fin_year = "<%= c_fin_year %>";
+  document.getElementById('withHeldAmount').classList.add("active");
+</script>
+<script src="/controller/dealer/withheldList.js"></script>
+<%- include('common/footer.ejs') -%>

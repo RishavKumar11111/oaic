@@ -1,0 +1,270 @@
+
+<!-- ====================================== HEADER PART START ====================================== -->
+
+<div class="mybox" *ngIf="first_page">
+    <div class="mybox-header">
+      <span>
+        <strong>
+          <label>Generate MRR Against Invoice</label>
+        </strong>
+      </span>
+    </div>
+    <div class="middle">
+      <div class="row">
+        <div class="col-lg-4 col-sm-12 col-xs-12">
+            <app-financial-year (newItemEvent)="changeFinancialYear($event)"></app-financial-year>
+        </div>
+        <div class="col-lg-5">
+          <label>Vendor: </label>
+          <select class="form-control"  [(ngModel)]="dealer" (change)="search_invoice_no='';">
+            <option value="" >ALL</option>
+            <option [ngValue]="x" *ngFor="let x of all_dealers">{{ x.LegalBussinessName }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- ====================================== HEADER PART ENDS ====================================== -->
+  
+  <!-- ====================================== LOADER PART START ====================================== -->
+  
+  <div class="loader">
+    <div *ngIf="loadingData" class="spinner-border text-info"></div>
+  </div>
+  
+  <!-- ====================================== LOADER PART ENDS ====================================== -->
+  
+  <!-- ====================================== INVOICE LIST PART START ====================================== -->
+  
+  <div class="mybox" *ngIf="showInvoiceTable">
+    <div class="mybox-header">
+      <div class="row">
+        <div class="col-3"></div>
+        <div class="col-6">
+        <strong>
+          <label>All Invoice List</label>
+        </strong>
+        </div>
+        <div class="col-3">
+            <div class="input-group mb-3 input-group-sm">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <input type="text" class="form-control" placeholder="Enter Invoice no." [(ngModel)]="search_invoice_no">
+            </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="no-record" *ngIf="all_invoices.length == 0">
+        No record found on financial year {{ fin_year }}.
+      </div>
+      <div *ngIf="all_invoices.length != 0">
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered table-hover">
+            <caption></caption>
+            <thead>
+              <tr>
+                <th scope="col">SL.</th>
+                <th scope="col">Vendor</th>
+                <th scope="col">P.O. Details</th>
+                <th scope="col">Invoice Details</th>
+                <th scope="col">No. of items</th>
+                <th scope="col">Invoice amount(&#8377;)</th>
+                <th scope="col">View Invoice</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let x of all_invoices | search: dealer.dl_id | search: search_invoice_no;let i = index;">
+                <td>{{ i + 1 }}</td>
+                <td>{{ x.LegalBussinessName }}</td>
+                <td style="text-align: left;">
+                  {{ x.PONo }} <br>
+                  Date: {{ x.ApprovedDate| date: 'dd-MM-y' }}
+                </td>
+                <td style="text-align: left;">
+                  {{ x.InvoiceNo }}<br>
+                  Date: {{ x.InvoiceDate | date: 'dd-MM-y' }}
+                </td>
+                <td>{{ x.NoOfOrderDeliver }}</td>
+                <td>{{ x.InvoiceAmount | number: '1.2-2' }}</td>
+                <td>
+                  <a href="{{x.InvoicePath}}" target="_blank">
+                    <button class="btn btn-outline-info"><i class="fas fa-file-pdf" aria-hidden="true"></i></button>
+                  </a>
+                </td>
+                <td>
+                  <button class="btn btn-outline-info" (click)="loadTable(x)">
+                    <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- ====================================== INVOICE LIST PART ENDS ====================================== -->
+  
+  <!-- ====================================== ORDERS LIST WITHIN INVOICE PART START ====================================== -->
+  
+  <div *ngIf="showTable">
+      <button class="btn btn-info btn-sm topBack" (click)="back();"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back </button>
+      <app-table-card>
+          <ng-container class="card-head">Orders</ng-container>
+          <ng-container class="card-body">
+
+              <table class="table table-striped table-bordered table-hover" id="allListTable">
+                <caption></caption>
+                <thead>
+                  <tr>
+                    <th scope="col">SL.</th>
+                    <th scope="col">Goods</th>
+                    <th scope="col">P.O. Details</th>
+                    <th scope="col">Supply Details</th>
+                    <th scope="col">Taxable Value(&#8377;)</th>
+                    <th scope="col">GST(&#8377;)</th>
+                    <th scope="col">Invoice Value(&#8377;)</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let x of allData | search: search_farmer_name | search: search_permit_no;let i = index;" [ngStyle]="x.isReceivedClass">
+                    <td>{{ i + 1 }}</td>
+                    <td>
+                      Product Category: {{ x.Implement}} <br>
+                      Manufacturer: {{ x.Make }} <br>
+                      Model / Item: {{ x.Model }}
+                    </td>
+                    <td>{{ x.POItemQuantity }} {{ x.UnitOfMeasurement }}<br>
+                      <ng-container *ngIf="!(x.Implement == 'Tractor' || x.Implement == 'Power tiller')">
+                        <ng-container *ngIf="x.PackageSize">( {{ x.PackageSize }}  {{ x.PackageUnitOfMeasurement }} * {{ x.PackageQuantity }} )</ng-container>
+                      </ng-container>
+                    </td>
+                    <td>
+                      <ng-container *ngIf="!(x.Implement == 'Tractor' || x.Implement == 'Power tiller')">
+                          {{ x.SupplyQuantity }} {{ x.UnitOfMeasurement }} <br>
+                          <ng-container *ngIf="x.PackageSize">( {{ x.PackageSize }}  {{ x.PackageUnitOfMeasurement }} * {{ x.SupplyPackageQuantity }} )</ng-container>
+                      </ng-container>
+                      <ng-container *ngIf="x.Implement == 'Tractor' || x.Implement == 'Power tiller'">
+                        {{ x.POItemQuantity }} {{ x.UnitOfMeasurement }}
+                      </ng-container>
+                    </td>
+                    <td>{{ x.TotalPurchaseTaxableValue | number: '1.2-2' }}</td>
+                    <td>
+                      Tax Rate: {{ x.TaxRate }}% <br>
+                      CGST: {{ x.TotalPurchaseCGST | number: '1.2-2' }} <br>
+                      SGST: {{ x.TotalPurchaseSGST | number: '1.2-2' }}
+                    </td>
+                    <td>{{ x.TotalPurchaseInvoiceValue | number: '1.2-2'  }}</td>
+                    <td>
+                      <button class="btn btn-outline-info round" (click)="proceedPay(x);"
+                        data-toggle="modal" data-target="#receiveItem" [disabled]="x.IsReceived">Receive</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+          </ng-container>
+          <ng-container class="card-footer">
+              <button class="btn btn-info btn-sm" (click)="back();"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back </button>
+              <button class="btn btn-info btn-sm" (click)="previewMrr()" >GENERATE MRR</button>
+          </ng-container>
+      </app-table-card>
+
+  </div>
+  
+  <!-- ====================================== ORDERS LIST WITHIN INVOICE PART START ====================================== -->
+  
+  <!-- ====================================== PRINT MRR PART START ====================================== -->
+  
+  <div *ngIf="printPage">
+      <button class="btn btn-info btn-sm topBack" (click)="back2();"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+      <div class="mybox">
+        <div class="mybox-header">
+          <span>
+            <strong>
+              <label>MATERIAL RECEIPT REPORT</label>
+            </strong>
+          </span>
+        </div>
+        <div>
+          <app-mrr
+            [AccountantDetails]="AccountantDetails"
+            [DMDetails]="DMDetails"
+            [printData]="printData"
+            [vendorDetails]="vendorDetails"
+            [invoice]="invoice"
+            [mrr]="mrr"
+            id="printPage"
+          ></app-mrr>
+  
+          <div class="bottomBack">
+            <button class="btn btn-info btn-sm" (click)="back2();"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+            <button class="btn btn-info btn-sm" [disabled]="clicked" (click)="generateMRR(); clicked=true;">Submit</button>
+            <button hidden="true" #printMRR printTitle="Material Receipt Report" [useExistingCss]="true" printSectionId="printPage"  ngxPrint></button>
+          </div>
+        </div>
+      </div>
+  </div>
+  
+  <!-- ====================================== PRINT MRR PART ENDS ====================================== -->
+  <div class="container">
+    <div class="modal fade" id="receiveItem">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title center">Enter item details</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body">
+
+
+            <table class="table table-hover">
+              <tbody>
+                <tr>
+                  <td> Product Category: </td>
+                  <td> {{ selectedItem.Implement }} </td>
+                </tr>
+                <tr>
+                  <td> Manufacturer: </td>
+                  <td> {{ selectedItem.Make }} </td>
+                </tr>
+                <tr>
+                  <td> Model/Item: </td>
+                  <td> {{ selectedItem.Model }} </td>
+                </tr>
+                <tr>
+                  <td> Quantity in P.O.: </td>
+                  <td> {{ selectedItem.POItemQuantity }} {{ selectedItem.UnitOfMeasurement }}</td>
+                </tr>
+                <tr>
+                  <td> Vendor Supply Quantity: </td>
+                  <td> {{ selectedItem.SupplyQuantity }} {{ selectedItem.UnitOfMeasurement }}</td>
+                </tr>
+                <tr>
+                  <td> Received Quantity: </td>
+                  <td> <input type="text" class="form-control" [(ngModel)]="selectedItem.ReceivedQuantity"> </td>
+                </tr>
+              </tbody>
+            </table>
+
+
+
+
+
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-info btn-sm" data-dismiss="modal" (click)="receiveItem()">Proceed</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

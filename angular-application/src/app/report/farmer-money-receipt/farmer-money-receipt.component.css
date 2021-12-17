@@ -1,0 +1,16 @@
+.underline {
+    border-bottom: 1px solid black;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .card-text {
+    height: 45%;
+    border: 4px solid;
+    margin-bottom: 5%;
+  }
+  .card {
+    height: 100%;
+  }
+  hr {
+    border-top: 3px dashed black !important;
+  }

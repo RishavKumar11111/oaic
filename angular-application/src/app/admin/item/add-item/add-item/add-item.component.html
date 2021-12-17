@@ -1,0 +1,95 @@
+
+
+<!-- ========================== LOADER START ==========================-->
+
+<div class="loader">
+    <div *ngIf="loadingData" class="spinner-border text-info"></div>
+  </div>
+  
+  <!-- ========================== LOADER ENDS ==========================-->
+  
+  <!-- ========================== ENTRY ITEM DETAIL START ==========================-->
+  
+  <div *ngIf="first_box">
+      <div class="mybox">
+        <div class="mybox-header">
+          <span>
+            <strong>
+              <label>Enter Item Details</label>
+            </strong>
+          </span>
+        </div>
+        <div class="middle">
+
+
+
+                <app-enter-item-details-form [ItemDetailsForm]="ItemDetailsForm"></app-enter-item-details-form>
+
+                <app-calculate-item-price [ItemDetailsForm]="ItemDetailsForm"></app-calculate-item-price>
+
+
+        </div>
+      </div>
+      <div class="mybox">
+        <div class="mybox-header">
+          <span>
+            <strong>
+              <label>Enter Packages Details</label>
+            </strong>
+          </span>
+        </div>
+        <div class="middle">
+
+
+
+
+
+          <app-enter-packages [ItemDetailsForm]="ItemDetailsForm"></app-enter-packages>
+
+
+
+
+
+
+
+
+
+        <div class="rightSubmit">
+            <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#reviewUpdateItemsModal" (click)="proceed();">Proceed </button>
+        </div>
+        </div>
+      </div>
+  </div>
+  
+  <!-- ========================== ENTRY ITEM DETAIL ENDS ==========================-->
+  
+  <!-- ========================== REVIEW ITEM DETAIL MODAL START ==========================-->
+  
+  <div class="container">
+    <div class="modal fade" id="reviewUpdateItemsModal">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content modal-lg" style="width: 130%;">
+          <div class="modal-header">
+            <h5 class="modal-title">VERIFY ITEM DETAIL</h5>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body" style="padding: 0;">
+            <div class="middle">
+
+
+              <app-preview-item-details [ItemDetailsForm]="ItemDetailsForm"></app-preview-item-details>
+
+
+          </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-info" data-dismiss="modal">Edit</button>
+            <button type="button" class="btn btn-outline-info" data-dismiss="modal" (click)="addItem();">ADD</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- ========================== REVIEW ITEM DETAIL MODAL ENDS ==========================-->
+  

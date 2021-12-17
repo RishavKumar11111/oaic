@@ -1,0 +1,85 @@
+
+<div class="mybox">
+    <div class="mybox-header">
+      <span>
+        <strong>
+            <label >STOCK</label>
+        </strong>
+      </span>
+    </div>
+    <div class="middle">
+      <div class="row">
+        <div class="col-lg-4">
+          <label>Financial year :</label>
+          <select class="form-control" [(ngModel)]="fin_year" (change)="loadStock()">
+            <option value="" disabled>--Select--</option>
+            <option [ngValue]="x" *ngFor="let x of fin_year_list">{{ x }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- ====================================== HEADER PART ENDS ====================================== -->
+  
+  <!-- ====================================== LOADER PART START ====================================== -->
+  
+  <div class="loader">
+    <div *ngIf="loader" class="spinner-border text-info"></div>
+  </div>
+  
+  <!-- ====================================== LOADER PART ENDS ====================================== -->
+  
+  <!-- ====================================== STOCK ITEMS TABLE PART START ====================================== -->
+  
+  <div class="mybox" *ngIf="showDetails">
+    <div class="mybox-header">
+      <span>
+        <strong>
+            <label >ITEMS</label>
+        </strong>
+      </span>
+    </div>
+      <div>
+        <div *ngIf="stockData.length == 0" class="no-record">
+          No record found on financial year {{ fin_year }}.
+        </div>
+        <div *ngIf="stockData.length != 0">
+          <div class="table-responsive">
+          <table class="table table-striped table-bordered table-hover" id="orderListTable" style="text-align: center;">
+            <caption></caption>
+            <thead>
+              <tr>
+                  <th scope="col">SL.</th>
+                  <th scope="col">System</th>
+                  <th scope="col">Implement</th>
+                  <th scope="col">Make</th>
+                  <th scope="col">Model</th>
+                  <th scope="col">Engine no.</th>
+                  <th scope="col">Chassic no.</th>
+                  <th scope="col">In</th>
+                  <th scope="col">Out</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let x of stockData;let i = index;">
+                  <td>{{ i + 1 }}</td>
+                  <!-- <td>FM{{ x.system | uppercase }}</td> -->
+                  <td>F.M.</td>
+                  <td>{{ x.implement }}</td>
+                  <td>{{ x.make}}</td>
+                  <td>{{ x.model }}</td>
+                  <td>{{ x.engine_no || '-' }}</td>
+                  <td>{{ x.chassic_no || '-' }}</td>
+                  <td>{{ x.in || '-' }}</td>
+                  <td>{{ x.out || '-' }}</td>
+              </tr>
+            </tbody>
+          </table>
+          </div>
+        </div>
+      </div>
+  </div>
+  
+  <!-- ====================================== STOCK ITEMS TABLE PART ENDS ====================================== -->
+  

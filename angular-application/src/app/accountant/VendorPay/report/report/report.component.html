@@ -1,0 +1,121 @@
+
+
+<!-- ====================================== HEADER PART START ====================================== -->
+
+<div class="mybox" *ngIf="show_approval_list">
+    <div class="mybox-header">
+      <span>
+        <strong>
+          <label>Vendor Payment Report</label>
+        </strong>
+      </span>
+    </div>
+    <div class="middle">
+      <div class="row">
+        <div class="col-lg-4">
+            <app-financial-year (newItemEvent)="changeFinancialYear($event)"></app-financial-year>
+        </div>
+        <div class="col-lg-4">
+          <label>Vendors :</label>
+          <select class="form-control" [(ngModel)]="dealer" (change)="loadApprovalListByDealer()">
+            <option value="">ALL</option>
+            <option [ngValue]="x" *ngFor="let x of dealer_list"> {{x.LegalBussinessName}} </option>
+          </select>
+        </div>
+        <div class="col-lg-4">
+          <label>Report type :</label>
+          <select class="form-control" [(ngModel)]="approval_status" (change)="loadApprovalListByStatus()">
+            <option value="">ALL</option>
+            <option value="pending_at_dm">Pending at DM</option>
+            <option value="pending_at_bank">Approved by DM & Pending at BANK</option>
+            <option value="paid">Confirmed by BANK</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- ====================================== HEADER PART ENDS ====================================== -->
+  
+  <!-- ====================================== LOADER PART START ====================================== -->
+  
+  <div class="loader">
+    <div *ngIf="loader" class="spinner-border text-info"></div>
+  </div>
+  
+  <!-- ====================================== LOADER PART ENDS ====================================== -->
+  
+  <!-- ====================================== APPROVAL LIST PART START ====================================== -->
+  
+  <div class="mybox" *ngIf="show_approval_list">
+    <div class="mybox-header">
+      <span>
+        <strong>
+          <label>APPROVAL LIST</label>
+        </strong>
+      </span>
+    </div>
+    <div>
+      <div class="no-record" *ngIf="approval_list.length == 0">
+        No record found on financial year {{ fin_year }}.
+      </div>
+      <div *ngIf="approval_list.length !== 0">
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered table-hover" id="itemListTable">
+            <caption></caption>
+            <thead>
+              <tr>
+                <th scope="col">SL.</th>
+                <th scope="col">Approval ID</th>
+                <th scope="col">Part payment ID</th>
+                <th scope="col">Approval date</th>
+                <th scope="col">Invoice no.</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Status</th>
+                <th scope="col">View Approval</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let x of approval_list | search: approval_status | search: dealer.dl_id ; let i = index;">
+                <td>{{ i + 1 }}</td>
+                <td>{{ x.approval_id }}</td>
+                <td>{{ x.pp_id }}</td>
+                <td>{{ x.approval_date | date: 'dd-MM-yyyy'}}</td>
+                <td>{{ x.invoice_no }}</td>
+                <td>{{ x.approval_amount | number }}</td>
+                <td>{{ x.status_desc}}</td>
+                <td><button class="btn btn-outline-info round" (click)="showApproval(x)"><i class="fas fa-bars" aria-hidden="true"></i></button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- ====================================== APPROVAL LIST PART ENDS ====================================== -->
+  
+  <!-- ====================================== PRINT APPROVAL PART START ====================================== -->
+  
+  <div *ngIf="show_approval_print">
+      <button class="btn btn-info btn-sm topBack" (click)="back()"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+      <div class="mybox">
+        <div class="mybox-header">
+          <span>
+            <strong>
+              <label>APPROVAL</label>
+            </strong>
+          </span>
+        </div>
+        <div>
+          <%- include('../common/dealer_pay_approval.ejs') -%>
+          <div class="bottomBack">
+              <button class="btn btn-info btn-sm" (click)="back()"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+              <button class="btn btn-info btn-sm" >Print <i class="fas fa-print" aria-hidden="true"></i></button>
+          </div>
+        </div>
+      </div>
+  </div>
+  
+  <!-- ====================================== PRINT APPROVAL PART ENDS ====================================== -->
+  

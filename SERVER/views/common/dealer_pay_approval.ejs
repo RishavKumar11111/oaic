@@ -1,0 +1,172 @@
+<style>
+  .table-bordered {
+    padding: 1%;
+  }
+</style>
+
+
+<div id="approval">
+    <link href="../new/css/sb-admin.css" rel="stylesheet">
+    <div class="card">
+      <div class="card-body">
+        <div class="card-text">
+          <div class="container">
+            <h3 style="text-align: center;">THE ODISHA AGRO INDUSTRIES CORPORATION LIMITED</h3>
+            <p style="font-size: larger; text-align: center; margin-top: -10px;">(A Govt. of Odisha Undertaking)</p>
+            <P style="font-size: larger; text-align: center; margin-top: -10px;"> Regd. H.O. :
+              95,Satyanagar,Bhubaneswar - 751007</P>
+            <h4 style="text-align: center;">Payment Approval</h4>
+            <br>
+            <br>
+
+            <div class="row table-bordered">
+              <div class="col-lg-7 col-md-7 table-bordered">
+                <p style="font-size: larger;">Pay To :</p>
+                <div class="container">
+                  <p style="font-size: larger;">
+                    Name : <label> {{dl.LegalBussinessName}} </label><br>
+                    Address : <label> {{dl.Address || '--' }} </label><br>
+                    Contact : <label> {{dl.EmailID || '--' }}, {{dl.ContactNumber || '--' }} </label><br>
+                    Bank name: <label> {{dl.BankName || '--' }} </label><br>
+                    A/C no: <label> {{dl.AccountNumber || '--' }} </label><br>
+                    Branch: <label> {{dl.BranchName || '--' }} </label><br>
+                    IFSC code: <label> {{dl.IFSCCode || '--' }} </label><br>
+
+                  </p>
+                </div>
+              </div>
+              <div class="col-lg-5 col-md-5 table-bordered">
+                <p style="font-size: larger;"><br>
+
+                  <label>Indent no.:</label> <label ng-click="showIndent()" data-toggle="modal" data-target="#viewIndent"> {{ indent_no }} </label><br>
+                  <label>Indent date:</label> <label > {{ indent_date | date: 'dd-MM-yyyy'  }} </label><br>
+                  <label>Indent amount:</label> <label > {{ indent_amount | number: '2'  }} </label><br>
+                  <label>Invoice no.: </label> <label ng-click="showInvoice()"> {{ invoice_no }} </label><br>
+                  <label>Invoice date:</label> <label> {{ invoice_date |date: 'dd-MM-yyyy' }} </label><br>
+                  <label>Invoice amount:</label> <label > {{ invoice_amount | number: '2' }} </label><br>
+                </p>
+              </div>
+            </div>
+
+            <br>
+            <br>
+            <div class="table-responsive" ng-if="true">
+              <table class="table table-hover table-bordered">
+                <caption></caption>
+                <thead>
+                  <tr>
+                    <th scope="col">SL.</th>
+                    <th scope="col">Mrr no.</th>
+                    <th scope="col">Description of goods and service</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Rate per quanity (&#8377;)</th>
+                    <th scope="col">Taxable value (&#8377;)</th>
+                    <th scope="col">SGST(6%)</th>
+                    <th scope="col">CGST(6%)</th>
+                    <th scope="col">Invoice value (&#8377;)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="x in invoice_items">
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ x.MRRNo }}</td>
+                    <td>
+                      Implement : {{x.Implement}} <br>
+                      Make : {{x.Make}} <br>
+                      Model : {{x.Model}}
+                    </td>
+                    <td>{{ x.ItemQuantity}}</td>
+                    <td>{{ x.PurchaseTaxableValue | number:'2' }}</td>
+                    <td>{{ x.TotalTaxableValue | number:'2' }}</td>
+                    <td>{{ x.TotalCGST | number:'2' }}</td>
+                    <td>{{ x.TotalSGST | number:'2' }}</td>
+                    <td>{{ x.TotalInvoiceValue | number:'2' }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="table-responsive" ng-if="false">
+              <table class="table table-hover table-bordered">
+                <caption></caption>
+                <thead>
+                  <tr>
+                    <th scope="col">SL.</th scope="col">
+                    <th scope="col">Mrr no.</th>
+                    <th scope="col">Description of goods and service</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Rate per quanity (&#8377;)</th>
+                    <th scope="col">Taxable value (&#8377;)</th>
+                    <th scope="col">G.S.T. rate(%)</th>
+                    <th scope="col">C.G.S.T.</th>
+                    <th scope="col">S.G.S.T.</th>
+                    <th scope="col">Invoice value (&#8377;)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="x in invoice_items">
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ x.MRRNo }}</td>
+                    <td>
+                      Implement : {{x.Implement}} <br>
+                      Make : {{x.Make}} <br>
+                      Model : {{x.Model}}
+                    </td>
+                    <td>{{ x.ItemQuantity}}</td>
+                    <td>{{ x.PurchaseTaxableValue | number:'2' }}</td>
+                    <td>{{ x.TotalTaxableValue | number:'2' }}</td>
+                    <td>{{ x.TaxRate }}%</td>
+                    <td>{{ x.TotalCGST | number:'2' }}</td>
+                    <td>{{ x.TotalSGST | number:'2' }}</td>
+                    <td>{{ x.TotalInvoiceValue | number:'2' }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <br>
+            <br>
+            <div class="table-bordered">
+              <p style="font-size: larger;"> Sub Total (&#8377;) : <strong>{{ subTotal | number :'2' }}</strong></p>
+            </div>
+            <div class="table-bordered">
+              <p style="font-size: larger;"> Less SGST TDS: <strong>{{ less_sgst | number : '2' }}</strong></p>
+            </div>
+            <div class="table-bordered">
+              <p style="font-size: larger;"> Less CGST TDS : <strong>{{ less_cgst | number : '2' }}</strong></p>
+            </div>
+            <div class="table-bordered">
+              <p style="font-size: larger;"> Paid amount : <strong>{{ paid_amount | number : '2' }}</strong></p>
+            </div>
+            <div class="table-bordered">
+              <p style="font-size: larger;"> Deduction amount : <strong>{{ deduction_amount | number :'2' }}</strong></p>
+            </div>
+            <div class="table-bordered">
+              <p style="font-size: larger;"> Pay now (&#8377;) : <strong>{{ pay_now | number : '2' }}</strong></p>
+            </div>
+            <div class="table-bordered">
+              <p style="font-size: larger;"> Pay amount in word : <strong>{{ pay_now | convertToWord }} rupees only /-</strong></p>
+            </div>
+            <div class="table-bordered">
+              <p style="font-size: larger;"> Remark : {{ remark }}</p>
+            </div>
+            <br>
+            <br>
+
+            <div class="row">
+              <div class="col-lg-6 col-md-6 col-sm-6 table-bordered">
+                <br><br><br>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-6 table-bordered">
+                <br><br><br>
+                <P style="font-size: larger;text-align: right;">Authorised Signatory : </P>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <br>
+</div>

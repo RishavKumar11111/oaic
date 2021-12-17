@@ -1,0 +1,105 @@
+<div class="mybox">
+    <div class="mybox-header">
+      <span>
+        <strong>
+          <label>PROJECT WISE LEDGER</label>
+        </strong>
+      </span>
+    </div>
+    <br>
+    <div class="container row">
+      <div class="col-lg-3">
+        <app-financial-year (newItemEvent)="changeFinancialYear($event)"></app-financial-year>
+      </div>
+      <div class="col-lg-4">
+        <label>Scheme :</label>
+        <select class="form-control" [(ngModel)]="schem" (change)="loadProjectNos()" >
+          <option value="" disabled>--select--</option>
+          <option [ngValue]="x" *ngFor=" let x of schem_list "> {{ x.schem_name }} </option>
+        </select>
+      </div>
+      <div class="col-lg-4"><label>Project No :</label>
+        <select class="form-control"  [(ngModel)]="project_no" (change)="loadCashBook();">
+          <option value="">--Select--</option>
+          <option [ngValue]="x" *ngFor="let x of project_no_list"> {{ x.reference_no }} </option>
+        </select>
+      </div>
+    </div>
+  </div>
+  
+  <!-- ====================================== HEADER PART ENDS ====================================== -->
+  
+  <!-- ====================================== LOADER PART START ====================================== -->
+  
+  <div class="loader">
+    <div *ngIf="loader" class="spinner-border text-info"></div>
+  </div>
+  
+  <!-- ====================================== LOADER PART ENDS ====================================== -->
+  
+  <!-- ====================================== CASHBOOK PART START ====================================== -->
+  
+  <div class="mybox" *ngIf="showCashBook">
+    <div class="mybox-header">
+      <span>
+        <strong>
+          <label>CASHBOOK</label>
+        </strong>
+      </span>
+    </div>
+    <div>
+      <div class="no-record" *ngIf="allData.length == 0">
+        <br>
+        No record found on financial year {{ fin_year }}.
+      </div>
+      <div *ngIf="allData.length != 0">
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered table-hover" id="orderListTable" style="text-align: center;">
+            <caption></caption>
+            <thead>
+              <tr>
+                <th scope="col">SL.</th>
+                <th scope="col">Date</th>
+                <th scope="col">Reference No.</th>
+                <th scope="col">From</th>
+                <th scope="col">To</th>
+                <th scope="col">Credit (&#8377;)</th>
+                <th scope="col">Debit (&#8377;)</th>
+                <th scope="col">Balance(&#8377;)</th>
+                <th scope="col">Purpose</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let x of allData ; let i = index;">
+                <td>{{ i + 1 }}</td>
+                <td>{{ x.date | date: 'dd-MM-yyyy'}}</td>
+                <td>{{ x.reference_no }}</td>
+                <td>{{ x.from_name }}</td>
+                <td>{{ x.to_name }}</td>
+                <td>{{ x.credit | number  }}</td>
+                <td>{{ x.debit | number }}</td>
+                <td>{{ x.balance | number  }}</td>
+                <td>{{ x.purpose}}</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+                  <h5>Total (&#8377;)</h5>
+                </td>
+                <td style="width: 10%;">{{ totalCredit | number }} </td>
+                <td style="width: 10%;">{{ totalDebit | number }} </td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- ====================================== CASHBOOK PART ENDS ====================================== -->
+  

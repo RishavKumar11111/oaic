@@ -1,0 +1,740 @@
+
+
+    <style>
+        .col-lg-6, .col-3 {
+            margin-top: 20px;
+        }
+        .add-button {
+            margin: 10px 0 15px 0;
+        }
+        .error-msg {
+            color: red;
+        }
+        .error {
+            font-size: 12px;
+            font-weight: bold;
+            color: #ff3f3f
+        }
+        .note {
+            font-size: 12px;
+        }
+        .bold-head {
+            font-weight: bold;
+        }
+    </style>
+
+    <style>
+        @import "compass";
+        .stepper .nav-tabs {
+            position: relative;
+        }
+        .stepper .nav-tabs > li {
+            width: 20%;
+            position: relative;
+        }
+        .stepper .nav-tabs > li:after {
+            content: '';
+            position: absolute;
+            background: #c1e0d8;
+            display: block;
+            width: 100%;
+            height: 7px;
+            top: 23px;
+            left: 0%;
+            z-index: 1;
+        }
+        .stepper .nav-tabs > li.completed::after {
+            background: #34bc9b;
+        }
+        .stepper .nav-tabs > li:last-child::after {
+            background: transparent;
+        }
+        .stepper .nav-tabs > li.active:last-child .round-tab {
+            background: #34bc9b;
+        }
+        .stepper .nav-tabs > li.active:last-child .round-tab::after {
+            /* content: '✔'; */
+            color: #fff;
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            top: 0;
+            display: block;
+        }
+        .stepper .nav-tabs [data-toggle='tab'] {
+            width: 25px;
+            height: 25px;
+            margin: 20px auto;
+            border-radius: 100%;
+            border: none;
+            padding: 0;
+            color: #f1f1f1;
+        }
+        .stepper .nav-tabs [data-toggle='tab']:hover {
+            background: transparent;
+            border: none;
+        }
+        .stepper .nav-tabs > .active > [data-toggle='tab'], .stepper .nav-tabs > .active > [data-toggle='tab']:hover, .stepper .nav-tabs > .active > [data-toggle='tab']:focus {
+            color: #34bc9b;
+            cursor: default;
+            border: none;
+        }
+        .stepper .tab-pane {
+            position: relative;
+            padding-top: 50px;
+        }
+        .stepper .round-tab {
+            width: 80%;
+            /* height: 40%; */
+            line-height: 45px;
+            display: inline-block;
+            border-radius: 25px;
+            background: #fff;
+            border: 2px solid #34bc9b;
+            color: #34bc9b;
+            z-index: 2;
+            position: absolute;
+            left: 0;
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .stepper .completed .round-tab {
+            background: #34bc9b;
+        }
+        .stepper .completed .round-tab::after {
+            content: '✔';
+            color: #fff;
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            top: 0;
+            display: block;
+        }
+        .stepper .active .round-tab {
+            background: #fff;
+            border: 2px solid #34bc9b;
+        }
+        .stepper .active .round-tab:hover {
+            background: #fff;
+            border: 2px solid #34bc9b;
+        }
+        .stepper .active .round-tab::after {
+            display: none;
+        }
+        .stepper .disabled .round-tab {
+            background: #fff;
+            color: #1a2f2a;
+            border-color: #658079;
+        }
+        .stepper .disabled .round-tab:hover {
+            color: #4dd3b6;
+            border: 2px solid #34bc9b;
+        }
+        .stepper .disabled .round-tab::after {
+            display: none;
+        }
+        .nav-tabs {
+            border-bottom: none !important;
+        }
+        .persistant-disabled {
+            cursor: pointer;
+        }
+        .complete-step {
+            background: #34bc9b !important;
+            color: white !important;
+            border-color: #34bc9b !important;
+            cursor: pointer;
+        }
+        .complete-step:hover {
+            background: white !important;
+            border-color: #34bc9b;
+            color: #34bc9b !important;
+        }
+        .complete-step-bar::after {
+            background-color: #34bc9b !important;
+        }
+ 
+    </style>
+
+                     <br>
+                     <div>
+                            <div class="stepper" ng-if="stepper">
+                              <ul class="nav nav-tabs" role="tablist">
+                                <li role="presentation" class="active" ng-class="completeStep1Bar" >
+                                  <a class="persistant-disabled" ng-click="goToStep1();" data-toggle="tab" aria-controls="stepper-step-1" role="tab">
+                                    <span class="round-tab" ng-class="isCompleteStep1" >Basic Details </span>
+                                  </a>
+                                </li>
+                                <li role="presentation" class="disabled" ng-class="completeStep2Bar" >
+                                  <a class="persistant-disabled" ng-click="goToStep2();" data-toggle="tab" aria-controls="stepper-step-2" role="tab">
+                                    <span class="round-tab" ng-class="isCompleteStep2" >Services</span>
+                                </a>
+                                </li>
+                                <li role="presentation" class="disabled" ng-class="completeStep3Bar" >
+                                  <a class="persistant-disabled" ng-click="goToStep3();" data-toggle="tab" aria-controls="stepper-step-2" role="tab">
+                                    <span class="round-tab" ng-class="isCompleteStep3" >Contact Person</span>
+                                </a>
+                                </li>
+                                <li role="presentation" class="disabled" ng-class="completeStep4Bar" >
+                                  <a class="persistant-disabled" ng-click="goToStep4();" data-toggle="tab" aria-controls="stepper-step-3" role="tab">
+                                    <span class="round-tab" ng-class="isCompleteStep4" >Principal Place</span>
+                                </a>
+                                </li>
+                                <li role="presentation" class="disabled" ng-class="completeStep5Bar" >
+                                  <a class="persistant-disabled" ng-click="goToStep5();" data-toggle="tab" aria-controls="stepper-step-4" role="tab">
+                                    <span class="round-tab" ng-class="isCompleteStep5" >Bank Details</span>
+                                </a>
+                                </li>
+                                <!-- <li role="presentation" class="disabled">
+                                  <a class="persistant-disabled" ng-click="goToStep6();" data-toggle="tab" aria-controls="stepper-step-6" role="tab" title="Complete">
+                                    <span class="round-tab">6</span>
+                                  </a>
+                                </li> -->
+                              </ul>
+                            </div>
+                    </div>
+                      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <div ng-show="step1">
+                        <h5>Basic Details</h5>
+                        <div class="wrap-input100 validate-input" data-validate="Enter username">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label for="legalName">Legal Name of the Bussiness (As per PAN) *: </label>
+                                    <input style="text-transform: uppercase;" type="text" onkeypress="validateTextAsName('legalName');" id="legalName" class="form-control" placeholder="Enter the legal Bussiness Name" ng-model="bussiness.LegalBussinessName">
+                                    <span class="note">Note: </span><span class="error">Do not use Miss/Mrs./Mr./Shri.</span>
+                                </div>
+                                
+                                <div class="col-lg-6">
+                                    <label for="TradeName">Trade Name *: </label>
+                                    <input style="text-transform: uppercase;" type="text" onkeypress="validateTextAsName('TradeName');" id="TradeName" class="form-control" placeholder="Enter Trade name" ng-model="bussiness.TradeName">
+                                    <span class="note">Note: </span><span class="error">Do not use Miss/Mrs./Mr./Shri.</span>
+                                </div>
+                                
+                                <div class="col-lg-6">
+                                    <label for="PermanentAccountNumber">Permanent Account Number (PAN) *: </label>
+                                    <input style="text-transform: uppercase;" type="text" maxlength="10" onkeypress="validateTextAndNumber('PermanentAccountNumber');" id="PermanentAccountNumber" class="form-control" placeholder="AYAPN0000P" ng-model="bussiness.PAN">
+                                </div>
+                                
+                                <!-- <div class="col-lg-6">
+                                    <label for="PANDocument">Upload PAN Document *: </label>
+                                    <input disabled type="file" onchange="checkFile('PANDocument');" accept="application/pdf" id="PANDocument" class="form-control" >
+                                    <span class="note">Note: </span><span class="error">Upload PDF only. Maximum size - 500kb</span>
+                                </div> -->
+                                
+                                <div class="col-lg-6">
+                                    <label for="GSTN">Goods & Services Tax Number (GSTN) *: </label>
+                                    <input style="text-transform: uppercase;" type="text" maxlength="15" onkeypress="validateTextAndNumber('GSTN');" id="GSTN" class="form-control" placeholder="Enter GSTN number" ng-model="bussiness.GSTN">
+                                </div>
+                                
+                                <!-- <div class="col-lg-6">
+                                    <label for="GSTNDocument">Upload GSTN Document *: </label>
+                                    <input disabled type="file" onchange="checkFile('GSTNDocument');" accept="application/pdf" id="GSTNDocument" class="form-control">
+                                    <span class="note">Note: </span><span class="error">Upload PDF only. Maximum size - 500kb</span>
+                                </div> -->
+                                
+                                <div class="col-lg-6">
+                                    <label for="BussinessConstitution">Constitution of the Bussiness *: </label>
+                                    <select id="BussinessConstitution" class="form-control" ng-model="bussiness.BussinessConstitution">
+                                        <option value="" disabled selected>--select--</option>
+                                        <option value="Proprietorship">Proprietorship</option>
+                                        <option value="Partnership">Partnership</option>
+                                        <option value="Limited Liability Partnership (LLP)">Limited Liability Partnership (LLP)</option>
+                                        <option value="Private Limited Company">Private Limited Company</option>
+                                        <option value="Public Limited Company">Public Limited Company</option>
+                                        <option value="HUF/AOP/BOI">HUF/AOP/BOI</option>
+                                        <option value="Central Govt./State Govt.">Central Govt./State Govt.</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="col-lg-6">
+                                    <label for="DateofIncorporation">Date of Incorporation/Formation *: </label>
+                                    <input type="date" id="DateofIncorporation" class="form-control" ng-model="bussiness.IncorporationDate">
+                                </div>
+                                
+                                <div class="col-lg-6">
+                                    <label for="ContactNumber">Contact Number *: </label>
+                                    <input type="text" maxlength="10" onkeypress="validateNumber('ContactNumber');" id="ContactNumber" class="form-control" placeholder="9937000000" ng-model="bussiness.ContactNumber">
+                                </div>
+                                
+                                <div class="col-lg-6">
+                                    <label for="dealerEmilID">Email-ID (It will be your UserID)*: </label>
+                                    <input type="text" id="dealerEmilID" class="form-control" placeholder="Enter your Email-ID" ng-model="bussiness.EmailID">
+                                </div>
+                                                                
+                                <div class="col-lg-6">
+                                    <label for="weatherMSME">Whether MSME *: </label>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="row">
+                                                <div class="col-lg-2"><input type="radio" id="MSMEYes" name="MSME" value="Yes" ng-model="bussiness.WhetherMSME"></div>
+                                                <div class="col-lg-10"><label for="MSMEYes">Yes</label></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="row">
+                                                <div class="col-lg-2"><input type="radio" id="MSMENo" name="MSME" value="No" ng-model="bussiness.WhetherMSME"></div>
+                                                <div class="col-lg-10"><label for="MSMENo">No</label></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6" ng-show="bussiness.WhetherMSME != 'Yes'"></div>
+                                <div class="col-lg-6" ng-show="bussiness.WhetherMSME == 'Yes'">
+                                    <label for="MSMECertificate">Upload MSME Certificate *: </label>
+                                    <input disabled type="file" onchange="checkFile('MSMECertificate');" accept="application/pdf" id="MSMECertificate" class="form-control">
+                                    <span class="note">Note: </span><span class="error">Upload PDF only. Maximum size - 500kb</span>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <label>Whether SSI Unit *: </label>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="row">
+                                                <div class="col-lg-2"><input type="radio" id="SSIUnitYes" name="SSIUnit" value="Yes" ng-model="bussiness.WhetherSSIUnit"></div>
+                                                <div class="col-lg-10"><label for="SSIUnitYes">Yes</label></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="row">
+                                                <div class="col-lg-2"><input type="radio" id="SSIUnitNo" name="SSIUnit" value="No" ng-model="bussiness.WhetherSSIUnit"></div>
+                                                <div class="col-lg-10"><label for="SSIUnitNo">No</label></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6" ng-show="bussiness.WhetherSSIUnit != 'Yes'"></div>
+                                <div class="col-lg-6" ng-show="bussiness.WhetherSSIUnit == 'Yes'">
+                                    <label for="RegistrationCertificate">Upload Registration Certificate *: </label>
+                                    <input disabled type="file" onchange="checkFile('RegistrationCertificate');" accept="application/pdf" id="RegistrationCertificate" class="form-control">
+                                    <span class="note">Note: </span><span class="error">Upload PDF only. Maximum size - 500kb</span>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                        <br>
+                        <div class="text-right">
+                            <button class="btn btn-info" ng-click="saveStep1();" 
+                            ng-disabled="bussiness.LegalBussinessName == undefined || bussiness.TradeName == undefined || bussiness.PAN == undefined
+                            || bussiness.BussinessConstitution == undefined || bussiness.GSTN == undefined || bussiness.IncorporationDate == undefined
+                            || bussiness.ContactNumber == undefined || bussiness.EmailID == undefined
+                            || bussiness.WhetherMSME == undefined || bussiness.WhetherSSIUnit == undefined"
+                            >Update & Next <i class="fa fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+
+
+
+                    <div ng-show="step2">
+                        <h5>3 Year Turnover & Services</h5>
+                        <div class="wrap-input100 validate-input" data-validate="Enter username">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <h6 class="bold-head">Financial Year Wise Turnover ( &#x20b9; ): </h6>
+                                    <br>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="row">
+                                        <div class="col-3"><label for="CoreBussinessActivity">2020-21 *: </label></div>
+                                        <div class="col-9">
+                                            <input type="text" onkeypress="validateNumber('finyear1');" id="finyear1" class="form-control" placeholder="Enter the Total Turnover of 2020-21 " ng-model="service.Turnover1">
+                                        </div>
+                                        <div class="col-3"><label for="CoreBussinessActivity">2019-20 *: </label></div>
+                                        <div class="col-9">
+                                            <input type="text" onkeypress="validateNumber('finyear2');" id="finyear2" class="form-control" placeholder="Enter the Total Turnover of 2019-20 " ng-model="service.Turnover2">
+                                        </div>
+                                        <div class="col-3"><label for="CoreBussinessActivity">2018-19 *: </label></div>
+                                        <div class="col-9">
+                                            <input type="text" onkeypress="validateNumber('finyear3');" id="finyear3" class="form-control" placeholder="Enter the Total Turnover of 2019-20 " ng-model="service.Turnover3">
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                </div>
+                                <div class="col-lg-6">
+                                    <label for="CoreBussinessActivity">Core Bussiness Activity *: </label>
+                                    <select id="CoreBussinessActivity" class="form-control" ng-model="service.CoreBussinessActivity" ng-change="goodsOrServicesList = []">
+                                        <option value="" disabled selected>--select--</option>
+                                        <option value="Manufacturer">Manufacturer</option>
+                                        <option value="Trader">Trader</option>
+                                        <option value="Service Provider">Service Provider</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-6"></div>
+                                <div class="col-lg-6">
+                                    <label for="goodsOrServices">Goods/Services *: </label>
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <select id="goodsOrServices" class="form-control" ng-model="goodsOrServices">
+                                                <option value="" disabled selected>--select--</option>
+                                                <option ng-if="service.CoreBussinessActivity != 'Service Provider'" value="Tractor">Tractor</option>
+                                                <option ng-if="service.CoreBussinessActivity != 'Service Provider'" value="Power Tiller">Power Tiller</option>
+                                                <option ng-if="service.CoreBussinessActivity != 'Service Provider'" value="Sprayer">Sprayer</option>
+                                                <option ng-if="service.CoreBussinessActivity != 'Service Provider'" value="Rotavator">Rotavator</option>
+                                                <option ng-if="service.CoreBussinessActivity != 'Service Provider'" value="Pepper Thresher">Pepper Thresher</option>
+                                                <option ng-if="service.CoreBussinessActivity != 'Service Provider'" value="Agriculture Implement">Agriculture Implement (not covered above)</option>
+                                                <option ng-if="service.CoreBussinessActivity != 'Service Provider'" value="Chemical Fertilizer">Chemical Fertilizer</option>
+                                                <option ng-if="service.CoreBussinessActivity != 'Service Provider'" value="Bio Fertilizer">Bio Fertilizer</option>
+                                                <option ng-if="service.CoreBussinessActivity != 'Service Provider'" value="Organic Fertilizer">Organic Fertilizer</option>
+                                                <option ng-if="service.CoreBussinessActivity != 'Service Provider'" value="Chemical Pesticides">Chemical Pesticides</option>
+                                                <option ng-if="service.CoreBussinessActivity != 'Service Provider'" value="Bio Pesticides">Bio Pesticides</option>
+                                                <option ng-if="service.CoreBussinessActivity == 'Service Provider'" value="Works Contact">Works Contact</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button class="btn btn-success" ng-click="AddGoodsOrServices();"><i class="fa fa-plus"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <label for="district">District *: </label>
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <select id="district" class="form-control" ng-model="district">
+                                                <option value="" disabled selected>--select--</option>
+                                                <option value="{{ x }}" ng-repeat="x in districtList">{{ x.dist_name }}</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button class="btn btn-success" ng-click="AddDistrict();"><i class="fa fa-plus"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <h6 class="bold-head"> Goods/Services List: </h6>
+                                    <ul>
+                                        <li ng-repeat="x in goodsOrServicesList"> {{ x }} </li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="col-lg-6">
+                                    <h6 class="bold-head"> District List for Apply: </h6>
+                                    <ul>
+                                        <li ng-repeat="x in selectedDistrictList" style="height: 45px;"> {{ x.dist_name }}  <button ng-click="removeDistrict($index);" class="btn btn-outline-danger float-right"><i class="fa fa-trash"></i></button></li>
+                                    </ul>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                        <br><div >
+                            <button class="btn btn-info float-left" ng-click="goToStep1();"><i class="fa fa-arrow-left"></i> Previous</button>
+                            <button class="btn btn-info float-right" ng-click="saveStep2();" 
+                            ng-disabled="service.CoreBussinessActivity == undefined || service.Turnover1 == undefined
+                            || service.Turnover2 == undefined || service.Turnover3 == undefined
+                            || selectedDistrictList.length == 0 || goodsOrServicesList.length == 0"
+                            >Update & Next <i class="fa fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+
+
+                    <div ng-show="step3">
+                        <h5>Authorised Signatory/Contact Person</h5>
+                        <div class="wrap-input100 validate-input" data-validate="Enter username">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label for="AuthorisedName">Name *: </label>
+                                    <input type="text" onkeypress="validateTextAsName('AuthorisedName');" id="AuthorisedName" class="form-control" placeholder="Enter Name" ng-model="authorisedSignatory.Name">
+                                </div>
+                                
+                                <div class="col-lg-6">
+                                    <label for="fatherName">Father's Name *: </label>
+                                    <input type="text" onkeypress="validateTextAsName('fatherName');" id="fatherName" class="form-control" placeholder="Enter Father's name" ng-model="authorisedSignatory.FathersName">
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <label for="authorisedMobileNo">Mobile Number *: </label>
+                                    <input type="text" maxlength="10" onkeypress="validateNumber('authorisedMobileNo');" id="authorisedMobileNo" class="form-control" placeholder="9937111117" ng-model="authorisedSignatory.MobileNumber">
+                                </div>
+                                <div class="col-lg-6">
+                                    <label for="AuthorisedEmailID">Email-ID *: </label>
+                                    <input type="text" id="AuthorisedEmailID" class="form-control" placeholder="odishaagro@gov.in" ng-model="authorisedSignatory.EmailID">
+                                </div>
+                                
+                                <div class="col-lg-6">
+                                    <label for="Designation">Designation *: </label>
+                                    <select id="Designation" class="form-control" ng-model="authorisedSignatory.Designation">
+                                        <option value="" disabled selected>--select--</option>
+                                        <option value="Propritor">Proprietor</option>
+                                        <option value="Partner">Partner</option>
+                                        <option value="Director">Director</option>
+                                        <option value="Manager">Manager</option>
+                                        <option value="Account Officer">Account Officer</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="add-button float-right">
+                                <button class="btn btn-success" ng-click="addAuthorisedSignatory();"
+                                ng-disabled="authorisedSignatory.Name == undefined || authorisedSignatory.FathersName == undefined
+                                || authorisedSignatory.MobileNumber == undefined || authorisedSignatory.EmailID == undefined
+                                || authorisedSignatory.Designation == undefined"
+                                ><i class="fa fa-plus" aria-hidden="true"></i> ADD</button>
+                            </div>
+                            <br>
+                            <div class="">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <th>SL</th>
+                                        <th>Name</th>
+                                        <th>Father's Name</th>
+                                        <th>Mobile No.</th>
+                                        <th>Email-ID</th>
+                                        <th>Designation</th>
+                                        <th>Action</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="x in authorisedSignatoryList">
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>{{ x.Name }}</td>
+                                            <td>{{ x.FathersName }}</td>
+                                            <td>{{ x.MobileNumber }}</td>
+                                            <td>{{ x.EmailID }}</td>
+                                            <td>{{ x.Designation }}</td>
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col-6"><button class="btn btn-outline-primary" ng-click="modifyAuthorisedSignatory($index, x)"><i class="fa fa-edit"></i></button></div>
+                                                    <div class="col-6"><button class="btn btn-outline-danger" ng-click="removeAuthorisedSignatory($index)"><i class="fa fa-trash"></i></button></div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <br>
+                        </div>
+                        <br>
+                        <div>
+                            <button class="btn btn-info float-left" ng-click="goToStep2();"><i class="fa fa-arrow-left"></i> Previous</button>
+                            <div class="float-right">
+                                <label class="float-left error-msg" ng-if="authorisedSignatoryList.length == 0">*Please add minimun one Authorised Signatory*</label>
+                                <button class="btn btn-info float-right" ng-click="saveStep3();" ng-disabled="authorisedSignatoryList.length == 0">Update & Next <i class="fa fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div ng-show="step4">
+                        <h5>Principal Place of Bussiness</h5>
+                        <div class="wrap-input100 validate-input" data-validate="Enter username">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label for="country">Country *: </label>
+                                    <input type="text" id="country" class="form-control" placeholder="India" value="India" disabled ng-model="principalPlace.Country">
+                                </div>
+                                <div class="col-lg-6">
+                                    <label for="state">State *: </label>
+                                    <select id="state" class="form-control" ng-model="principalPlace.StateCode">
+                                        <option value="" disabled selected>--select--</option>
+                                        <option value="{{ x.StateCode }}" ng-repeat="x in stateList">{{ x.StateName }}</option>
+                                    </select>
+                                </div> 
+                                
+                                <div class="col-lg-6">
+                                    <label for="cityDistrict">City / District *: </label>
+                                    <input type="text" onkeypress="validateTextAsName('cityDistrict');" id="cityDistrict" class="form-control" placeholder="Bhubaneswar" ng-model="principalPlace.DistrictOrCity">
+                                </div>
+                                <div class="col-lg-6">
+                                    <label for="pincode">Pincode *: </label>
+                                    <input type="text" maxlength="6" onkeypress="validateNumber('pincode');" id="pincode" class="form-control" placeholder="751001" ng-model="principalPlace.Pincode">
+                                </div>
+                                
+                                <div class="col-lg-6">
+                                    <label for="address">Detailed Address *: </label>
+                                    <textarea class="form-control" id="address" cols="30" rows="4" placeholder="Enter full address" ng-model="principalPlace.Address"></textarea>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="add-button float-right">
+                                <button class="btn btn-success" ng-click="addPrincipalPlace();"
+                                ng-disabled="principalPlace.Country == undefined || principalPlace.StateCode == undefined
+                                || principalPlace.DistrictOrCity == undefined || principalPlace.Pincode == undefined
+                                || principalPlace.Address == undefined"
+                                ><i class="fa fa-plus" aria-hidden="true"></i> ADD</button>
+                            </div>
+                            <br>
+                            <div class="">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <th>SL</th>
+                                        <th>Country</th>
+                                        <th>State</th>
+                                        <th>City/District</th>
+                                        <th>Pincode</th>
+                                        <th>Address</th>
+                                        <th>Action</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="x in principalPlacesList">
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>{{ x.Country }}</td>
+                                            <td>{{ x.StateCode }}</td>
+                                            <td>{{ x.DistrictOrCity }}</td>
+                                            <td>{{ x.Pincode }}</td>
+                                            <td>{{ x.Address }}</td>
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col-6"><button class="btn btn-outline-primary" ng-click="modifyPrincipalPlace($index, x)"><i class="fa fa-edit"></i></button></div>
+                                                    <div class="col-6"><button class="btn btn-outline-danger" ng-click="removePrincipalPlace($index)"><i class="fa fa-trash"></i></button></div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <br>
+                        </div>
+                        <br>
+                        <div >
+                            <button class="btn btn-info float-left" ng-click="goToStep3();"><i class="fa fa-arrow-left"></i> Previous</button>
+                            <div class="float-right">
+                                <label class="float-left error-msg" ng-if="principalPlacesList.length == 0">*Please add minimun one Principal Place*</label>
+                                <button class="btn btn-info float-right" ng-click="saveStep4();" ng-disabled="principalPlacesList.length == 0">Update & Next <i class="fa fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div ng-show="step5">
+                        <h5>Bank Account Details</h5>
+                        <div class="wrap-input100 validate-input" data-validate="Enter username">
+                            <div class="row" ng-show="selectedBankAccountNumber != ''">
+                                <div class="col-lg-6">
+                                    <label for="bankAccountNo">Account Number *: </label>
+                                    <input type="text" onkeypress="validateNumber('bankAccountNo');" maxlength="20" id="bankAccountNo" class="form-control" placeholder="48908762189" ng-model="bank.AccountNumber">
+                                </div>
+                                
+                                <div class="col-lg-6">
+                                    <label for="accountType">Type of Account *: </label>
+                                    <select id="accountType" class="form-control" ng-model="bank.AccountType">
+                                        <option value="" disabled selected>--select--</option>
+                                        <option value="Saving Account">Saving Account</option>
+                                        <option value="Current Account">Current Account</option>
+                                        <option value="Cash Credit Account">Cash Credit Account</option>
+                                        <option value="Loan Account">Loan Account</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="col-lg-6">
+                                    <label for="bankName">Bank Name *: </label>
+                                    <select id="bankName" class="form-control" ng-model="bank.BankName">
+                                        <option value="" selected disabled>--select--</option>
+                                        <option value="State Bank of India ">State Bank of India </option>
+                                        <option value="Bank of Baroda ">Bank of Baroda <br> (Including Vijaya Bank and Dena  Bank)</option>
+                                        <option value="Bank of India ">Bank of India </option>
+                                        <option value="Bank of Maharashtra ">Bank of Maharashtra </option>
+                                        <option value="Canara Bank ">Canara Bank <br> (Including Syndicate Bank)</option>
+                                        <option value="Central Bank of India ">Central Bank of India </option>
+                                        <option value="Indian Bank ">Indian Bank <br> (Including Allahabad Bank)</option>
+                                        <option value="Indian Overseas Bank ">Indian Overseas Bank </option>
+                                        <option value="Punjab National Bank ">Punjab National Bank <br> (including Oriental Bank of  </option>
+                                        <option value="Commerce and United Bank of India)">Commerce and United Bank of India)</option>
+                                        <option value="Punjab & Sind Bank ">Punjab & Sind Bank </option>
+                                        <option value="Union Bank of India ">Union Bank of India <br> (including Andhra Bank and Corporation Bank)</option>
+                                        <option value="UCO Bank ">UCO Bank </option>                                                                            
+                                        <option value="Axis Bank Ltd.">Axis Bank Ltd.</option>
+                                        <option value="Catholic Syrian Bank Ltd.">Catholic Syrian Bank Ltd.</option>
+                                        <option value="City Union Bank Ltd.">City Union Bank Ltd.</option>
+                                        <option value="Development Credit Bank Ltd.">Development Credit Bank Ltd.</option>
+                                        <option value="Dhanlaxmi Bank Ltd.">Dhanlaxmi Bank Ltd.</option>
+                                        <option value="Federal Bank Ltd.">Federal Bank Ltd.</option>
+                                        <option value="HDFC Bank Ltd.">HDFC Bank Ltd.</option>
+                                        <option value="ICICI Bank Ltd.">ICICI Bank Ltd.</option>
+                                        <option value="IndusInd Bank Ltd.">IndusInd Bank Ltd.</option>
+                                        <option value="Jammu & Kashmir Bank Ltd.">Jammu & Kashmir Bank Ltd.</option>
+                                        <option value="Karnataka Bank Ltd.">Karnataka Bank Ltd.</option>
+                                        <option value="Karur Vysya Bank Ltd.">Karur Vysya Bank Ltd.</option>
+                                        <option value="Kotak Mahindra Bank Ltd.">Kotak Mahindra Bank Ltd.</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-6">
+                                    <label for="branchName">Branch Name *: </label>
+                                    <input type="text" onkeypress="validateTextAsName('branchName');" id="branchName" class="form-control" placeholder="Bhubaneswar, Main Branch" ng-model="bank.BranchName">
+                                </div>
+                                
+                                <div class="col-lg-6">
+                                    <label for="ifscCode">IFSC Code *: </label>
+                                    <input type="text" style="text-transform: uppercase;" onkeypress="validateTextAndNumber('ifscCode');" id="ifscCode" class="form-control" placeholder="SBIN000876" ng-model="bank.IFSCCode">
+                                </div>
+                                <!-- <div class="col-lg-6">
+                                    <label for="uploadBankDocument">Upload Passbook/Bank Statement/Cancelled Check *: </label>
+                                    <input disabled type="file" onchange="checkFile('uploadBankDocument');" accept="application/pdf" id="uploadBankDocument" class="form-control" placeholder="Enter your name">
+                                    <span class="note">Note: </span><span class="error">Upload PDF only. Maximum size - 500kb</span>
+                                </div> -->
+                            </div>
+                            <br>
+                            <div class="add-button float-right" ng-show="selectedBankAccountNumber != ''">
+                                <button class="btn btn-success" 
+                                ng-disabled="bank.AccountNumber == undefined || bank.AccountType == undefined
+                                || bank.BankName == undefined || bank.BranchName == undefined
+                                || bank.IFSCCode == undefined"
+                                ng-click="addBankAccount();"><i class="fa fa-check" aria-hidden="true"></i> Update</button>
+                            </div>
+                            <br>
+                            <div class="">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <th>SL</th>
+                                        <th>Account Number</th>
+                                        <th>Account Type</th>
+                                        <th>Bank Name</th>
+                                        <th>Branch Name</th>
+                                        <th>IFSC Code</th>
+                                        <th>Action</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="x in bankAccountsList">
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>{{ x.AccountNumber }}</td>
+                                            <td>{{ x.AccountType }}</td>
+                                            <td>{{ x.BankName }}</td>
+                                            <td>{{ x.BranchName }}</td>
+                                            <td>{{ x.IFSCCode }}</td>
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col-lg-12"><button class="btn btn-outline-primary" ng-click="modifyBankAccount($index, x)"><i class="fa fa-edit"></i></button></div>
+                                                    <!-- <div class="col-lg-6"><button class="btn btn-outline-danger" ng-click="removeBankAccount($index)"><i class="fa fa-trash"></i></button></div> -->
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <br>
+                        </div>
+                        <br>
+                        <div>
+                            <button class="btn btn-info float-left" ng-click="goToStep4();"><i class="fa fa-arrow-left"></i> Previous</button>
+                            <div class="float-right">
+                                <label class="float-left error-msg" ng-if="bankAccountsList.length == 0">*Please add minimun one Bank Account*</label>
+                                <button class="btn btn-info float-right" ng-click="goto1stPage();" ng-disabled="bankAccountsList.length == 0"><i class="fa fa-check"></i> Finish</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <br>
+                    <br>

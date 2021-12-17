@@ -1,0 +1,103 @@
+<div class="row">
+    <div class="col-lg-6">
+
+
+      <table class="table table-head-fixed table-striped table-hover">
+        <thead>
+          <tr>
+            <th style="text-align: right;width: 50%;" scope="col">Field Name</th>
+            <th style="text-align: left;width: 50%" scope="col">Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="text-align: right;">Permit number :</td>
+            <td style="text-align: left;">{{ order.PERMIT_ORDER }}</td>
+          </tr>
+          <tr>
+            <td style="text-align: right;">Farmer ID :</td>
+            <td style="text-align: left;">{{ order.FARMER_ID }}</td>
+          </tr>
+          <tr>
+            <td style="text-align: right;">Farmer name :</td>
+            <td style="text-align: left;">{{ order.VCHFARMERNAME }}</td>
+          </tr>
+          <tr>
+            <td style="text-align: right;">Father name :</td>
+            <td style="text-align: left;">{{ order.VCHFATHERNAME }}</td>
+          </tr>
+          <tr>
+            <td style="text-align: right;">District :</td>
+            <td style="text-align: left;">{{ order.Dist_Name }}</td>
+          </tr>
+          <tr>
+            <td style="text-align: right;">Block :</td>
+            <td style="text-align: left;">{{ order.block_name }}</td>
+          </tr>
+          <tr>
+            <td style="text-align: right;">GP name :</td>
+            <td style="text-align: left;">{{ order.vch_GPName }}</td>
+          </tr>
+          <tr>
+            <td style="text-align: right;">Village name :</td>
+            <td style="text-align: left;">{{ order.vch_VillageName }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+
+    </div>
+    <div class="col-lg-6">
+
+
+
+      <table class="table table-head-fixed table-striped table-hover">
+        <thead>
+          <tr>
+            <th style="text-align: right;width: 50%;" scope="col">Field Name</th>
+            <th style="text-align: left;width: 50%" scope="col">Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="text-align: right;">Issue date :</td>
+            <td style="text-align: left;">{{ order.DT_PERMIT | date :'dd-MM-yyyy' }}</td>
+          </tr>
+          <tr>
+            <td style="text-align: right;">Permit Validity :</td>
+            <td style="text-align: left;">{{ order.DT_P_VALIDITY | date :'dd-MM-yyyy' }}</td>
+          </tr>
+          <tr>
+            <td style="text-align: right;">Product Category :</td>
+            <td style="text-align: left;">{{ order.Implement }}</td>
+          </tr>
+          <tr>
+            <td style="text-align: right;">Manufacturer :</td>
+            <td style="text-align: left;">{{ order.Make }}</td>
+          </tr>
+          <tr>
+            <td style="text-align: right;">Model / Item:</td>
+            <td style="text-align: left;">{{ order.Model }}</td>
+          </tr>
+          <tr>
+            <td style="text-align: right;">Subsidy amount(&#8377;):</td>
+            <td style="text-align: left;"><strong>{{ order.SUB_AMNT | number: '1.2-2' }}</strong></td>
+          </tr>
+          <tr>
+            <td style="text-align: right;">Full amount(&#8377;):</td>
+            <td style="text-align: left;"><strong>{{ order.FULL_COST | number: '1.2-2' }}</strong></td>
+          </tr>
+          <tr *ngIf="order.paid_amount">
+            <td style="text-align: right;">Paid amount(&#8377;):</td>
+            <td style="text-align: left;"><strong>{{ order.paid_amount | number: '1.2-2' }}</strong></td>
+          </tr>
+          <tr *ngIf="order.PendingCost">
+            <td style="text-align: right;">Pending amount(&#8377;):</td>
+            <td style="text-align: left;"><strong>{{ order.PendingCost | number: '1.2-2' }}</strong></td>
+          </tr>
+        </tbody>
+      </table>
+
+
+    </div>
+  </div>

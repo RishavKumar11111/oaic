@@ -1,0 +1,225 @@
+<%- include('common/header.ejs') -%>
+
+<!-- ====================================== HEADER PART START ====================================== -->
+
+<div class="mybox" ng-show="show_invoice_list">
+  <div class="mybox-header">
+    <span>
+      <strong>
+        <label>Part Payment to Vendor </label>
+      </strong>
+    </span>
+  </div>
+  <div class="middle">
+    <div class="row">
+      <div class="col-lg-3">
+        <label>Financial Year:</label>
+        <select class="form-control" ng-options="x for x in fin_year_list" ng-model="fin_year" ng-change="loadDealers()">
+          <option value="" disabled>--Select--</option>
+        </select>
+      </div>
+      <div class="col-lg-5">
+        <label>Vendors :</label>
+        <select class="form-control" ng-options="x.LegalBussinessName for x in dealer_list" ng-model="dealer">
+          <option value="">ALL</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====================================== HEADER PART ENDS ====================================== -->
+
+<!-- ====================================== LOADER PART START ====================================== -->
+
+<div class="loader">
+  <div ng-show="loader" class="spinner-border text-info"></div>
+</div>
+
+<!-- ====================================== LOADER PART ENDS ====================================== -->
+
+<!-- ====================================== INVOICE LIST PART START ====================================== -->
+
+<div class="mybox" ng-show="show_invoice_list">
+  <div class="mybox-header">
+    <span>
+      <strong>
+        <label>ALL PENDING PAYMENTS</label>
+      </strong>
+    </span>
+  </div>
+  <div>
+    <div class="no-record" ng-show="invoice_list.length == 0">
+      No record found on financial year {{ fin_year }}.
+    </div>
+    <div ng-show="invoice_list.length != 0">
+      <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover">
+          <caption></caption>
+          <thead>
+            <tr>
+              <th scope="col">SL.</th>
+              <th scope="col">Indent no.</th>
+              <th scope="col">Invoice no.</th>
+              <th scope="col">Approval ID</th>
+              <th scope="col">Indent amount</th>
+              <th scope="col">Invoice amount</th>
+              <th scope="col">Full amount(Approval)</th>
+              <th scope="col">Paid amount</th>
+              <th scope="col">Deduction amount</th>
+              <!-- <th scope="col">My remark</th>
+              <th scope="col">Vendor remark</th> -->
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="x in invoice_list | filter: { dl_id: dealer.dl_id }">
+              <td>{{ $index + 1 }}</td>
+              <td>{{ x.indent_no }}</td>
+              <td>{{ x.invoice_no }}</td>
+              <td>{{ x.approval_id }}</td>
+              <td>{{ x.indent_ammount | number: '2' }}</td>
+              <td>{{ x.invoice_ammount | number: '2' }}</td>
+              <td>{{ x.ammount | number: '2' }}</td>
+              <td>{{ x.ammount - x.deduction_amount | number: '2' }}</td>
+              <td>{{ x.deduction_amount | number: '2' }}</td>
+              <!-- <td>{{ x.remark}}</td>
+              <td>{{ x.dl_remark || '--' }}</td> -->
+              <td><button class="btn btn-outline-info round" ng-disabled="x.payment_status == 'Pending'" data-toggle="modal" data-target="#enterPaymentDetail" ng-click="loadList(x)">Pay</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====================================== INVOICE LIST PART ENDS ====================================== -->
+
+<!-- ====================================== APPROVAL PRINT PART START ====================================== -->
+
+<div ng-show="paymentInvoice">
+    <button class="btn btn-info btn-sm topBack" ng-click="back()"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+    <div class="mybox">
+      <div class="mybox-header">
+        <span>
+          <strong>
+            <label>APPROVAL</label>
+          </strong>
+        </span>
+      </div>
+      <div>
+        <%- include('../common/dealer_pay_approval.ejs') -%>
+        <div class="bottomBack">
+          <button class="btn btn-info btn-sm" ng-click="back()"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+          <button class="btn btn-info btn-sm" ng-click="sendApproval()">Send Approval</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- ====================================== APPROVAL PRINT PART ENDS ====================================== -->
+
+<!-- ====================================== PAYMENT DETAIL/DEDUCTION AMOUNT MODAL PART START ====================================== -->
+
+<div class="middle">
+  <div class="modal" id="enterPaymentDetail">
+    <div class="modal-dialog">
+      <div class="modal-content" style="width: 600px;">
+        <div class="modal-header">
+          <h4 class="modal-title">Pay pending payments</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form name="myForm">
+              <!-- <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                  <label >My remark: </label>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-12 col-sm-12">
+                  <strong >{{ remark }}</strong>
+                </div>
+              </div> -->
+              <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">Vendor remark : </div>
+                <div class="col-lg-8 col-md-8 col-sm-12 col-sm-12">
+                  <strong >{{ dl_remark }}</strong>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">Indent amount (&#8377;) : </div>
+                <div class="col-lg-8 col-md-8 col-sm-12 col-sm-12">
+                  <strong >{{ indent_amount | number: '2' }}</strong>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">Invoice amount (&#8377;) : </div>
+                <div class="col-lg-8 col-md-8 col-sm-12 col-sm-12">
+                  <strong >{{ invoice_amount | number: '2' }}</strong>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">Less SGST TDS (&#8377;) : </div>
+                <div class="col-lg-8 col-md-8 col-sm-12 col-sm-12">
+                  <strong >{{ less_sgst | number:'2' }}</strong>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">Less CGST TDS (&#8377;) : </div>
+                <div class="col-lg-8 col-md-8 col-sm-12 col-sm-12">
+                  <strong >{{ less_cgst | number:'2' }}</strong>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">Initiated amount(&#8377;) : </div>
+                <div class="col-lg-8 col-md-8 col-sm-12 col-sm-12">
+                  <strong >{{ subTotal | number: '2' }}</strong>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">Paid amount (&#8377;) : </div>
+                <div class="col-lg-8 col-md-8 col-sm-12 col-sm-12">
+                  <strong >{{ paid_amount | number: '2' }}</strong>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">Pending amount (&#8377;) : </div>
+                <div class="col-lg-8 col-md-8 col-sm-12 col-sm-12">
+                  <strong >{{ pending_amount | number: '2' }}</strong>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">Deduction amount (&#8377;) :</div>
+                <div class="col-lg-8 col-md-8 col-sm-12 col-sm-12">
+                  <input type="number" class="form-control" ng-model="deduction_amount" max="{{pending_amount}}" min="0" required>
+                </div>
+              </div>
+              <div class="row" style="margin-top: 5px;">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">Remark :</div>
+                <div class="col-lg-8 col-md-8 col-sm-12 col-sm-12">
+                  <textarea class="form-control" cols="30" rows="4" ng-model="remark" placeholder="Enter remark within 500 words" maxlength="500" required></textarea>
+                </div>
+              </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-info" data-dismiss="modal" ng-click="showDetailesOfPayment();" ng-disabled="myForm.$invalid">Proceed</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====================================== PAYMENT DETAIL/DEDUCTION AMOUNT MODAL PART START ====================================== -->
+
+
+<script>
+  var c_fin_year = "<%= c_fin_year %>";
+</script>
+<script>
+  document.getElementById('dealerPayLink').classList.add("active");
+  document.getElementById('dealerPayDropDown').classList.add("active");
+  document.getElementById('dealerPartPaymentSubItem').classList.add("active");
+</script>
+<script src="/controller/accountant/dealerPartPayment.js"></script>
+<%- include('common/footer.ejs') -%>

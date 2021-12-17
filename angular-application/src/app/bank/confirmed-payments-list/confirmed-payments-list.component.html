@@ -1,0 +1,102 @@
+
+<!-- ====================================== HEADER PART START ====================================== -->
+
+<div class="mybox" *ngIf="showTable">
+    <div class="mybox-header">
+      <span>
+        <strong>
+          <label>Report</label>
+        </strong>
+      </span>
+    </div>
+    <div class="middle">
+      <div class="row">
+          <div class="col-lg-4 col-sm-12 col-xs-12">
+              <app-financial-year (newItemEvent)="changeFinancialYear($event)"></app-financial-year>
+          </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- ====================================== HEADER PART START ====================================== -->
+  
+  <!-- ====================================== HEADER PART START ====================================== -->
+  
+  <div class="loader">
+    <div *ngIf="loadingData" class="spinner-border text-info"></div>
+  </div>
+  
+  <!-- ====================================== HEADER PART ENDS ====================================== -->
+  
+  <!-- ====================================== PENDING PAYMENT LIST PART START ====================================== -->
+  
+  <div class="mybox" *ngIf="showTable">
+    <div class="mybox-header">
+      <span>
+        <strong>
+          <label>Approved Payment List</label>
+        </strong>
+      </span>
+    </div>
+    <div >
+      <div *ngIf="approvedPaymentList.length == 0" class="no-record">
+        No record found on financial year {{ fin_year }}.
+      </div>
+      <div *ngIf="approvedPaymentList.length != 0">
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered table-hover" id="itemListTable">
+            <caption></caption>
+                <thead>
+                  <tr >
+                    <th scope="col">SL.</th>
+                    <th scope="col">Approval ID</th>
+                    <th scope="col">Part payment ID</th>
+                    <th scope="col">Approval Date</th>
+                    <th scope="col">Amount(&#8377;)</th>
+                    <th scope="col">View</th>
+                  </tr>
+                </thead>
+                <tbody>
+                      <tr *ngFor="let x of approvedPaymentList;let i = index;" >
+                        <td>{{ i + 1 }}</td>
+                        <td>{{ x.approval_id }}</td>
+                        <td>{{ x.pp_id }}</td>
+                        <td>{{ x.approval_date | date:'dd-MM-yyyy'}}</td>
+                        <td>{{ x.pay_now_amount | number }}</td>
+                        <td>
+                          <button class="btn btn-outline-info round" (click)="viewDetails(x)" data-toggle="modal" data-target="#viewDetails"><i class="fas fa-bars" aria-hidden="true"></i></button>
+                        </td>                
+                    </tr>
+                </tbody>
+          </table>
+          </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- ====================================== PENDING PAYMENT LIST PART ENDS ====================================== -->
+  
+  <!-- ====================================== PRINT APPROVAL PART START ====================================== -->
+  
+  <div *ngIf="paymentInvoice">
+      <button class="btn btn-info topBack btn-sm" (click)="back()"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+      <div class="mybox">
+        <div class="mybox-header">
+          <span>
+            <strong>
+              <label>Approval for Vendor Payment</label>
+            </strong>
+          </span>
+        </div>
+        <div >
+        <app-vendor-payment-approval [selectedApproval]="selectedApproval"></app-vendor-payment-approval>
+          
+          <div class="bottomBack">
+              <button class="btn btn-info btn-sm" (click)="back()"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+          </div>
+        </div>
+      </div>
+  </div>
+  
+  <!-- ====================================== PRINT APPROVAL PART ENDS ====================================== -->
+  

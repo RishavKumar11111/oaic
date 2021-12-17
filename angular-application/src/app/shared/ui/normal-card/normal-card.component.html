@@ -1,0 +1,19 @@
+<div class="mybox">
+    <div class="mybox-header">
+      <span>
+        <strong>
+          <label>
+              <ng-content select=".card-head"></ng-content>
+          </label>
+        </strong>
+      </span>
+    </div>
+    <div class="middle">
+        <ng-content select=".card-body"></ng-content>
+
+        <div #modalFooter class="modal-footer" *ngIf="displayFooter">
+          <ng-content select=".card-footer"></ng-content>
+      </div>
+            
+    </div>
+  </div>

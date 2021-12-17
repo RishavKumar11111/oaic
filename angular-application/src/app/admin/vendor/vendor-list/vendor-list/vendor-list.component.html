@@ -1,0 +1,456 @@
+
+    <!--====== SEARCH SPECIFIC Vendor PART START ======-->
+
+    <div class="mybox" *ngIf="page1">
+        <div class="mybox-header">
+          <span>
+            <strong>
+              <label>Search Vendor</label>
+            </strong>
+          </span>
+        </div>
+        <div class="middle row">
+          <!-- <div class="col-md-3">
+            <label>District : </label>
+            <select class="form-control" [(ngModel)]="dist" (change)="loadDistWiseDealers();">
+                <option value="" selected>ALL</option>
+                <option [ngValue]="x" *ngFor="let x of district_list;">{{ x.dist_name }}</option>
+            </select>
+          </div> -->
+          <div class="col-md-4">
+            <label>Vendor name : </label>
+            <input type="text" class="form-control" [(ngModel)]="searchByDlName" placeholder="Search by Vendor name.">
+          </div>
+        </div>
+    </div>
+
+    <!--====== SEARCH SPECIFIC Vendor PART ENDS ======-->
+
+    <!--====== LOADER PART START ======-->
+
+    <div class="loader">
+      <div *ngIf="loadingData" class="spinner-border text-info"></div>
+    </div>
+
+    <!--====== LOADER PART ENDS ======-->
+
+    <!--====== ALL Vendor LIST PART START ======-->
+
+    <div class="mybox" *ngIf="page1">
+      <div class="mybox-header">
+        <span>
+          <strong>
+            <label>All Registered Vendor's List</label>
+          </strong>
+        </span>
+      </div>
+      <div class="table-responsive fixed-height-table">
+        <table class="table table-head-fixed table-striped table-hover" style="text-align: left;" id="ApprovedVendorListTable">
+          <thead>
+            <tr>
+              <th>SL</th>
+              <th>Vendor</th>
+              <th>Trade Name</th>
+              <th>Contact</th>
+              <th>View</th>
+              <th>Edit</th>
+              <th>Remove</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let x of dlList | search: searchByDlName;let i = index; ">
+              <td>{{ i + 1 }}</td>
+              <td>
+                Name: {{ x.LegalBussinessName || '--'}}
+                <br>
+                ID: {{ x.VendorID || '--' }}
+              </td>
+              <td>{{ x.TradeName || '--' }}</td>
+              <td>
+                Email: {{ x.EmailID || '--'}}
+                <br>
+                Mobile: {{ x.ContactNumber || '--'}}
+              </td>
+              <td>
+                <button class="btn btn-outline-info" (click)="showDlDetail(x);"> <i class="fas fa-bars" aria-hidden="true"></i></button>
+              </td>
+              <td>
+                <button class="btn btn-outline-info" (click)="editDlDetail(x);"> <i class="fas fa-edit" aria-hidden="true"></i></button>
+              </td>
+              <td>
+                <button class="btn btn-outline-danger" data-toggle="modal" data-target="#removeDl" (click)="showRemoveDealerModal(x);"> <i class="fas fa-trash" aria-hidden="true"></i></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <br>
+      <div class="text-center" style="padding: 20px;">
+          <button class="btn btn-success" (click)="exportToExcel('#ApprovedVendorListTable');"><i class="fa fa-print"></i> Download as Excel <i class="fa fa-print"></i></button>     </div>
+    </div>
+
+    <!--====== ALL Vendor LIST PART ENDS ======-->
+
+    <!--====== VIEW DETAIL/CONFIRMATION PART START ======-->
+
+    <div *ngIf="page2">
+      <button class="btn btn-info topBack" (click)="goto1stPage();"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+      <div class="mybox">
+        <div class="mybox-header">
+          <span>
+            <strong>
+              <label>Vendor Details</label>
+            </strong>
+          </span>
+        </div>
+        <div class="middle">
+          <form name="dealerDetailForm">
+            
+            
+            <div class="row">
+              <div class="col-lg-6">
+                  <div class="table-responsive">
+                      <h5 style="text-align: center;">Basic Details</h5>
+                      <table class="table table-head-fixed table-striped table-hover">
+                        <thead></thead>
+                        <tbody>
+                          <tr >
+                              <td>Legal Name of the Bussiness (As per PAN) : </td>
+                              <td>{{ Data.LegalBussinessName }}</td>
+                          </tr>
+                          <tr >
+                              <td>Permanent Account Number (PAN) : </td>
+                              <td>{{ Data.PAN }}</td>
+                          </tr>
+                          <tr >
+                              <td>Goods & Services Tax Number (GSTN) : </td>
+                              <td>{{ Data.GSTN }}</td>
+                          </tr>
+                          <tr >
+                              <td>Constitution of the Bussiness: </td>
+                              <td>{{ Data.BussinessConstitution }}</td>
+                          </tr>
+                          <tr >
+                              <td>Contact Number : </td>
+                              <td>{{ Data.ContactNumber }}</td>
+                          </tr>
+                          <tr>
+                            <td>Whether MSME : </td>
+                            <td>{{ Data.WhetherMSME }}</td>
+                          </tr>
+                          <tr>
+                            <td>Whether SSI Unit : </td>
+                            <td>{{ Data.WhetherSSIUnit }}</td>
+                          </tr>
+                        
+                        </tbody>
+                      </table>
+                    </div>
+              </div>
+              <div class="col-lg-6">
+                  <div class="table-responsive">
+                      <h5 style="text-align: center;">Basic Details</h5>
+                      <table class="table table-head-fixed table-striped table-hover">
+                        <thead></thead>
+                        <tbody>
+                          <tr >
+                              <td>Trade Name: </td>
+                              <td>{{ Data.TradeName }}</td>
+                          </tr>
+                          <tr >
+                              <td>PAN Document : </td>
+                              <td>
+                                <a href="{{Data.PANDocument}}" target="_blank">
+                                  <i class="fas fa-file-pdf" aria-hidden="true"></i>
+                                </a>
+                              </td>
+                          </tr>
+                          <tr >
+                              <td>GSTN Document: </td>
+                              <td>
+                                <a href="{{ Data.GSTNDocument }}" target="_blank">
+                                  <i class="fas fa-file-pdf" aria-hidden="true"></i>
+                                </a>
+                              </td>
+                          </tr>
+                          <tr >
+                              <td>Date of Incorporation/Formation : </td>
+                              <td>{{ Data.IncorporationDate }}</td>
+                          </tr>
+                          <tr >
+                              <td>Email-ID : </td>
+                              <td>{{ Data.EmailID }}</td>
+                          </tr>
+                          <tr >
+                            <td>MSME Certificate : </td>
+                            <td>
+                                <a href="{{ Data.MSMECertificate }}" target="_blank" disable="Data.WhetherMSME == 'No'">
+                                  <i class="fas fa-file-pdf" aria-hidden="true"></i>
+                                </a>
+                              </td>
+                          </tr>
+                          <tr >
+                              <td>Registration Certificate : </td>
+                              <td>
+                                <a href="{{ Data.SSIUnitRegistrationCertificate }}" target="_blank" disable="Data.WhetherSSIUnit == 'No'">
+                                  <i class="fas fa-file-pdf" aria-hidden="true"></i>
+                                </a>
+                              </td>
+                          </tr>
+                          <tr>
+                            <td>Core Bussiness Activity : </td>
+                            <td>{{ Data.CoreBussinessActivity }}</td>
+                          </tr>
+                        
+                        </tbody>
+                      </table>
+                    </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-6">
+                  <div class="table-responsive">
+                      <h5 style="text-align: center;">Services</h5>
+                      <table class="table table-head-fixed table-striped table-hover">
+                        <thead></thead>
+                        <tbody>
+                          <tr >
+                              <td>Applying Districts: </td>
+                              
+                              <td>
+                                <div *ngIf="Data.AppliedDistrictList.length == 0">No District Found.</div>
+
+                                  <ul *ngIf="Data.AppliedDistrictList.length != 0">
+                                      <li *ngFor="let x of Data.AppliedDistrictList">
+                                      {{x.DistrictName}}
+                                      </li>
+                                  </ul>
+                              </td>
+                          </tr>
+                          <tr >
+                              <td>Goods/Services: </td>
+                              
+                              <td>
+                                <div *ngIf="Data.GoodsOrServicesList.length == 0">No Service Added.</div>
+
+                                  <ul *ngIf="Data.GoodsOrServicesList.length != 0">
+                                      <li *ngFor="let x of Data.GoodsOrServicesList">
+                                      {{x.Service}}
+                                      </li>
+                                  </ul>
+                              </td>
+                          </tr>
+                        
+                        </tbody>
+                      </table>
+                    </div>
+              </div>
+              <div class="col-lg-6">
+                  <div class="table-responsive">
+                      <h5 style="text-align: center;">Turnover of Last 3 Year </h5>
+                      <table class="table table-head-fixed table-striped table-hover">
+                        <thead></thead>
+                        <tbody>
+                          <tr >
+                              <td>Financial Year 2020-21 : </td>
+                              <td>  &#x20b9; {{ Data.Turnover1 | number}}</td>
+                          </tr>
+                          <tr >
+                              <td>Financial Year 2019-20 : </td>
+                              <td>  &#x20b9; {{ Data.Turnover2 | number }}</td>
+                          </tr>
+                          <tr >
+                              <td>Financial Year 2018-19 : </td>
+                              <td>  &#x20b9; {{ Data.Turnover3 | number }}</td>
+                          </tr>
+                        
+                        </tbody>
+                      </table>
+                    </div>
+              </div>
+            </div>
+
+
+              <div class="row">
+                <div class="col-12">
+                  <h6>Authorised Signatory/Contact Person</h6>
+                </div>
+                <div class="col-12">
+                        <div class="table-responsive">
+                          <table class="table table-head-fixed table-striped table-hover">
+                            <thead>
+                              <th>SL</th>
+                              <th>Name</th>
+                              <th>Father's Name</th>
+                              <th>Mobile No.</th>
+                              <th>Email-ID</th>
+                              <th>Designation</th>
+                          </thead>
+                          <tbody>
+                              <tr *ngFor="let x of Data.ContactPersonList;let i = index;">
+                                  <td>{{ i + 1 }}</td>
+                                  <td>{{ x.Name }}</td>
+                                  <td>{{ x.FathersName }}</td>
+                                  <td>{{ x.MobileNumber }}</td>
+                                  <td>{{ x.EmailID }}</td>
+                                  <td>{{ x.Designation }}</td>
+                              </tr>
+                          </tbody>
+                          </table>
+                        </div>
+                </div>
+              </div>
+
+
+              <div class="row">
+                <div class="col-12">
+                  <h6>Principal Place of Bussiness</h6>
+                </div>
+                <div class="col-12">
+                        <div class="table-responsive">
+                          <table class="table table-head-fixed table-striped table-hover">
+                                <thead>
+                                        <th>SL</th>
+                                        <th>Country</th>
+                                        <th>State</th>
+                                        <th>City/District</th>
+                                        <th>Pincode</th>
+                                        <th>Address</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let x of Data.PrincipalPlacesList;let i = index;">
+                                            <td>{{ i + 1 }}</td>
+                                            <td>{{ x.Country }}</td>
+                                            <td>{{ x.StateCode }}</td>
+                                            <td>{{ x.DistrictOrCity }}</td>
+                                            <td>{{ x.Pincode }}</td>
+                                            <td>{{ x.Address }}</td>
+                                        </tr>
+                                    </tbody>
+                          </table>
+                        </div>
+                </div>
+              </div>
+
+
+              <div class="row">
+                <div class="col-12">
+                  <h6>Bank Account Details</h6>
+                </div>
+                <div class="col-12">
+                        <div class="table-responsive">
+                          <table class="table table-head-fixed table-striped table-hover">
+                            <thead>
+                              <th>SL</th>
+                              <th>Account Number</th>
+                              <th>Account Type</th>
+                              <th>Bank Name</th>
+                              <th>Branch Name</th>
+                              <th>IFSC Code</th>
+                              <th>Document</th>
+                          </thead>
+                          <tbody>
+                              <tr *ngFor="let x of Data.BankAccountsList;;let i = index;">
+                                  <td>{{ i + 1 }}</td>
+                                  <td>{{ x.AccountNumber }}</td>
+                                  <td>{{ x.AccountType }}</td>
+                                  <td>{{ x.BankName }}</td>
+                                  <td>{{ x.BranchName }}</td>
+                                  <td>{{ x.IFSCCode }}</td>
+                                  <td>
+                                    <a href="{{x.BankDocument}}" target="_blank">
+                                      <i class="fas fa-file-pdf" aria-hidden="true"></i>
+                                    </a>
+                                  </td>
+                              </tr>
+                          </tbody>
+                          </table>
+                        </div>
+                </div>
+              </div>
+
+
+
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!--====== VIEW DETAIL/CONFIRMATION PART ENDS ======-->
+
+    <!--====== ADD NEW Vendor DETAIL START ======-->
+
+    <div *ngIf="page3">
+      <button class="btn btn-info topBack" (click)="goto1stPage();"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+      <div class="mybox">
+        <div class="mybox-header">
+          <span>
+            <strong>
+              <label>Edit Vendor Details</label>
+            </strong>
+          </span>
+        </div>
+        <div class="middle">
+
+
+
+
+
+
+          <app-vendor-registration [selectedVendorID]="selectedVendorID" (backEvent)="goto1stPage()"></app-vendor-registration>
+
+
+
+
+
+
+
+        </div>
+      </div>
+    </div>
+
+
+
+<div class="container"> 
+  <div class="modal fade" id="removeDl">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header removeModal">
+          <h5 class="modal-title">Are you sure to remove this Vendor ?</h5>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body boldFont" style="padding: 0;">
+          <table class="table table-hover" style="color: red;">
+            <tbody>
+              <tr>
+                <td>Vendor id:</td>
+                <td>{{ removeDL.VendorID }}</td>
+              </tr>
+              <tr>
+                <td>Vendor Bussiness name:</td>
+                <td>{{ removeDL.LegalBussinessName }}</td>
+              </tr>
+              <tr>
+                <td>PAN:</td>
+                <td>{{ removeDL.PAN }}</td>
+              </tr>
+              <tr>
+                <td>Email-ID / User-ID:</td>
+                <td>{{ removeDL.EmailID }}</td>
+              </tr>
+              <tr>
+                <td>Contact Number:</td>
+                <td>{{ removeDL.ContactNumber }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-info" data-dismiss="modal">No</button>
+          <button type="button" class="btn btn-outline-danger" data-dismiss="modal" (click)="removeDealer();" >Yes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

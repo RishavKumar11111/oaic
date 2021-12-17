@@ -1,0 +1,72 @@
+
+       <form [formGroup]= "PrincipalPlaceForm">
+            <h5>Principal Place of Bussiness</h5>
+            <div class="wrap-input100 validate-input" data-validate="Enter username">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label for="country">Country *: </label>
+                        <input type="text" formControlName="Country" id="country" class="form-control" placeholder="India" value="India"  >
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="state">State *: </label>
+                        <select formControlName="StateCode" id="state" class="form-control" >
+                            <option value="" disabled selected>--select--</option>
+                            <option [ngValue]="x.StateCode" *ngFor="let x of stateList">{{ x.StateName }}</option>
+                        </select>
+                    </div> 
+                    
+                    <div class="col-lg-6">
+                        <label for="cityDistrict">City / District *: </label>
+                        <input type="text" formControlName="DistrictOrCity" onkeypress="validateTextAsName('cityDistrict');" id="cityDistrict" class="form-control" placeholder="Bhubaneswar" >
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="pincode">Pincode *: </label>
+                        <input type="text" formControlName="Pincode" maxlength="6" onkeypress="validateNumber('pincode');" id="pincode" class="form-control" placeholder="751001" >
+                    </div>
+                    
+                    <div class="col-lg-6">
+                        <label for="address">Detailed Address *: </label>
+                        <textarea class="form-control" formControlName="Address" id="address" cols="30" rows="4" placeholder="Enter full address" ></textarea>
+                    </div>
+                </div>
+                <br>
+                <div class="add-button float-right">
+                    <button class="btn btn-success" (click)="addPrincipalPlace();"
+                    disable="principalPlace.Country == undefined || principalPlace.StateCode == undefined
+                    || principalPlace.DistrictOrCity == undefined || principalPlace.Pincode == undefined
+                    || principalPlace.Address == undefined"
+                    ><i class="fa fa-plus" aria-hidden="true"></i> ADD</button>
+                </div>
+                <br>
+                <div class="">
+                    <table class="table table-hover">
+                        <thead>
+                            <th>SL</th>
+                            <th>Country</th>
+                            <th>State</th>
+                            <th>City/District</th>
+                            <th>Pincode</th>
+                            <th>Address</th>
+                            <th>Action</th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor = " let x of principalPlacesList ; let i = index">
+                                <td> {{i+1}} </td>
+                                <td> {{x.Country}} </td>
+                                <td> {{x.StateCode}} </td>
+                                <td> {{x.DistrictOrCity}} </td>
+                                <td> {{x.Pincode}} </td>
+                                <td> {{x.Address}} </td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-6"><button class="btn btn-outline-primary" (click)="modifyPrincipalPlace(i, x)"><i class="fa fa-edit"></i></button></div>
+                                        <div class="col-6"><button class="btn btn-outline-danger" (click)="removePrincipalPlace(i)"><i class="fa fa-trash"></i></button></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <br>
+            </div>
+        </form>

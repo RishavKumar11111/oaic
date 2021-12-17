@@ -1,0 +1,34 @@
+
+<!-- ==================================== HEADER FINANCIAL YEAR PART START ==================================== -->
+
+<div class="mybox">
+    <div class="mybox-header">
+      <span>
+        <strong>
+          <label>Initiate Purchase Order</label>
+        </strong>
+      </span>
+    </div>
+    <div class="middle">
+      <div class="row">
+        <div class="col-lg-4 col-sm-12 col-xs-12">
+            <app-financial-year (newItemEvent)="changeFinancialYear($event)"></app-financial-year>
+        </div>
+        <div class="col-lg-4">
+          <label>Purchase Order Type: </label>
+          <br>
+          <input [formControl]="POType" type="radio" id="Subsidy" name="fav_language" value="Subsidy">
+          <label for="Subsidy">&nbsp;&nbsp; Subsidy</label>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <input [formControl]="POType" type="radio" id="Non-Subsidy" name="fav_language" value="NonSubsidy">
+          <label for="Non-Subsidy">&nbsp;&nbsp; Non-Subsidy</label>
+        </div>
+        <div class="col-lg-4">
+          <h6 style="color: red;text-align: right;">** P.O. Initiation is not possible, <br> if the purchase price is not added **</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- ==================================== HEADER FINANCIAL YEAR PART ENDS ==================================== -->
+  

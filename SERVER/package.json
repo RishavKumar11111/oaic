@@ -1,0 +1,45 @@
+{
+  "name": "development",
+  "version": "1.0.0",
+  "main": "app.js",
+  "dependencies": {
+    "biguint-format": "^1.0.2",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "csurf": "^1.11.0",
+    "ejs": "^2.7.4",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "express-validation": "^3.0.8",
+    "helmet": "^4.6.0",
+    "http-errors": "^1.8.0",
+    "jest": "^27.2.4",
+    "joi": "^17.4.2",
+    "jsonwebtoken": "^8.5.1",
+    "log-update": "^4.0.0",
+    "multer": "^1.4.2",
+    "pg": "^8.5.1",
+    "request": "^2.88.2",
+    "request-ip": "^2.1.3",
+    "sequelize": "^6.6.2",
+    "sha256": "^0.2.0",
+    "supertest": "^6.1.6",
+    "swagger-jsdoc": "^6.1.0",
+    "swagger-ui-express": "^4.1.6",
+    "ua-parser-js": "^0.7.24"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "nodemon server.js",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://openforge.gov.in/plugins/git/oams/Development.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

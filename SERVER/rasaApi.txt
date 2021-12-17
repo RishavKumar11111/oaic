@@ -1,0 +1,46 @@
+            let response = await $http.post('http://localhost:1020/admin/sendChatBotMessage', { newMessage: newMessage, id: $scope.conversationId});
+            $scope.conversationId = response.data.id;
+            let allMessage = response.data.message;
+            for(let i = 0; i < allMessage.length; i++) {
+                try{
+                    let response1 = await $http.get(JSON.parse(allMessage[i].text).api);
+                    message = response1.data;
+                    
+                    ************** APPEND message TO VIEW PAGE OF CLIENT **************
+
+
+                } catch(e){
+                    message = allMessage[i].text;
+                    
+                    ************** APPEND message TO VIEW PAGE OF CLIENT **************
+                    
+                }
+            }
+
+            
+
+const request = require('request');
+router.post('/sendChatBotMessage', async (req, res) => {
+    try{
+        const id = req.body.id == undefined ? (Math.floor(Math.random() * 1000) + 10 ) : req.body.id;
+        const data = {
+            sender: id,
+            message: req.body.newMessage
+          }    
+          request.post({
+            headers: {'content-type' : 'application/json'},
+            url:     'http://164.100.140.200/webhooks/rest/webhook',
+            // url:     'http://localhost:5005/webhooks/rest/webhook',
+            body:    JSON.stringify(data)
+          }, function(error, response, body){
+              try{
+                let rData = JSON.parse(body);
+                res.send({message: rData, id: id});
+              } catch(e) {
+                  console.log(e);
+              }
+          });
+    } catch(e){
+        console.log(e);
+    }
+});

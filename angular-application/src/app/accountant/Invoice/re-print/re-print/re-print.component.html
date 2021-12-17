@@ -1,0 +1,140 @@
+<!-- ====================================== HEADER PART START ====================================== -->
+
+<div class="mybox" *ngIf="showHeader">
+    <div class="mybox-header">
+        <span>
+          <strong>
+              <label >Delivered Orders</label>
+          </strong>
+        </span>
+    </div>
+    <div class="middle">
+      <div class="row"> 
+        <div class="col-lg-3">
+            <app-financial-year (newItemEvent)="changeFinancialYear($event)"></app-financial-year>
+          </div>
+          <div class="col-lg-3">
+            <label>From date:</label>
+            <input type="date" class="form-control" [(ngModel)]="fromDate">
+          </div>
+          <div class="col-lg-3">
+            <label>To date:</label>
+            <input type="date" class="form-control" [(ngModel)]="toDate">
+          </div>
+          <div class="col-lg-3">
+            <button class="btn btn-info" style="margin-top: 13%;"><i class="fa fa-search"></i> Search</button>
+          </div>
+      </div>
+    </div>
+</div>
+
+<!-- ====================================== HEADER PART START ====================================== -->
+
+<!-- ====================================== LOADER PART START ====================================== -->
+
+<div class="loader">
+  <div *ngIf="loader" class="spinner-border text-info"></div>
+</div>
+
+<!-- ====================================== LOADER PART ENDS ====================================== -->
+
+<!-- ====================================== ORDERS LIST PART START ====================================== -->
+
+<div class="mybox" *ngIf="showTable">
+  <div class="mybox-inner-header">
+    <div class="row">
+      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <i class="fas fa-search" aria-hidden="true"></i>
+            </span>
+          </div>
+          <input type="text" class="form-control" placeholder="Farmer Name" [(ngModel)]="matchByFarmerName">
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+        <strong>
+          <h5>Orders List</h5>
+        </strong>
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <i class="fas fa-search" aria-hidden="true"></i>
+            </span>
+          </div>
+          <input type="text" class="form-control" placeholder="Permit No" [(ngModel)]="matchByPermitNo">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div >
+    <div class="no-record" *ngIf="items.length == 0">
+      No record found on financial year {{ fin_year }}.
+    </div>
+    <div *ngIf="items.length != 0">
+      <div class="table-responsive">
+      <table class="table table-striped table-bordered table-hover" id="orderListTable">
+        <caption></caption>
+        <thead>
+          <tr>
+            <th scope="col">SL.</th>
+            <th scope="col">Invoice no.</th>
+            <th scope="col">Customer Name</th>
+            <th scope="col">Division Name</th>
+            <th scope="col">Invoice Amount</th>
+            <th scope="col">Product Details</th>
+            <!-- <th scope="col">No. of orders Delivered</th>
+            <th scope="col">Remark</th>
+            <th scope="col">Date</th>
+            <th scope="col">Delivery date</th> -->
+            <th scope="col">View</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let x of items; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>
+              {{ x.CustomerInvoiceNo }} <br>
+              {{ x.InsertedDate | date: 'dd/MM/YYYY' }}
+            </td>
+            <td>{{ x.LegalCustomerName }}
+            <td>{{ x.DivisionName }}</td>
+            <td>{{ x.InvoiceAmount }}</td>
+            <td>
+              Product category: {{ x.Implement }} <br>
+              Manufacturer: {{ x.Make }} <br>
+              Model/Item {{ x.Model }}</td>
+            <td>
+              <button class="btn btn-outline-info round" (click)="showDetails(x)"><i class="fas fa-bars" aria-hidden="true"></i></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="printIndent">
+  <button class="btn btn-info btn-sm topBack" (click)= "back()"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+  <div class="mybox">
+    <div class="mybox-header">
+      <span>
+        <strong>
+          <label>Generated Invoice</label>
+        </strong>
+      </span>
+    </div>
+    <div>
+      <app-invoice  [x]="x" [orderList]="orderList" [POType]="POType" [invoicedata] = "invoicedata" id="printPage"></app-invoice>
+      <div class="bottomBack">
+        <button class="btn btn-info btn-sm" (click)= "back()"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+

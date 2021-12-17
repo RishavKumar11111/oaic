@@ -1,0 +1,413 @@
+<%- include('common/header.ejs') -%>
+
+    <!-- ====================================== LOADER PART START ====================================== -->
+
+    <div class="loader">
+        <div ng-show="loader" class="spinner-border text-info"></div>
+    </div>
+
+    <!-- ====================================== LOADER PART ENDS ====================================== -->
+
+    <!-- ====================================== Vendor LIST PART START ====================================== -->
+
+    <div class="mybox" ng-show="page1">
+        <div class="mybox-header">
+            <div class="row">
+                <div class="col-4"></div>
+                <div class="col-4">
+                    <strong>
+        <label>Vendors List</label>
+      </strong>
+                </div>
+                <div class="col-4">
+                    <form>
+                        <div class="input-group mb-3 input-group-sm">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                      <i class="fas fa-search" aria-hidden="true"></i>
+                  </span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Enter vendor bussiness name." data-ng-model="search_dl_name">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div ng-show="dlList.length == 0" class="no-record">
+                No vendor available.
+            </div>
+            <div ng-show="dlList.length != 0">
+                <div class="table-responsive fixed-height-table">
+                    <table class="table table-striped table-bordered table-hover table-head-fixed" id="orderListTable" style="text-align: center;">
+                        <caption></caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">SL.</th>
+                                <th scope="col">Vendor-ID</th>
+                                <th scope="col">Bussiness Name</th>
+                                <th scope="col">Address</th>
+                                <!-- <th scope="col">Detail</th> -->
+                                <th scope="col">Ledger</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="x in dlList | filter : { dl_name: search_dl_name }">
+                                <td>{{ $index + 1 }}</td>
+                                <td>{{ x.VendorID }}</td>
+                                <td>{{ x.LegalBussinessName }}</td>
+                                <td>{{ x.dl_address }}</td>
+                                <!-- <td><button class="btn btn-outline-info"><i class="fas fa-bars" aria-hidden="true"></i></button></td> -->
+                                <td><button class="btn btn-outline-info" ng-click="showLedger(x.dl_id);"><i class="fas fa-arrow-right" aria-hidden="true"></i></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================================== Vendor LIST PART START ====================================== -->
+
+
+    <!-- ====================================== TRANSACTIONS TABLE PART START ====================================== -->
+
+    <div ng-show="page2">
+        <button class="btn btn-info btn-sm topBack" ng-click="gotoPage1();"><i class="fas fa-arrow-left" aria-hidden="true"></i></button>
+        <div class="mybox">
+            <div class="mybox-header">
+                <span>
+          <strong>
+            <label>TRANSACTIONS</label>
+          </strong>
+        </span>
+            </div>
+            <div>
+                <div ng-show="ledgers.length == 0" class="no-record">
+                    No record found on financial year {{ fin_year }}.
+                </div>
+                <div ng-show="ledgers.length != 0">
+                    <div class="table-responsive fixed-height-table">
+                        <table class="table table-striped table-bordered table-hover table-head-fixed" id="orderListTable" style="text-align: center;">
+                            <caption></caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">SL.</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">From</th>
+                                    <th scope="col">To</th>
+                                    <th scope="col">Credit(&#8377;)</th>
+                                    <th scope="col">Debit(&#8377;)</th>
+                                    <th scope="col">Balance(&#8377;)</th>
+                                    <th scope="col">Detail</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="x in ledgers">
+                                    <td>{{ $index + 1 }}</td>
+                                    <td>{{ x.date | date : 'dd-MM-y'}}</td>
+                                    <td>{{ x.from_name }}</td>
+                                    <td>{{ x.to_name }}</td>
+                                    <td>{{ x.credit | number }}</td>
+                                    <td>{{ x.debit | number }}</td>
+                                    <td>{{ x.balance | number }}</td>
+                                    <td><button class="btn btn-outline-info" ng-click="showDetail(x);"><i class="fas fa-bars" aria-hidden="true"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        <strong>Total(&#8377;)</strong>
+                                    </td>
+                                    <td style="width: 10%">{{ totalCredit | number: '2' }}</td>
+                                    <td style="width: 10%">{{ totalDebit | number: '2' }}</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="bottomBack">
+                <button class="btn btn-info btn-sm" ng-click="gotoPage1();"><i class="fas fa-arrow-left" aria-hidden="true"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================================== TRANSACTIONS TABLE PART START ====================================== -->
+
+    <!-- ====================================== VIEW TRANSACTION DETAIL PART START ====================================== -->
+
+    <div ng-show="page3">
+        <button class="btn btn-info btn-sm topBack" ng-click="goto2ndPage();"><i class="fas fa-arrow-left" aria-hidden="true"></i></button>
+        <div class="mybox">
+            <div class="mybox-header">
+                <span>
+          <strong>
+            <label>TRANSACTION DETAIL</label>
+          </strong>
+        </span>
+            </div>
+            <div class="middle">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        <div class="table-responsive">
+                            <h5 style="text-align: center;">Indent detail</h5>
+                            <table class="table table-head-fixed table-striped table-hover">
+                                <thead></thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Indent no. : </td>
+                                        <td>{{ td.indent_no }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Date : </td>
+                                        <td>{{ td.indent_date | date: 'mediumDate' }}, {{ td.indent_date | date: 'mediumTime' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>No. of items : </td>
+                                        <td>{{ td.indent_items }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Amount : </td>
+                                        <td>{{ td.indent_ammount | number: '2' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>View indent : </td>
+                                        <td><button class="btn btn-outline-info" ng-click="viewIndent(td.indent_no);"><i class="fas fa-file-pdf" aria-hidden="true"></i></button></td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        <div class="table-responsive">
+                            <h5 style="text-align: center;">Invoice detail</h5>
+                            <table class="table table-head-fixed table-striped table-hover">
+                                <thead></thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Invoice no. : </td>
+                                        <td>{{ td.invoice_no }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Date : </td>
+                                        <td>{{ td.invoice_date | date: 'mediumDate' }}, {{ td.invoice_date | date: 'mediumTime' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>No. of items : </td>
+                                        <td>{{ td.invoice_items }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Amount : </td>
+                                        <td>{{ td.invoice_ammount | number: '2' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>View invoice : </td>
+                                        <td>
+                                            <a ng-href="{{td.invoice_path}}" target="_blank">
+                                                <button class="btn btn-outline-info"><i class="fas fa-file-pdf" aria-hidden="true"></i></button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-show="purpose == 'advance_dealer_bill'">
+                    <div class="col-lg-3 col-md-3 col-sm-0 col-xs-0"></div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        <div class="table-responsive">
+                            <h5 style="text-align: center;">MRR detail</h5>
+                            <table class="table table-head-fixed table-striped table-hover">
+                                <thead></thead>
+                                <tbody>
+                                    <tr>
+                                        <td>MRR no. : </td>
+                                        <td>{{ td.mrr_id }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Date : </td>
+                                        <td>{{ td.mrr_date | date: 'mediumDate' }}, {{ td.mrr_date | date: 'mediumTime' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>No. of items : </td>
+                                        <td>{{ td.mrr_items }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Amount : </td>
+                                        <td>{{ td.mrr_amount | number: '2' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>View MRR : </td>
+                                        <td><button class="btn btn-outline-info" ng-click="viewMrr(td.mrr_id);"><i class="fas fa-file-pdf" aria-hidden="true"></i></button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-0 col-xs-0"></div>
+                </div>
+                <div ng-show="purpose == 'pay_against_bill'">
+                    <div class="table-responsive">
+                        <h5 style="text-align: center;">MRR detail</h5>
+                        <table class="table table-head-fixed table-hover">
+                            <thead>
+                                <th scope="col">MRR no.</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">No. of items</th>
+                                <th scope="col">Amount</th>
+                                <th scope="col">View MRR</th>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="x in mrrList">
+                                    <td>{{ x.mrr_id }}</td>
+                                    <td>{{ x.mrr_date | date: 'mediumDate' }}, {{ x.mrr_date | date: 'mediumTime' }}</td>
+                                    <td>{{ x.mrr_items }}</td>
+                                    <td>{{ x.mrr_amount | number: '2' }}</td>
+                                    <td><button class="btn btn-outline-info" ng-click="viewMrr(x.mrr_id);"><i class="fas fa-file-pdf" aria-hidden="true"></i></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row" ng-show="purpose == 'pay_against_bill'">
+                    <div class="col-lg-3 col-md-3 col-sm-0 col-xs-0"></div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        <div class="table-responsive">
+                            <h5 style="text-align: center;margin-top: 30px;">Approval detail</h5>
+                            <table class="table table-head-fixed table-striped table-hover">
+                                <thead></thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Approval ID : </td>
+                                        <td>{{ td.approval_id }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Date : </td>
+                                        <td>{{ td.approval_date | date: 'mediumDate' }}, {{ td.approval_date | date: 'mediumTime' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>No. of items : </td>
+                                        <td>{{ td.approval_items }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Amount : </td>
+                                        <td>{{ td.approval_amount | number: '2' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>View approval : </td>
+                                        <td><button class="btn btn-outline-info" ng-click="showApproval(td.approval_id);"><i class="fas fa-file-pdf" aria-hidden="true"></i></button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Accountant send approval on : </td>
+                                        <td>{{ td.approval_date | date: 'mediumDate' }}, {{ td.approval_date | date: 'mediumTime' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>DM approved on : </td>
+                                        <td>{{ td.dm_approved_on | date: 'mediumDate' }}, {{ td.dm_approved_on | date: 'mediumTime' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bank approved on : </td>
+                                        <td>{{ td.bank_approved_on | date: 'mediumDate' }}, {{ td.bank_approved_on | date: 'mediumTime' }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-0 col-xs-0"></div>
+                </div>
+                <div class="bottomBack">
+                    <button class="btn btn-info btn-sm" ng-click="goto2ndPage();"><i class="fas fa-arrow-left" aria-hidden="true"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================================== VIEW TRANSACTION DETAIL PART START ====================================== -->
+
+    <!-- ==================================== PRINT INDENT PART START ==================================== -->
+
+    <div ng-show="printIndent">
+        <button class="btn btn-info btn-sm topBack" ng-click="goto3rdPage()"><i class="fas fa-arrow-left" aria-hidden="true"></i></button>
+        <div class="mybox">
+            <div class="mybox-header">
+                <span>
+        <strong>
+          <label>INDENT</label>
+        </strong>
+      </span>
+            </div>
+            <div>
+                <%- include('../common/purchaseOrder.ejs') -%>
+                    <div class="bottomBack">
+                        <button class="btn btn-info btn-sm" ng-click="goto3rdPage()"><i class="fas fa-arrow-left" aria-hidden="true"></i></button>
+                        <button class="btn btn-info btn-sm" onclick="printElem('indent')" ng-click="goto3rdPage()"><i class="fas fa-print" aria-hidden="true"></i></button>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================================== PRINT INDENT PART ENDS ==================================== -->
+
+    <!-- ====================================== PRINT MRR RECEIPT PART START ====================================== -->
+
+    <div ng-show="printMRR">
+        <button class="btn btn-info btn-sm topBack" ng-click="goto3rdPage()"><i class="fas fa-arrow-left" aria-hidden="true"></i></button>
+        <div class="mybox">
+            <div class="mybox-header">
+                <span>
+        <strong>
+          <label>MATERIAL RECEIPT REPORT</label>
+        </strong>
+      </span>
+            </div>
+            <div>
+                <%- include('../common/mrr.ejs') -%>
+                    <div class="bottomBack">
+                        <button class="btn btn-info btn-sm" ng-click="goto3rdPage();"><i class="fas fa-arrow-left" aria-hidden="true"></i></button>
+                        <button class="btn btn-info btn-sm" onclick="printElem('MRR')" ng-click="goto3rdPage();"><i class="fas fa-print" aria-hidden="true"></i></button>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================================== PRINT MRR RECEIPT PART ENDS ====================================== -->
+
+    <!-- ====================================== PRINT APPROVAL PART START ====================================== -->
+
+    <div ng-show="printApproval">
+        <button class="btn btn-info btn-sm topBack" ng-click="goto3rdPage()"><i class="fas fa-arrow-left" aria-hidden="true"></i></button>
+        <div class="mybox">
+            <div class="mybox-header">
+                <span>
+        <strong>
+          <label>APPROVAL</label>
+        </strong>
+      </span>
+            </div>
+            <div>
+                <%- include('../common/dealer_pay_approval.ejs') -%>
+                    <div class="bottomBack">
+                        <button class="btn btn-info btn-sm" ng-click="goto3rdPage()"> <i class="fas fa-arrow-left" aria-hidden="true"></i> </button>
+                        <button class="btn btn-info btn-sm" onclick="printElem('approval')" ng-click="goto3rdPage()"> <i class="fas fa-print" aria-hidden="true"></i> </button>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================================== PRINT APPROVAL PART ENDS ====================================== -->
+
+
+    <script>
+        var c_fin_year = "<%= c_fin_year %>";
+    </script>
+    <script>
+        document.getElementById('dlLedger').classList.add("active");
+    </script>
+    <script src="/controller/accHead/dealerGlobalLedger.js"></script>
+    <%- include('common/footer.ejs') -%>

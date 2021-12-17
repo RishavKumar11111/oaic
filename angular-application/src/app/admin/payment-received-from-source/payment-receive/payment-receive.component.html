@@ -1,0 +1,148 @@
+
+      <!-- ========================== LOADER PART START ========================== -->
+
+      <div class="loader">
+        <div *ngIf="loadingData" class="spinner-border text-info"></div>
+      </div>
+
+      <!-- ========================== LOADER PART ENDS ========================== -->
+
+      <!-- ========================== ADD PAYMENT DETAIL START ========================== -->
+
+      <div *ngIf="first_box">
+        <div class="mybox">
+          <div class="mybox-header">
+            <span>
+              <strong>
+                <label>ENTER RECEIVED PAYMENT DETAIL</label>
+              </strong>
+            </span>
+          </div>
+          <div class="middle">
+            <form name="dealerDetailForm">
+                  <div class="row">
+                      <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <label >Source<span class="asterisk-mark">*</span> :</label>
+                        <select class="form-control" [(ngModel)]="source" [ngModelOptions]="{standalone: true}" required>
+                                <option value="" disabled>--select--</option>
+                                <option [ngValue]="x" *ngFor="let x of sourceList">{{ x.source_name }}</option>
+                        </select>
+                      </div>
+                      <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <label >Scheme<span class="asterisk-mark">*</span> :</label>
+                        <select class="form-control" [(ngModel)]="scheme" [ngModelOptions]="{standalone: true}" (change)="loadComponents()" required>
+                                <option value="" disabled>--select--</option>
+                                <option [ngValue]="x" *ngFor="let x of schemeList">{{ x.schem_name }}</option>
+                        </select>
+                      </div>
+                      <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <label >Component<span class="asterisk-mark">*</span> :</label>
+                        <select class="form-control" [(ngModel)]="component" [ngModelOptions]="{standalone: true}" required>
+                                <option value="" disabled>--select--</option>
+                                <option [ngValue]="x" *ngFor="let x of componentList">{{ x.comp_name }}</option>
+                        </select>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <label >Amount<span class="asterisk-mark">*</span> :</label>
+                        <input type="number" class="form-control" [(ngModel)]="amount" [ngModelOptions]="{standalone: true}" min="1" placeholder="Enter received amount." required>
+                      </div>
+                      <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <label >Mode<span class="asterisk-mark">*</span> :</label>
+                        <select class="form-control" [(ngModel)]="mode" [ngModelOptions]="{standalone: true}" ng_change="addRefNoText()" required>
+                                <option value="" disabled>--select--</option>
+                                <option value="cash">Cash</option>
+                                <option value="cheque">Cheque</option>
+                                <option value="dd">DD</option>
+                                <option value="net_banking">Net Banking</option>
+                        </select>
+                      </div>
+                      <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <label >Reference no.<span class="asterisk-mark">*</span> :</label> &nbsp;&nbsp;<span class="asterisk-mark">{{ refInfo }}</span>
+                        <input type="text" class="form-control" placeholder="Enter payment reference no." [(ngModel)]="ref_no" [ngModelOptions]="{standalone: true}" required>
+                      </div>
+                  </div>
+            </form>
+            <div class="row">
+              <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                <label >Payment date<span class="asterisk-mark">*</span> :</label>
+                <input type="date" class="form-control" [(ngModel)]="payment_date" [ngModelOptions]="{standalone: true}" max="{{cDate | date: 'y-MM-dd' }}" required>
+              </div>
+              <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                <label >Remark<span class="asterisk-mark">*</span> :</label>
+                <input type="text" class="form-control" [(ngModel)]="remark" [ngModelOptions]="{standalone: true}" placeholder="Enter your remark." required>
+              </div>
+            </div>
+            <div class="rightSubmit">
+              <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#reviewUpdateItemsModal" >Receive</button>
+            </div>
+          </div>
+        </div>        
+      </div>
+
+      <!-- ========================== ADD PAYMENT DETAIL ENDS ========================== -->
+
+
+
+      <!-- ========================== REVIEW PAYMENT DETAIL MODAL START ========================== -->
+
+      <div class="container">
+        <div class="modal fade" id="reviewUpdateItemsModal">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">VERIFY PAYMENT DETAIL</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </div>
+              <div class="modal-body" style="padding: 0;">
+                <div class="table-responsive" style="text-align: left;">
+                        <table class="table table-hover">
+                          <thead></thead>
+                          <tbody>
+                            <tr >
+                                <td>Source : </td>
+                                <td>{{ source.source_name }}</td>
+                            </tr>
+                            <tr >
+                                <td>Scheme : </td>
+                                <td>{{ scheme.schem_name }}</td>
+                            </tr>
+                            <tr >
+                                <td>Component : </td>
+                                <td>{{ component.comp_name }}</td>
+                            </tr>
+                            <tr >
+                                <td>Amount : (&#8377;)</td>
+                                <td>{{ amount }}</td>
+                            </tr>
+                            <tr >
+                                <td>Payment mode : </td>
+                                <td>{{ mode }}</td>
+                            </tr>
+                            <tr >
+                                <td>Payment reference no. : </td>
+                                <td>{{ ref_no }}</td>
+                            </tr>
+                            <tr >
+                                <td>Payment date : </td>
+                                <td>{{ payment_date | date:'dd-MM-yyyy'}}</td>
+                            </tr>
+                            <tr >
+                                <td>Remark : </td>
+                                <td>{{ remark }}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-info" data-dismiss="modal">Edit</button>
+                <button type="button" class="btn btn-outline-info" data-dismiss="modal" (click)="addPayment();">Receive</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- ========================== REVIEW PAYMENT DETAIL MODAL ENDS ==========================-->

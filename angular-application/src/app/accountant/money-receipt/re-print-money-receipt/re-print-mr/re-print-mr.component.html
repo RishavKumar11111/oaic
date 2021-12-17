@@ -1,0 +1,143 @@
+<div class="mybox" *ngIf="first_card">
+    <div class="mybox-header">
+      <span>
+        <strong>
+          <label>Re-PRINT FARMER MONEY RECEIPT</label>
+        </strong>
+      </span>
+    </div>
+    <div class="middle">
+      <div class="row">
+        <div class="col-lg-3">
+            <app-financial-year (newItemEvent)="changeFinancialYear($event)"></app-financial-year>
+        </div>
+        <div class="col-lg-3">
+          <label>From date:</label>
+          <input type="date" class="form-control" [(ngModel)]="fromDate" [ngModelOptions]="{standalone: true}">
+        </div>
+        <div class="col-lg-3">
+          <label>To date:</label>
+          <input type="date" class="form-control" [(ngModel)]="toDate" [ngModelOptions]="{standalone: true}">
+        </div>
+        <div class="col-lg-3">
+          <button class="btn btn-info" style="margin-top: 13%;"><i class="fa fa-search"></i> Search</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="loader"><!-- LOADER -->
+    <div *ngIf="loadingData" class="spinner-border text-info"></div>
+  </div>
+  
+  
+  <div class="mybox" *ngIf="showData">
+    <div class="mybox-header">
+      <div class="row">
+        <div class="col-3">
+          <form>
+            <div class="input-group mb-3 input-group-sm">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <input type="text" class="form-control" placeholder="Enter farmer name" data-[(ngModel)]="search_farmer_name" [ngModelOptions]="{standalone: true}">
+            </div>
+        </form>
+        </div>
+        <div class="col-6">
+        <strong>
+          <label>MONEY RECEIPT LIST</label>
+        </strong>
+        </div>
+        <div class="col-3">
+          <form>
+            <div class="input-group mb-3 input-group-sm">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <input type="text" class="form-control" placeholder="Enter permit no." data-[(ngModel)]="search_permit_no" [ngModelOptions]="{standalone: true}">
+            </div>
+        </form>
+        </div>
+      </div>
+    </div>
+    <div >
+      <div *ngIf="all_receipts.length == 0" class="no-record">
+        No record found on financial year {{ fin_year }}.
+      </div>
+      <div *ngIf="all_receipts.length != 0">
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered table-hover" id="orderListTable">
+            <caption></caption>
+            <thead>
+              <tr>
+                <th scope="col">SL.</th>
+                <th scope="col" (click)="sortedOrderOfColumn('date')">Date</th>
+                <th scope="col" (click)="sortedOrderOfColumn('receipt_no')">Receipt no.</th>
+                <th scope="col" (click)="sortedOrderOfColumn('farmer_name')">Customer name(ID)</th>
+                <th scope="col" (click)="sortedOrderOfColumn('permit_no')">Purpose</th>
+                <th scope="col" (click)="sortedOrderOfColumn('permit_no')">Amount</th>
+                <th scope="col" (click)="sortedOrderOfColumn('implement')">Implement </th>
+                <th scope="col" style="text-align: center;">View</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor ="let x of all_receipts | search : search_permit_no | search : search_farmer_name ; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ x.date | date: 'dd-MM-y' }}</td>
+                <td>{{ x.MoneyReceiptNo}}</td>
+                <td>{{ x.CustomerName }}
+                  <br>
+                  ( {{ x.PayFromID }} )
+                </td>
+                <td>{{ x.purpose }}</td>
+                <td>{{ x.amount | number: '1.2-2' }}</td>
+                <td>{{ x.Implement }}</td>
+                <td>
+                  <div style="text-align: center;">
+                    <button class="btn btn-outline-info round" (click)="showReceipt(x.MoneyReceiptNo)">
+                      <i class="fas fa-bars" aria-hidden="true"></i>
+                    </button></div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  
+  </div>
+  
+  <div *ngIf="printPage">
+        <button class="btn btn-info btn-sm topBack" (click)="back()"><i class="fas fa-arrow-left" aria-hidden="true"></i></button>
+        <div class="mybox">
+          <div class="mybox-header">
+            <span>
+              <strong>
+                <label>MONEY RECEIPT</label>
+              </strong>
+            </span>
+          </div>
+          <div>
+            
+          <app-farmer-money-receipt [DMDetails]="DMDetails"
+          [data]="data"
+          id="printPage"
+          ></app-farmer-money-receipt>
+            <div class="bottomBack">
+                <button class="btn btn-info btn-sm" (click)="back();"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+                <button class="btn btn-info btn-sm" 
+                printTitle="Money Receipt"
+                [useExistingCss]="true"
+                printSectionId="printPage"
+                ngxPrint
+                (click)="back();">Print <i class="fas fa-print" aria-hidden="true"></i></button>
+            </div>
+          </div>
+        </div>
+  </div>

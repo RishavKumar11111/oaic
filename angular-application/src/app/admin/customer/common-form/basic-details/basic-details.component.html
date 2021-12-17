@@ -1,0 +1,127 @@
+<form [formGroup]= "customerDetailsForm">
+
+           <h5>Basic Details</h5>
+           <div class="wrap-input100 validate-input" data-validate="Enter username">
+               <div class="row">
+                   <div class="col-lg-6">
+                       <label for="legalName">Legal Name of the Customer (As per PAN) <span style="color:#ff0000" class="asterisk-mark">*</span>: </label>
+                       <input style="text-transform: uppercase;" formControlName="CustomerName" type="text"  id="legalName" class="form-control" placeholder="Enter the legal Customer Name" >
+                       <span class="note">Note: </span><span class="error">Do not use Miss/Mrs./Mr./Shri.</span>
+                   </div>
+                   
+                   <div class="col-lg-6">
+                       <label for="TradeName">Trade Name <span style="color:#ff0000" class="asterisk-mark">*</span>    : </label>
+                       <input style="text-transform: uppercase;" formControlName="TradeName" type="text" onkeypress="validateTextAsName('TradeName');" id="TradeName" class="form-control" placeholder="Enter Trade name" >
+                       <span class="note">Note: </span><span class="error">Do not use Miss/Mrs./Mr./Shri.</span>
+                   </div>
+                   
+                   <div class="col-lg-6">
+                       <label for="BussinessConstitution">Constitution of the Bussiness: </label>
+                       <select id="BussinessConstitution" formControlName="BussinessConstitution" class="form-control" >
+                           <option value="" disabled selected>--select--</option>
+                           <option value="Proprietorship">Proprietorship</option>
+                           <option value="Partnership">Partnership</option>
+                           <option value="Limited Liability Partnership (LLP)">Limited Liability Partnership (LLP)</option>
+                           <option value="Private Limited Company">Private Limited Company</option>
+                           <option value="Public Limited Company">Public Limited Company</option>
+                           <option value="HUF/AOP/BOI">HUF/AOP/BOI</option>
+                           <option value="Central Govt./State Govt.">Central Govt./State Govt.</option>
+                           <option value="Cooperative Society">Cooperative Society</option>
+                           <option value="Others">Others</option>
+                       </select>
+                   </div>
+                   
+                  
+                   <div class="col-lg-6">
+                       <label for="ContactNumber">Contact Number: </label>
+                       <input type="text" formControlName="contactNumber" maxlength="10" onkeypress="validateNumber('contactNumber');" id="contactNumber" class="form-control" placeholder="9937000000" >
+                   </div>
+                   <br><br><br>
+                   <div class="col-lg-6">
+                       <label for="customerEmailID">Email-ID: </label>
+                       <input type="text" formControlName="CustomerEmailID" id="customerEmailID" class="form-control" placeholder="Enter your Email-ID" >
+                   </div>
+       
+                   <div class="col-lg-6">
+                   </div>
+       
+       
+                   
+                             
+                   <div class="col-lg-6">
+                       <label for="weatherPAN">Do you have PAN: </label>
+                       <div class="row">
+                           <div class="col-lg-6">
+                               <div class="row">
+                                   <div class="col-lg-2"><input type="radio"  id="PANYes" name="PANYes" value="Yes" (click)= "showPANDiv();" ></div>
+                                   <div class="col-lg-10"><label for="PANYes">Yes</label></div>
+                               </div>
+                           </div>
+                           <div class="col-lg-6">
+                               <div class="row">
+                                   <div class="col-lg-2"><input type="radio"  id="PANNo" name="PANNo" value="No" (click)="hidePANDiv();"></div>
+                                   <div class="col-lg-10"><label for="PANNo">No</label></div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+       
+       
+                   <div class="col-lg-6" *ngIf="PANpageDiv">
+                       <label for="PermanentAccountNumber">Enter Permanent Account Number (PAN) *: </label>
+                       <input style="text-transform: uppercase;" formControlName="PANnum" type="text" maxlength="10" onkeypress="validateTextAndNumber('PermanentAccountNumber');" id="PermanentAccountNumber" class="form-control" placeholder="AYAPN0000P" >
+                   </div>
+       
+                   <div class="col-lg-6">
+                       <label for="weatherGSTN">Do you have GSTN: </label>
+                       <div class="row">
+                           <div class="col-lg-6">
+                               <div class="row">
+                                   <div class="col-lg-2"><input type="radio"  id="GSTNYes" name="GSTNYes" value="Yes" (click)= "showGSTNDiv();" ></div>
+                                   <div class="col-lg-10"><label for="GSTNYes">Yes</label></div>
+                               </div>
+                           </div>
+                           <div class="col-lg-6">
+                               <div class="row">
+                                   <div class="col-lg-2"><input type="radio"  id="GSTNNo" name="GSTNNo" value="No" (click)="hideGSTNDiv();"></div>
+                                   <div class="col-lg-10"><label for="GSTNNo">No</label></div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+       
+                  
+       
+                   <div class="col-lg-6" *ngIf="GSTNpageDiv">
+                       <label for="GSTN">Enter Goods & Services Tax Number (GSTN) *: </label>
+                       <input style="text-transform: uppercase;" formControlName="GSTNnum" type="text" maxlength="15" onkeypress="validateTextAndNumber('GSTN');" id="GSTN" class="form-control" placeholder="Enter GSTN number" >
+                   </div>
+
+
+
+                   <div class="col-lg-6">
+                    <label for="district">District *: </label>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <select id="district" class="form-control" [(ngModel)]="district" [ngModelOptions]="{standalone: true}">
+                                <option value="" disabled selected>--select--</option>
+                                <option value="ALL">ADD ALL</option>
+                                <option [ngValue]="x" *ngFor="let x of allDistrictList">{{ x.dist_name }}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-success" (click)="addDistrict();"><i class="fa fa-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+                                                
+                <div class="col-lg-6" *ngIf="DistrictList.value.length != 0">
+                    <h6 class="bold-head"> District List for Apply: </h6>
+                    <ul>
+                        <li *ngFor="let x of DistrictList.value;let i = index;" style="height: 45px;"> {{ x.dist_name }}  <button (click)="removeDistrict(i);" class="btn btn-outline-danger float-right"><i class="fa fa-trash"></i></button></li>
+                    </ul>
+                </div>
+                  
+               </div>
+           </div>
+</form>

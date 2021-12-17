@@ -1,0 +1,20 @@
+<app-header></app-header>
+
+<div id="wrapper">
+
+    <app-sidebar></app-sidebar>
+
+    <div id="content-wrapper">
+
+        <app-page-heading></app-page-heading>
+        <div [@fadeAnimation]="outlet.isActivated ? outlet.activatedRoute : ''">
+                <router-outlet #outlet="outlet"></router-outlet>
+        </div>
+<br>
+<br>
+
+<app-footer></app-footer>
+
+</div>
+
+</div>

@@ -1,0 +1,102 @@
+      <!--====== ALL ACCOUNTANT LIST START ======-->
+
+      <div class="mybox">
+        <div class="mybox-header">
+          <span>
+            <strong>
+              <label>All District Wise Accountants List</label>
+            </strong>
+          </span>
+        </div>
+        <div class="table-responsive fixed-height-table">
+          <table class="table table-head-fixed table-striped table-hover">
+            <thead>
+              <tr>
+                <th>SL</th>
+                <th>District name</th>
+                <th>User-ID</th>
+                <th>Accountant name</th>
+                <th>Address</th>
+                <th>Mobile no.</th>
+                <th>Edit</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let x of accList;let i = index;">
+                <td>{{ i + 1 }}</td>
+                <td>{{ x.dist_name }}</td>
+                <td>{{ x.acc_id }}</td>
+                <td>{{ x.acc_name || '--'}}</td>
+                <td>{{ x.acc_address || '--'}}</td>
+                <td>{{ x.acc_mobile_no || '--'}}</td>
+                <td>
+                  <button class="btn btn-outline-info" data-toggle="modal" data-target="#editDetail" (click)="showModifyModal(x);"> <i class="fas fa-edit" aria-hidden="true"></i></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      
+        <!-- LOADER -->
+        <div class="loader">
+          <div *ngIf="loadingData" class="spinner-border text-info"></div>
+        </div>
+      
+        <br>
+        <br>
+    </div>
+
+    <!--====== ALL ACCOUNTANT LIST ENDS ======-->
+
+    <!--====== MODIFY ACCOUNTANT DETAIL MODAL START ======-->
+
+    <div class="container"> 
+      <div class="modal fade" id="editDetail">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Modify Accontant detail of {{ selectedItem.dist_name}} District</h5>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 0;">
+              <form name="myModifyFrom">
+                <table class="table table-hover" style="line-height: 0.8; text-align: left;">
+                <caption></caption>
+                <tbody>
+                  <tr>
+                    <td>District name :</td>
+                    <td>{{ selectedItem.dist_name }}</td>
+                  </tr>
+                  <tr>
+                    <td>Name<span class="asterisk-mark">*</span>:</td>
+                    <td>
+                      <input type="text" class="form-control" [(ngModel)]="selectedItem.acc_name" [ngModelOptions]="{standalone: true}" placeholder="Enter accontant name." name="acc_name" required>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Mobile Number:</td>
+                    <td>
+                      <input type="number" class="form-control" minlength="10" maxlength="10" [(ngModel)]="selectedItem.acc_mobile_no" [ngModelOptions]="{standalone: true}" placeholder="Enter accontant mobile no.">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Address:</td>
+                    <td>
+                      <textarea class="form-control" [(ngModel)]="selectedItem.acc_address" [ngModelOptions]="{standalone: true}" placeholder="Enter accontant address." id="Address" cols="30" rows="5"></textarea>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-outline-info" data-dismiss="modal" (click)="modifyAccDetail();" >Modify</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--====== MODIFY ACCOUNTANT DETAIL MODAL ENDS ======-->
+

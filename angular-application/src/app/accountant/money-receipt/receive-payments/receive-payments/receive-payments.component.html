@@ -1,0 +1,139 @@
+<ng-container *ngIf="page1">
+        <div class="mybox">
+            <div class="mybox-header">
+                <span>
+                    <strong>
+                        <label>RECEIVE PAYMENTS</label>
+                    </strong>
+                </span>
+            </div>
+            <div class="middle">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label>Payment Type: </label>
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                        <input type="radio" id="Advanced" name="fav_language" value="Advanced" [(ngModel)]="payment_type">
+                        <label for="Advanced">&nbsp;&nbsp; Advanced</label>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="PayAgainstInvoice" name="fav_language" value="PayAgainstInvoice"
+                            [(ngModel)]="payment_type">
+                        <label for="PayAgainstInvoice">&nbsp;&nbsp; Pay Against Invoice</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- header part end -->
+
+        <!-- advanced payment details part start -->
+        <div class="mybox">
+            <div class="mybox-header">
+                <span>
+                    <strong>
+                        <label>Payment Details</label>
+                    </strong>
+                </span>
+            </div>
+            <div class="middle">
+                <form [formGroup]="advancePaymentDetailsForm">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label>Customer<span class="asterisk-mark">*</span> :</label>
+                            <select class="form-control" formControlName="customerID" (change)="loadCustomerLedger();" required >
+                                <option value="" disabled>--select--</option>
+                                <option [ngValue]="x.CustomerID" *ngFor="let x of CustomerDetails">{{x.TradeName}}</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-4" *ngIf="payment_type == 'PayAgainstInvoice'">
+                            <label>Invoice Number(&#8377;)<span class="asterisk-mark">*</span> :</label>
+                            <select formControlName="customerInvoiceNo" (change)="getCusInvoiceDetailsByInvoiceID()" class="form-control" required >
+                                <option value="" disabled>--select--</option>
+                                <option [ngValue]="x.CustomerInvoiceNo" *ngFor="let x of invoiceList">{{ x.CustomerInvoiceNo }}</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-4" *ngIf="payment_type == 'PayAgainstInvoice'">
+                            <label>Invoice Amount<span class="asterisk-mark">*</span> :</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <strong>{{ selectedInvoiceDetails.InvoiceAmount | number: '1.2-2' }}</strong>
+                        </div>
+                        <div class="col-lg-4" *ngIf="payment_type == 'Advanced'">
+                            <label>Division<span class="asterisk-mark">*</span> :</label>
+                            <select class="form-control" formControlName="division" (change)="loadImplementList()" required>
+                                <option value="" disabled>--select--</option>
+                                <option [ngValue]="x.DivisionID" *ngFor="let x of divisionList">{{x.DivisionName}}</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-4" *ngIf="payment_type == 'Advanced'">
+                            <label>Product Category<span class="asterisk-mark">*</span> :</label>
+                            <select class="form-control"formControlName="productCategory" required>
+                                <option value="" disabled>--select--</option>
+                                <option [ngValue]="x" *ngFor="let x of implementList">{{x}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </form>
+
+
+                <app-enter-receipt-details [receiptDetailsForm]="advancePaymentDetailsForm"></app-enter-receipt-details>
+
+
+                <div style="text-align: center;">
+                    <button style="font-size: medium;" class="btn btn-lg btn-info round" (click)="proceedPay();" >ADD</button>
+                </div>
+                <br>
+                <div class="table-responsive fixed-height-table">
+                    <table class="table table-striped table-bordered table-hover" style="text-align: left;">
+                        <caption></caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">SL.</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Reference Number</th>
+                                <th scope="col">Credit</th>
+                                <th scope="col">Debit</th>
+                                <th scope="col">Balance</th>
+                                <th scope="col">Purpose</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let x of payments;let i = index;">
+                                <td>{{ i + 1 }}</td>
+                                <td>{{ x.date | date: 'dd-MM-yyyy' }}</td>
+                                <td>{{ x.reference_no }}</td>
+                                <td>{{ x.credit | number: '1.2-2' }}</td>
+                                <td>{{ x.debit | number: '1.2-2' }}</td>
+                                <td>{{ x.balance | number: '1.2-2' }}</td>
+                                <td>{{ x.purpose | uppercase }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <br>
+
+        </div>
+        <!-- advanced payment details ends -->
+</ng-container>
+
+
+<ng-container *ngIf="printPage">
+    <button class="btn btn-info btn-sm topBack" (click)="back()"><i class="fas fa-arrow-left" aria-hidden="true"></i></button>
+    <app-normal-card>
+      <ng-container class="card-head">MONEY RECEIPT</ng-container>
+      <ng-container class="card-body">
+          <app-farmer-money-receipt
+          [data]="data"
+          id="printPage"
+          ></app-farmer-money-receipt>
+      </ng-container>
+      <ng-container class="card-footer">
+            <button class="btn btn-info btn-sm" (click)="back()"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+            <button class="btn btn-info btn-sm" (click)="addPayment()">Confirm & Print</button>
+            <button hidden="true" #printMR printTitle="Money Receipt" [useExistingCss]="true" printSectionId="printPage"  ngxPrint></button>
+      </ng-container>
+    </app-normal-card>
+</ng-container>

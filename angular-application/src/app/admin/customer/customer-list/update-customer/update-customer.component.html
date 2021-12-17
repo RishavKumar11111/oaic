@@ -1,0 +1,97 @@
+
+
+        <br>
+        <div>
+               <div class="stepper" *ngIf="stepper">
+                 <ul class="nav nav-tabs" role="tablist">
+                   <li role="presentation" class="active" [ngClass]="completeStep1Bar" >
+                     <a class="persistant-disabled" (click)="goToStep1();" data-toggle="tab" aria-controls="stepper-step-1" role="tab">
+                       <span class="round-tab" [ngClass]="isCompleteStep1" >Basic Details </span>
+                     </a>
+                   </li>
+                   
+                   <li role="presentation" class="disabled" [ngClass]="completeStep3Bar" >
+                     <a class="persistant-disabled" (click)="goToStep2();" data-toggle="tab" aria-controls="stepper-step-2" role="tab">
+                       <span class="round-tab" [ngClass]="isCompleteStep3" >Contact Person</span>
+                   </a>
+                   </li>
+                   <li role="presentation" class="disabled" [ngClass]="completeStep4Bar" >
+                     <a class="persistant-disabled" (click)="goToStep3();" data-toggle="tab" aria-controls="stepper-step-3" role="tab">
+                       <span class="round-tab" [ngClass]="isCompleteStep4" >Principal Place</span>
+                   </a>
+                   </li>
+                   <li role="presentation" class="disabled" [ngClass]="completeStep5Bar" >
+                     <a class="persistant-disabled" (click)="goToStep4();" data-toggle="tab" aria-controls="stepper-step-4" role="tab">
+                       <span class="round-tab" [ngClass]="isCompleteStep5" >Bank Details</span>
+                   </a>
+                   </li>
+                   <!-- <li role="presentation" class="disabled">
+                     <a class="persistant-disabled" (click)="goToStep6();" data-toggle="tab" aria-controls="stepper-step-6" role="tab" title="Complete">
+                       <span class="round-tab">6</span>
+                     </a>
+                   </li> -->
+                 </ul>
+               </div>
+       </div>
+       
+
+       <br>
+       <br>
+       <br>
+       <br>
+       <div *ngIf="step1">
+
+
+        <app-basic-details [customerDetailsForm]="customerDetailsForm"></app-basic-details>
+
+
+           <br>
+           <div class="text-right">
+               <button class="btn btn-info" (click)="saveStep1();"  >Save & Proceed <i class="fa fa-arrow-right"></i></button>
+           </div>
+       </div>
+       
+       <div *ngIf="step2">
+           
+        <app-contact-person [customerDetailsForm]="customerDetailsForm"></app-contact-person>
+
+
+           <br>
+           <div>
+               <button class="btn btn-info float-left" (click)="goToStep1();"><i class="fa fa-arrow-left"></i> Previous</button>
+               <div class="float-right">
+                   <button class="btn btn-info float-right" (click)="saveStep2();" disable="ContactPersonList.value.length == 0">Save & Proceed <i class="fa fa-arrow-right"></i></button>
+               </div>
+           </div>
+       </div>
+       
+       
+       <div *ngIf="step3">
+        
+        
+        <app-principal-place [customerDetailsForm]="customerDetailsForm"></app-principal-place>
+
+
+           <br>
+           <div >
+               <button class="btn btn-info float-left" (click)="goToStep2();"><i class="fa fa-arrow-left"></i> Previous</button>
+               <div class="float-right">
+                   <button class="btn btn-info float-right" (click)="saveStep3();" disable="principalPlacesList.length == 0">Save & Proceed <i class="fa fa-arrow-right"></i></button>
+               </div>
+           </div>
+       </div>
+       
+       <div *ngIf="step4">
+           
+
+        <app-bank-details [customerDetailsForm]="customerDetailsForm"></app-bank-details>
+
+
+           <div>
+               <button class="btn btn-info float-left" (click)="goToStep3();"><i class="fa fa-arrow-left"></i> Previous</button>
+               <div class="float-right">
+                   <button class="btn btn-info float-right" (click)="FinalUpdateCustomerDetails();" disable="bankAccountsList.length == 0"><i class="fa fa-check"></i> Final Update All</button>
+               </div>
+           </div>
+       </div>
+

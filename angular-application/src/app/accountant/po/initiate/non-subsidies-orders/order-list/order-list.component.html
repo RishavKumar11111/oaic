@@ -1,0 +1,43 @@
+
+              <div class="table-responsive fixed-height-table">
+                <table class="table table-striped table-bordered table-hover" style="text-align: left;">
+                  <caption></caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">SL.</th>
+                      <th scope="col">Goods Details</th>
+                      <th scope="col">Quantity</th>
+                      <th scope="col">Rate per Unit</th>
+                      <th scope="col">Tax</th>
+                      <th scope="col">Invoice Value</th>
+                      <th scope="col">Actions</th>
+
+                      <!-- <th scope="col">Action</th> -->
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let x of orderList.value;let i = index;">
+                      <td>{{ i + 1 }}</td>
+                      <td>
+                        Division: {{ x.DivisionName }} <br>
+                        Category: {{ x.Implement}} <br>
+                        Manufacturer: {{ x.Make}} <br>
+                        Model/Item: {{ x.Model}} <br>
+                        Unit of Msr.: {{ x.UnitOfMeasurement }}
+                      </td>
+                      <td>{{ x.Quantity }}</td>
+                      <td>{{ x.PurchaseTaxableValue }} </td>
+                      <td>
+                        Taxable Value: {{ x.TotalPurchaseTaxableValue }} <br>
+                        CGST: {{ x.TotalPurchaseCGST }} <br>
+                        SGST: {{ x.TotalPurchaseSGST }}
+                      </td>
+                      <td>{{ x.TotalPurchaseInvoiceValue }}</td>
+                      <td>
+                          <button class="btn btn-sm btn-outline-danger" (click)="removeOrder(i);"><i class="fa fa-trash"></i></button>
+                          &nbsp;
+                        </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>

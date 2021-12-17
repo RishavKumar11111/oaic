@@ -1,0 +1,176 @@
+<div class="row">
+    <div class="col-lg-4">
+      <label >Division<span class="asterisk-mark">*</span> :</label>
+      <select class="form-control" [(ngModel)]="nonSubsidyData.DivisionID" (change)="loadImplementList();" required>
+              <option value="" disabled>--select--</option>
+              <option [ngValue]="x.DivisionID" *ngFor="let x of divisionList">{{ x.DivisionName }}</option>
+      </select>
+    </div>
+    <div class="col-lg-4">
+      <label >Product Category<span class="asterisk-mark">*</span> :</label>
+      <select class="form-control" [(ngModel)]="nonSubsidyData.Implement" (change)="loadMakeList();" required>
+              <option value="" disabled>--select--</option>
+              <option value="{{ x }}" *ngFor="let x of implementList">{{ x }}</option>
+      </select>
+    </div>
+    <div class="col-lg-4">
+      <label >Manufacturer<span class="asterisk-mark">*</span> :</label>
+      <select class="form-control" [(ngModel)]="nonSubsidyData.Make" (change)="loadModelList();" required>
+              <option value="" disabled>--select--</option>
+              <option value="{{ x }}" *ngFor="let x of makeList">{{ x }}</option>
+      </select>
+    </div>
+    <div class="col-lg-4">
+      <label >Model / Item<span class="asterisk-mark">*</span> :</label>
+      <select class="form-control" [(ngModel)]="nonSubsidyData.Model" (change)="loadModelDetails();" required>
+              <option value="" disabled>--select--</option>
+              <option value="{{x}}" *ngFor="let x of modelList">{{ x }}</option>
+      </select>
+    </div>
+    <div class="col-lg-4">
+      <label >Quantity<span class="asterisk-mark">*</span> :</label>
+      <input type="number" class="form-control" (keyup)="calculateItemQuantity();" [(ngModel)]="nonSubsidyData.Quantity" placeholder="Enter Quantity. (Default is 1)" required>
+    </div>
+    <div class="col-lg-4">
+      <label >Unit of Measurement<span class="asterisk-mark">*</span> :</label>
+      <select class="form-control" [(ngModel)]="nonSubsidyData.UnitOfMeasurement" required>
+              <option value="" disabled>--select--</option>
+              <option value="Bags">Bags</option>
+              <option value="Kilograms">Kilograms</option>
+              <option value="Kilometers">Kilometers</option>
+              <option value="Meter">Meter</option>
+              <option value="Metric Ton">Metric Ton</option>
+              <option value="Numbers">Numbers</option>
+              <option value="Packs">Packs</option>
+              <option value="Pieces">Pieces</option>
+              <option value="Pairs">Pairs</option>
+              <option value="Quintal">Quintal</option>
+              <option value="Sets">Sets</option>
+              <option value="Tonnes">Tonnes</option>
+              <option value="Foots">Foots</option>
+              <option value="Liter">Liter</option>
+      </select>
+    </div>
+
+
+    <div class="col-lg-4" *ngIf="packageSizeList.length > 0">
+      <label >Package Size<span class="asterisk-mark">*</span> :</label>
+      <select class="form-control" [(ngModel)]="nonSubsidyData.PackageSize" (change)="loadPackageUnits();" required>
+              <option value="" disabled>--select--</option>
+              <option [ngValue]="x.PackageSize" *ngFor="let x of packageSizeList">{{ x.PackageSize }}</option>
+      </select>
+    </div>
+    <div class="col-lg-4" *ngIf="packageSizeList.length > 0">
+      <label >Package Unit of Measurement<span class="asterisk-mark">*</span> :</label>
+      <select class="form-control" [(ngModel)]="nonSubsidyData.PackageUnitOfMeasurement" (change)="loadPackagePrice();" required>
+              <option value="" disabled>--select--</option>
+              <option [ngValue]="x.UnitOfMeasurement" *ngFor="let x of packageUnitList;">{{ x.UnitOfMeasurement }}</option>
+      </select>
+    </div>
+    <div class="col-lg-4" *ngIf="packageSizeList.length > 0">
+      <label >Package Quantity<span class="asterisk-mark">*</span> :</label>
+      <input type="number" class="form-control" [(ngModel)]="nonSubsidyData.PackageQuantity" placeholder="Total Package Quantity" disabled required>
+    </div>
+
+
+    <div class="col-lg-4">
+      <label >Vendor<span class="asterisk-mark">*</span> :</label>
+      <select [disabled]="orderListLength > 0" class="form-control" [(ngModel)]="vendorDetails" (change)="selectVenorID();" required>
+              <option value="" disabled>--select--</option>
+              <option [ngValue]="x" *ngFor="let x of vendorsList">{{ x.TradeName }}</option>
+      </select>
+    </div>
+    <div class="col-lg-4">
+      <label >Customer :</label>
+      <select [disabled]="orderListLength > 0" class="form-control" [(ngModel)]="customerDetailsNgModel" (change)="selectCustomerDetails();" required>
+              <option value="" disabled>--select--</option>
+              <option [ngValue]="x" *ngFor ="let x of CustomerList"> {{x.TradeName}} </option>
+            </select>
+    </div>
+    <div class="col-lg-4">
+      <label >Order Reference :</label>
+      <input [disabled]="orderListLength > 0" type="text" class="form-control" [(ngModel)]="orderReferenceNo" placeholder="Enter Order Reference Number" required>
+    </div>
+  </div>
+  <br>
+  <br>
+  <div class="row">
+
+    <div class="col-lg-6" *ngIf="vendorDetails">
+      <div class="table-responsive">
+        <table class="table table-hover" style="text-align: left;">
+          <caption></caption>
+          <thead>
+            <tr>
+              <th scope="col">Vendor Trade Name: </th>
+              <th scope="col">{{ vendorDetails.TradeName }}</th>
+            </tr>
+            <tr>
+              <th scope="col">Vendor Bussiness Name: </th>
+              <th scope="col">{{ vendorDetails.LegalBussinessName }}</th>
+            </tr>
+            <tr>
+              <th scope="col">Customer Name: </th>
+              <th scope="col">{{ customerDetailsNgModel.LegalCustomerName || '--' }}</th>
+            </tr>
+            <tr>
+              <th scope="col">Customer Email-ID: </th>
+              <th scope="col">{{ customerDetailsNgModel.EmailID || '--' }}</th>
+            </tr>
+            <tr>
+              <th scope="col">Order Reference No.: </th>
+              <th scope="col">{{ orderReferenceNo || '--' }}</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+
+    </div>
+    <div class="col-lg-6">
+      
+      <div class="table-responsive" *ngIf="modelDetails.PurchaseTaxableValue">
+        <table class="table table-hover" style="text-align: left;">
+          <caption></caption>
+          <thead>
+            <tr>
+              <th scope="col">Rate per Unit: </th>
+              <th scope="col">{{ modelDetails.PurchaseTaxableValue | number }}</th>
+            </tr>
+            <tr>
+              <th scope="col">Total Taxable Value: </th>
+              <th scope="col">{{ modelDetails.TotalPurchaseTaxableValue | number }}</th>
+            </tr>
+            <tr>
+              <th scope="col">CGST: </th>
+              <th scope="col">{{ modelDetails.TotalPurchaseCGST | number }}</th>
+            </tr>
+            <tr>
+              <th scope="col">SGST: </th>
+              <th scope="col">{{ modelDetails.TotalPurchaseSGST | number }}</th>
+            </tr>
+            <tr>
+              <th scope="col">Invoice Value: </th>
+              <th scope="col">{{ modelDetails.TotalPurchaseInvoiceValue | number }}</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+
+
+
+
+<div>
+      <br>
+      <div style="text-align: right;">
+        <button class="btn btn-lg btn-info round"  (click)="shwPurchaseOrderForNonSubsidy()"
+        [disabled]="nonSubsidyData.UnitOfMeasurement == '' || nonSubsidyData.Quantity == ''
+        || nonSubsidyData.Model == '' || vendorDetails == ''
+        || nonSubsidyData.Implement == '' || nonSubsidyData.Make == ''
+        || nonSubsidyData.DivisionID == ''">
+        Add Item to Order List</button>
+      </div>
+</div>

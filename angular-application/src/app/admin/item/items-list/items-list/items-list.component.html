@@ -1,0 +1,262 @@
+
+<!--================================ FILTER LIST START ================================-->
+
+<div class="mybox" *ngIf="first_box">
+    <div class="mybox-header">
+      <span>
+        <strong>
+          <label>Search Item</label>
+        </strong>
+      </span>
+    </div>
+      <div class="middle row">
+        <div class="col-md-3">
+          <label>Implement : </label>
+          <input type="text" class="form-control" [(ngModel)]="searchByImplement" placeholder="Search by Implement.">
+        </div>
+        <div class="col-md-3">
+          <label>Make : </label>
+          <input type="text" class="form-control" [(ngModel)]="searchByMake" placeholder="Search by Make.">
+        </div>
+        <div class="col-md-3">
+          <label>Model : </label>
+          <input type="text" class="form-control" [(ngModel)]="searchByModel" placeholder="Search by Model / Item">
+        </div>
+      </div>
+</div>
+
+<!--================================ FILTER LIST ENDS ================================-->
+
+<!--================================ LOADER START ================================-->
+
+<div class="loader"><!-- LOADER -->
+  <div *ngIf="loadingData" class="spinner-border text-info"></div>
+</div>
+
+<!--================================ LOADER ENDS ================================-->
+
+<!--================================ SHOW ALL LIST START ================================-->
+
+<div class="mybox" *ngIf="first_box">
+  <div class="mybox-header">
+    <span>
+      <strong>
+        <label>All Item List</label>
+      </strong>
+    </span>
+  </div>
+  <div class="table-responsive fixed-height-table">
+    <table class="table table-head-fixed table-striped table-hover">
+      <thead>
+        <tr>
+          <th>SL</th>
+          <th>Division</th>
+          <th>Product Category</th>
+          <th>Manufacturer</th>
+          <th>Model / Item</th>
+          <th>View</th>
+          <th>Update</th>
+          <th>Remove</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let x of itemList | search: searchByImplement | search: searchByMake | search: searchByModel;let i = index;">
+          <td>{{ i + 1 }}</td>
+          <td>{{ x.DivisionName }}</td>
+          <td>{{ x.Implement }}</td>
+          <td>{{ x.Make }}</td>
+          <td>{{ x.Model }}</td>
+          <td>
+            <button class="btn btn-outline-info" data-toggle="modal" data-target="#viewItemDetailModal" (click)="showItemDetail(x);"> <i class="fas fa-bars" aria-hidden="true"></i></button>
+          </td>
+          <td>
+            <button class="btn btn-outline-info" (click)="showUpdateItem(x);"> <i class="fas fa-edit" aria-hidden="true"></i></button>
+          </td>
+          <td>
+            <button class="btn btn-outline-danger" data-toggle="modal" data-target="#removeItemModal" (click)="showRemoveItemModal(x);"> <i class="fas fa-trash" aria-hidden="true"></i></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!--================================ SHOW ALL LIST ENDS ================================-->
+
+<!--================================ UPDATE ITEM DETAIL START ================================-->
+
+<div *ngIf="update_detail">
+  <button class="btn btn-info btn-sm topBack" (click)="back();"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+  <form name="updateForn">
+  <div class="mybox">
+    <div class="mybox-header">
+      <span>
+        <strong>
+          <label>ITEM DETAIL</label>
+        </strong>
+      </span>
+    </div>
+    <div class="middle">
+
+
+
+        <app-enter-item-details-form [ItemDetailsForm]="ItemDetailsForm"></app-enter-item-details-form>
+
+        <app-calculate-item-price [ItemDetailsForm]="ItemDetailsForm"></app-calculate-item-price>
+
+
+
+
+
+
+
+    </div>
+  </div>
+  <div class="mybox">
+    <div class="mybox-header">
+      <span>
+        <strong>
+          <label>Invoice Price</label>
+        </strong>
+      </span>
+    </div>
+    <div class="middle">
+
+
+
+
+      <app-enter-packages [ItemDetailsForm]="ItemDetailsForm"></app-enter-packages>
+
+
+
+
+
+
+
+
+
+    <div class="bottomBack">
+        <button class="btn btn-info btn-sm" (click)="back();"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+        <!-- <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#reviewUpdateItemsModal" (click)="proceed();" >Proceed </button> -->
+        <button class="btn btn-info btn-sm" (click)="proceed();" >Proceed </button>
+    </div>
+    </div>
+  </div>
+  </form>
+</div>
+
+<!--================================ UPDATE ITEM DETAIL ENDS ================================-->
+
+<!--================================ VIEW ITEM DETAIL MODAL START ================================-->
+
+<div class="container">
+  <div class="modal fade" id="viewItemDetailModal">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content" >
+        <div class="modal-header">
+          <h5 class="modal-title">Item detail</h5>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body" style="padding: 0;">
+            <div class="middle">
+
+
+
+              <app-preview-item-details [ItemDetailsForm]="ItemDetailsForm"></app-preview-item-details>
+
+
+
+
+
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-info" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--================================ VIEW ITEM DETAIL MODAL ENDS ================================-->
+
+<!--================================ REVIEW UPDATE ITEM MODAL START ================================-->
+
+<div class="container"> 
+  <div class="modal fade" id="reviewUpdateItemsModal">
+    <div class="modal-dialog">
+      <div class="modal-content" style="width: 130%;">
+        <div class="modal-header">
+          <h5 class="modal-title">Item detail</h5>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body" style="padding: 0;">
+          <div class="middle">
+
+
+
+
+
+
+
+            <app-preview-item-details [ItemDetailsForm]="ItemDetailsForm"></app-preview-item-details>
+
+
+
+
+
+
+
+        </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-info" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-outline-info" data-dismiss="modal" (click)="update();">Update</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--================================ REVIEW UPDATE ITEM MODAL ENDS ================================-->
+
+<!--================================ REMOVE ITEM MODAL START ================================-->
+
+<div class="container">
+  <div class="modal fade" id="removeItemModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header removeModal">
+          <h5 class="modal-title">Are you sure to remove this item</h5>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body boldFont" style="padding: 0;">
+            <table class="table table-hover" style="color: red;">
+            <caption></caption>
+            <tbody>
+              <tr>
+                <td>Product Category:</td>
+                <td>{{ ItemDetailsForm.value['Implement'] }}</td>
+              </tr>
+              <tr>
+                <td>Manufacturer:</td>
+                <td>{{ ItemDetailsForm.value['Make'] }}</td>
+              </tr>
+              <tr>
+                <td>Model / Item:</td>
+                <td>{{ ItemDetailsForm.value['Model'] }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-info" data-dismiss="modal">No</button>
+          <button type="button" class="btn btn-outline-danger" data-dismiss="modal" (click)="removeItem();">Yes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--================================ REMOVE ITEM MODAL ENDS ================================-->
+

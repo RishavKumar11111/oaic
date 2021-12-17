@@ -1,0 +1,518 @@
+<!-- ====================================== HEADER PART START ====================================== -->
+<app-normal-card *ngIf="showTable">
+  <ng-container class="card-head">Deliver to Customer</ng-container>
+  <ng-container class="card-body">
+
+    <div class="row">
+      <div class="col-lg-4">
+        <app-financial-year (newItemEvent)="changeFinancialYear($event)"></app-financial-year>
+      </div>
+      <div class="col-lg-4">
+        <label>Purchase Order Type: </label>
+        <br>
+        <input [formControl]="POType" type="radio" id="Subsidy" name="fav_language" value="Subsidy">
+        <label for="Subsidy">&nbsp;&nbsp; Subsidy</label>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input [formControl]="POType" type="radio" id="Non-Subsidy" name="fav_language" value="NonSubsidy">
+        <label for="Non-Subsidy">&nbsp;&nbsp; Non-Subsidy</label>
+      </div>
+    </div>
+
+  </ng-container>
+
+</app-normal-card>
+
+<!-- ====================================== HEADER PART ENDS ====================================== -->
+
+<!-- ====================================== HEADER PART ENDS ====================================== -->
+
+<div class="loader">
+  <div *ngIf="loader" class="spinner-border text-info"></div>
+</div>
+
+<!-- ====================================== HEADER PART ENDS ====================================== -->
+
+<!-- ====================================== ORDER LIST PART START ====================================== -->
+
+<app-table-card *ngIf="showTable && (POType.value == 'Subsidy')">
+  <ng-container class="card-head">Deliver to Customer</ng-container>
+  <ng-container *ngIf="items.length == 0" class="no-record">No record found on financial year {{ fin_year }}.
+  </ng-container>
+
+  <ng-container *ngIf="items.length != 0" class="card-body">
+
+    <table class="table table-bordered table-hover" id="orderListTable">
+      <caption></caption>
+      <thead>
+        <tr>
+          <th scope="col">SL.</th>
+          <th scope="col">Permit no.</th>
+          <th scope="col">Farmer name(ID)</th>
+          <th scope="col">Product Category</th>
+          <th scope="col">Manufacturer</th>
+          <th scope="col">Model/Item</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let x of items ; let i = index; ">
+          <td>{{ i + 1 }}</td>
+          <td>{{ x.OrderReferenceNo }}</td>
+          <td>{{ x.farmer_name }} <br>({{ x.farmer_id }})</td>
+          <td>{{ x.Implement }}</td>
+          <td>{{ x.Make }}</td>
+          <td>{{ x.Model }}</td>
+          <td>
+            <div class="row">
+              <div class="col-lg-4"><button class="btn btn-outline-info round" (click)="showDetailes(x)"
+                  data-toggle="modal" data-target="#viewDetails">
+                  <i class="fas fa-bars" aria-hidden="true"></i>
+                </button></div>
+              <div class="col-lg-6">
+                <button class="btn btn-outline-info round" (click)="showDelivery(x)" data-toggle="modal"
+                  data-target="#deliveryModal">Deliver</button>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </ng-container>
+</app-table-card>
+
+
+<!-- =================================== Non-Subsidy Part starts ====================================================== -->
+
+<div class="mybox" *ngIf="showTable && (POType.value == 'NonSubsidy')">
+  <div class="mybox-header">
+    <span>
+      <strong>
+        <label>Invoice</label>
+      </strong>
+    </span>
+  </div>
+  <div class="middle">
+    <div class="row">
+      <div class="col-lg-4">
+        <label>Division<span class="asterisk-mark">*</span> :</label>
+        <select class="form-control" [(ngModel)]="nonSubsidyData.DivisionID" (change)="loadImplementList();" required>
+          <option value="" disabled>--select--</option>
+          <option [ngValue]="x.DivisionID" *ngFor="let x of divisionList">{{ x.DivisionName }}</option>
+        </select>
+      </div>
+      <div class="col-lg-4">
+        <label>Product Category<span class="asterisk-mark">*</span> :</label>
+        <select class="form-control" [(ngModel)]="nonSubsidyData.Implement" (change)="loadMakeList();" required>
+          <option value="" disabled>--select--</option>
+          <option value="{{ x }}" *ngFor="let x of implementList">{{ x }}</option>
+        </select>
+      </div>
+      <div class="col-lg-4">
+        <label>Manufacturer<span class="asterisk-mark">*</span> :</label>
+        <select class="form-control" [(ngModel)]="nonSubsidyData.Make" (change)="loadModelList();" required>
+          <option value="" disabled>--select--</option>
+          <option value="{{ x }}" *ngFor="let x of makeList">{{ x }}</option>
+        </select>
+      </div>
+      <div class="col-lg-4">
+        <label>Model / Item<span class="asterisk-mark">*</span> :</label>
+        <select class="form-control" [(ngModel)]="nonSubsidyData.Model" (change)="loadModelUnitOfMeasurementList();" required>
+          <option value="" disabled>--select--</option>
+          <option value="{{x}}" *ngFor="let x of modelList">{{ x }}</option>
+        </select>
+      </div>
+      <div class="col-lg-4">
+        <label>Unit of Measurement<span class="asterisk-mark">*</span> :</label>        
+        <select class="form-control" [(ngModel)]="nonSubsidyData.UnitOfMeasurement" (change)="loadModelDetails();" required>
+          <option value="" disabled>--select--</option>
+          <option [ngValue]="x" *ngFor="let x of unitOfMeasurementList">{{ x }}</option>
+        </select>
+      </div>
+
+      <div class="col-lg-4">
+        <label>Quantity<span class="asterisk-mark">*</span> :</label>
+        <input type="number" class="form-control" (keyup)="calculateItemQuantity();"
+          [(ngModel)]="nonSubsidyData.Quantity" placeholder="Enter Quantity. (Default is 1)" required>
+      </div>
+
+
+      <div class="col-lg-4" *ngIf="packageSizeList.length > 0">
+        <label>Package Size<span class="asterisk-mark">*</span> :</label>
+        <select class="form-control" [(ngModel)]="nonSubsidyData.PackageSize" (change)="loadPackageUnits();" required>
+          <option value="" disabled>--select--</option>
+          <option [ngValue]="x.PackageSize" *ngFor="let x of packageSizeList">{{ x.PackageSize }}</option>
+        </select>
+      </div>
+      <div class="col-lg-4" *ngIf="packageSizeList.length > 0">
+        <label>Package Unit of Measurement<span class="asterisk-mark">*</span> :</label>
+        <select class="form-control" [(ngModel)]="nonSubsidyData.PackageUnitOfMeasurement" (change)="loadPackagePrice();" required>
+          <option value="" disabled>--select--</option>
+          <option [ngValue]="x.PackageUnitOfMeasurement" *ngFor="let x of packageUnitList;">{{ x.PackageUnitOfMeasurement }}</option>
+        </select>
+      </div>
+      <div class="col-lg-4" *ngIf="packageSizeList.length > 0">
+        <label>Package Quantity<span class="asterisk-mark">*</span> :</label>
+        <input type="number" class="form-control" [(ngModel)]="nonSubsidyData.PackageQuantity"
+          placeholder="Total Package Quantity" disabled required>
+      </div>
+
+      <div class="col-lg-4">
+        <label>Customer<span class="asterisk-mark">*</span> :</label>
+        <select class="form-control" [(ngModel)]="customerDetailsNgModel" (change)="selectCustomerDetails();"  required [disabled]="this.orderList.length != 0">
+          <option value="" disabled>--select--</option>
+          <option [ngValue]="x" *ngFor="let x of CustomerList"> {{x.TradeName}} </option>
+        </select>
+      </div>
+      <div class="col-lg-4">
+      </div>
+    </div>
+    <br>
+    <br>
+    <div class="row">
+
+      <div class="col-lg-6">
+
+        <div class="table-responsive">
+          <table class="table table-hover" style="text-align: left;">
+            <caption></caption>
+            <thead>
+              <tr>
+                <th scope="col">Available Quantity: </th>
+                <th scope="col">{{ availableQuantity | number }}</th>
+              </tr>
+              <tr>
+                <th scope="col">Unit of Measurement: </th>
+                <th scope="col">{{ nonSubsidyData.UnitOfMeasurement || '--' }}</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+
+      </div>
+      <div class="col-lg-6">
+
+        <div class="table-responsive" *ngIf="modelDetails.SellTaxableValue">
+          <table class="table table-hover" style="text-align: left;">
+            <caption></caption>
+            <thead>
+              <tr>
+                <th scope="col">Rate per Unit: </th>
+                <th scope="col">{{ modelDetails.SellTaxableValue | number }}</th>
+              </tr>
+              <tr>
+                <th scope="col">Total Taxable Value: </th>
+                <th scope="col">{{ modelDetails.TotalSellTaxableValue | number }}</th>
+              </tr>
+              <tr>
+                <th scope="col">CGST: </th>
+                <th scope="col">{{ modelDetails.TotalSellCGST | number }}</th>
+              </tr>
+              <tr>
+                <th scope="col">SGST: </th>
+                <th scope="col">{{ modelDetails.TotalSellSGST | number }}</th>
+              </tr>
+              <tr>
+                <th scope="col">Invoice Value: </th>
+                <th scope="col">{{ modelDetails.TotalSellInvoiceValue | number }}</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+
+      </div>
+    </div>
+    <div class="row">
+
+      <div class="col-lg-4">
+        <button class="btn btn-info round" data-toggle="modal" data-target="#addCustomer">
+          <i class="fas fa-user"></i> Add New Customer</button>
+      </div>
+      <div class="col-lg-4"></div>
+      <div class="col-lg-4 text-right">
+        <button class="btn btn-info round" (click)="shwPurchaseOrderForNonSubsidy()">
+          Add Item to Order List</button>
+      </div>
+      <br>
+    </div>
+    <div class="table-responsive fixed-height-table">
+      <table class="table table-striped table-bordered table-hover" style="text-align: left;">
+        <caption></caption>
+        <thead>
+          <tr>
+            <th scope="col">SL.</th>
+            <th scope="col">Goods Details</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Rate per Unit</th>
+            <th scope="col">Tax</th>
+            <th scope="col">Invoice Value</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let x of orderList;let i = index;">
+            <td>{{ i + 1 }}</td>
+            <td>
+              Division: {{ x.DivisionName }} <br>
+              Category: {{ x.Implement}} <br>
+              Manufacturer: {{ x.Make}} <br>
+              Model/Item: {{ x.Model}} <br>
+              Unit of Msr.: {{ x.UnitOfMeasurement }}
+            </td>
+            <td>{{ x.ItemQuantity }}</td>
+            <td>{{ x.SellTaxableValue }} </td>
+            <td>
+              Taxable Value: {{ x.TotalSellTaxableValue }} <br>
+              CGST: {{ x.TotalSellCGST }} <br>
+              SGST: {{ x.TotalSellSGST }}
+            </td>
+            <td>{{ x.TotalSellInvoiceValue }}</td>
+            <td>
+              <button class="btn btn-sm btn-outline-danger" (click)="removeOrder(i);"><i
+                  class="fa fa-trash"></i></button>
+              &nbsp;
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div style="width: 100;text-align: center;">
+    <button class="btn btn-lg btn-info round" (click)="showInvoice();"> Generate Invoice</button>
+  </div>
+  <br>
+
+</div>
+
+<!-- =================================== NON-SUBSIDY PART ENDS ====================================================== -->
+
+<!-- ====================================== VIEW ORDER DETAIL MODAL PART START ====================================== -->
+
+<div class="container">
+  <div class="modal fade" id="viewDetails">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Details</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div>
+            <div class="row">
+              <div class="col-lg-4">Permit number : </div>
+              <div class="col-lg-8">{{ x.permit_no }}</div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4">Farmer ID : </div>
+              <div class="col-lg-8"> {{ x.farmer_id }} </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4">Farmer name : </div>
+              <div class="col-lg-8"> {{ x.farmer_name }} </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4">Father name : </div>
+              <div class="col-lg-8"> {{ x.farmer_father_name }} </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4">District :</div>
+              <div class="col-lg-8"> {{ x.dist_name }} </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4">Block :</div>
+              <div class="col-lg-8"> {{ x.block_name }} </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4">GP name :</div>
+              <div class="col-lg-8"> {{ x.gp_name }} </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4">Village name :</div>
+              <div class="col-lg-8"> {{ x.village_name }} </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4">Implement :</div>
+              <div class="col-lg-8"> {{ x.Implement }} </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4">Make :</div>
+              <div class="col-lg-8"> {{ x.Make }} </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4">Model :</div>
+              <div class="col-lg-8"> {{ x.Model }} </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-info round" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====================================== VIEW ORDER DETAIL MODAL PART ENDS ====================================== -->
+
+<!-- ====================================== ENTER FEEDBACK MODAL PART START ====================================== -->
+
+<div class="container">
+  <div class="modal fade" id="deliveryModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title center">Enter feedback</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form name="myForm" novalidate>
+            <div class="row">
+              <div class="col-lg-5">Permit number : </div>
+              <div class="col-lg-7"> {{ x.permit_no }} </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-5">Farmer name : </div>
+              <div class="col-lg-7"> {{ x.farmer_name }} </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-5">Farmer id : </div>
+              <div class="col-lg-7"> {{ x.farmer_id }} </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-5">Implement : </div>
+              <div class="col-lg-7"> {{ x.Implement }} </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-5">Make : </div>
+              <div class="col-lg-7"> {{ x.Make }} </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-5">model : </div>
+              <div class="col-lg-7"> {{ x.Model }} </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-5">Remark<span class="asterisk-mark">*</span> :</div>
+              <div class="col-lg-7">
+                <input type="text" class="form-control" [(ngModel)]="remark" placeholder="Enter remark."
+                  [ngModelOptions]="{standalone: true}" required>
+              </div>
+            </div>
+            <div class="row" style="margin-top: 5px;">
+              <div class="col-lg-5">Deliver date<span class="asterisk-mark">*</span> :</div>
+              <div class="col-lg-7 ">
+                <input type="date" class="form-control container" name="date" [(ngModel)]="expected_delivery_date"
+                  [ngModelOptions]="{standalone: true}" required>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline-info" (click)="showInvoice();" data-dismiss="modal">Deliver</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====================================== ENTER FEEDBACK MODAL PART ENDS ====================================== -->
+
+
+
+<!-- ======================================= Customer details modal start ========================================= -->
+
+
+<div class="container">
+  <div class="modal fade" id="addCustomer">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Customer Details</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="AddCustomerForm">
+            <div class="row">
+              <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                <label>Legal Name of Customer<span style="color:#ff0000" class="asterisk-mark">*</span>&nbsp;:</label> &nbsp; &nbsp;
+              </div>
+              <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                <input type="text" class="form-control" placeholder="enter your legal name of the customer" formControlName="legalname" required>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                <label>Trade Name<span style="color:#ff0000" class="asterisk-mark">*</span>&nbsp;:</label> &nbsp; &nbsp;
+              </div>
+              <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                <input type="text" class="form-control" placeholder="enter your trade name" formControlName="tradename">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                <label>Constitution of Business<span style="color:#ff0000" class="asterisk-mark">*</span>&nbsp;:</label> &nbsp; &nbsp;
+              </div>
+              <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                <input type="text" class="form-control" placeholder="enter your constitution of business" formControlName="constitutionofbusiness">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                <label>Contact Number<span style="color:#ff0000" class="asterisk-mark">*</span>&nbsp;:</label> &nbsp; &nbsp;
+              </div>
+              <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                <input type="number" class="form-control" placeholder="enter your contact number" formControlName="contactnumber" required maxlength="10">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                <label>E-MailID<span style="color:#ff0000" class="asterisk-mark">*</span>&nbsp;:</label> &nbsp; &nbsp;
+              </div>
+              <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                <input type="text" class="form-control" placeholder="enter your email-id" formControlName="email">
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-info round" data-dismiss="modal" (click)="AddCustomerDetails();">Add</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- ======================================= Customer details modal end ========================================= -->
+
+
+
+<!-- ====================================== INVOICE PRINT PART START ====================================== -->
+
+<div *ngIf="show_print_page">
+  <button class="btn btn-info btn-sm topBack"
+    (click)="showTable=true;show_print_page=false;remark='';expected_delivery_date='';"><i class="fas fa-arrow-left"
+      aria-hidden="true"></i> Back</button>
+  <div class="mybox">
+    <div class="mybox-header">
+      <span>
+        <strong>
+          <label>Farmer Invoice</label>
+        </strong>
+      </span>
+    </div>
+    <div>
+      <app-invoice [x]="x" [orderList]="orderList" [POType]="POType" [invoicedata] = "invoicedata" id="printPage"></app-invoice>
+      <div class="bottomBack">
+        <button class="btn btn-info btn-sm"
+          (click)="showTable=true;show_print_page=false;remark='';expected_delivery_date='';"><i
+            class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+        <button class="btn btn-info btn-sm" [disabled]="clicked" (click)="deliverPreview(); clicked= true;">Deliver</button>
+        <button hidden="true" #printInvoice printTitle="Customer Invoice" [useExistingCss]="true"
+          printSectionId="printPage" ngxPrint></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====================================== INVOICE PRINT PART ENDS ====================================== -->

@@ -1,0 +1,277 @@
+<ul class="sidebar navbar-nav" *ngIf="userRole == 'ADMIN'">
+    <li class="nav-item">
+        <a class="nav-link" href="#">
+            <i class="fas fa-fw fa-tachometer-alt" aria-hidden="true"></i>
+            <span> Dashboard</span>
+        </a>
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link" routerLink="/admin/dm-list" routerLinkActive="active">
+            <i class="fas fa-fw fa-tachometer-alt" aria-hidden="true"></i>
+            <span> D.M.</span></a>
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link" routerLink="/admin/accountant-list" routerLinkActive="active">
+            <i class="fas fa-fw fa-tachometer-alt" aria-hidden="true"></i>
+            <span> Accountants</span></a>
+    </li>
+    <li class="nav-item dropdown">
+        <a [ngClass]="{'active': customerChild.isActive}" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-fw fa-tachometer-alt" aria-hidden="true"></i>
+            <span> Customer</span>
+        </a>
+        <div #customerChild="routerLinkActive" class="dropdown-menu" aria-labelledby="pagesDropdown" routerLinkActive="active" >
+            <a class="dropdown-item" routerLink="/admin/add-customer" routerLinkActive="active" ><i class="far fa-circle" aria-hidden="true"></i> Add </a>
+            <a class="dropdown-item" routerLink="/admin/customer-list" routerLinkActive="active" ><i class="far fa-circle" aria-hidden="true"></i> Available List</a>
+        </div>
+    </li>
+    <li class="nav-item dropdown">
+        <a [ngClass]="{'active': vendorChild.isActive}" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-fw fa-tachometer-alt" aria-hidden="true"></i>
+            <span> Vendor</span>
+        </a>
+        <div #vendorChild="routerLinkActive" class="dropdown-menu" aria-labelledby="pagesDropdown" routerLinkActive="active" >
+            <a class="dropdown-item" routerLink="/admin/approve-vendor" routerLinkActive="active" ><i class="far fa-circle" aria-hidden="true"></i> Approve</a>
+            <a class="dropdown-item" routerLink="/admin/vendors-list" routerLinkActive="active" ><i class="far fa-circle" aria-hidden="true"></i> Available List</a>
+        </div>
+    </li>
+    <li class="nav-item dropdown">
+        <a [ngClass]="{'active': addItemChild.isActive}" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-fw fa-tachometer-alt" aria-hidden="true"></i>
+            <span> Items</span>
+        </a>
+        <div #addItemChild="routerLinkActive" class="dropdown-menu" aria-labelledby="pagesDropdown" routerLinkActive="active">
+            <a class="dropdown-item" routerLink="/admin/add-new-item" routerLinkActive="active"><i class="far fa-circle" aria-hidden="true"></i> Add</a>
+            <a class="dropdown-item" routerLink="/admin/items-list" routerLinkActive="active"><i class="far fa-circle" aria-hidden="true"></i> Modify</a>
+        </div>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" routerLink="/admin/payment-receive-other-source" routerLinkActive="active">
+            <i class="fas fa-fw fa-tachometer-alt" aria-hidden="true"></i>
+            <span> Receive payment</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" routerLink="/admin/audit-log" routerLinkActive="active">
+            <i class="fas fa-fw fa-tachometer-alt" aria-hidden="true"></i>
+            <span> Audit log</span>
+        </a>
+    </li>
+</ul>
+
+
+
+
+
+
+<ul class="sidebar navbar-nav" *ngIf="userRole == 'BANK'">
+    <li class="nav-item active">
+        <a class="nav-link" id="dashboard" href="#">
+            <i class="fas fa-fw fa-tachometer-alt" aria-hidden="true"></i>
+            <span> Dashboard</span>
+        </a>
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link" routerLink="/bank/pending-payments" routerLinkActive="active">
+            <i class="fas fa-fw fa-tachometer-alt" aria-hidden="true"></i>
+            <span> Confirm Payment</span>
+        </a>
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link" routerLink="/bank/confirmed-payments-list" routerLinkActive="active">
+            <i class="fas fa-fw fa-tachometer-alt" aria-hidden="true"></i>
+            <span> Re-Print</span>
+        </a>
+    </li>
+
+</ul>
+
+
+
+
+
+
+<ul class="sidebar navbar-nav" *ngIf="userRole == 'DM'">
+    <li class="nav-item active">
+        <a class="nav-link" id="dashboard" href="#">
+            <i class="fas fa-fw fa-tachometer-alt" aria-hidden="true"></i>
+            <span> Dashboard</span>
+        </a>
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link" routerLink="/dm/approve-purchase-order" routerLinkActive="active">
+            <i class="fas fa-fw fa-tachometer-alt" aria-hidden="true"></i>
+            <span> Purchase Order</span>
+        </a>
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link" routerLink="/dm/approve-payment" routerLinkActive="active">
+            <i class="fas fa-fw fa-tachometer-alt" aria-hidden="true"></i>
+            <span> Approve Payment</span>
+        </a>
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link" routerLink="/dm/approved-payments-list" routerLinkActive="active">
+            <i class="fas fa-fw fa-tachometer-alt" aria-hidden="true"></i>
+            <span> Approved Payment List</span>
+        </a>
+    </li>
+
+</ul>
+
+
+
+
+
+<ul class="sidebar navbar-nav" *ngIf="userRole == 'DEALER'">
+    <li class="nav-item active">
+        <a class="nav-link" id="dashboard" href="#">
+            <i class="fas fa-fw fa-tachometer-alt" aria-hidden="true"></i>
+            <span> Dashboard</span>
+        </a>
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link" routerLink="/vendor/all-purchase-orders-list" routerLinkActive="active">
+            <i class="fas fa-fw fa-tachometer-alt" aria-hidden="true"></i>
+            <span> All P.O.</span>
+        </a>
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link" routerLink="/vendor/deliver-order" routerLinkActive="active">
+            <i class="fas fa-fw fa-tachometer-alt" aria-hidden="true"></i>
+            <span> Deliver</span>
+        </a>
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link" routerLink="/vendor/deliver-report" routerLinkActive="active">
+            <i class="fas fa-fw fa-tachometer-alt" aria-hidden="true"></i>
+            <span> Deliver Report</span>
+        </a>
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link" routerLink="/vendor/withheld-amount" routerLinkActive="active">
+            <i class="fas fa-fw fa-tachometer-alt" aria-hidden="true"></i>
+            <span> Withheld Amount</span>
+        </a>
+    </li>
+
+</ul>
+
+
+
+
+<ul class="sidebar navbar-nav" *ngIf="userRole == 'ACCOUNTANT'">
+    <li class="nav-item">
+        <a class="nav-link" href="#" id="dashboard">
+            <i class="fas fa-fw fa-tachometer-alt" aria-hidden="true"></i>
+            <span> Dashboard</span>
+        </a>
+    </li>
+    <li class="nav-item dropdown">
+        <a [ngClass]="{'active': mrChild.isActive}" class="nav-link dropdown-toggle" href="#" id="ordersLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-fw fa-tachometer-alt" aria-hidden="true"></i>
+            <span> Money Receipt</span>
+        </a>
+        <div #mrChild="routerLinkActive" routerLinkActive="active" class="dropdown-menu" aria-labelledby="pagesDropdown">
+            <a routerLink="/accountant/receive-money-against-permit" routerLinkActive="active" class="dropdown-item"><i class="far fa-circle" aria-hidden="true"></i> Against Permit </a>
+            <a routerLink="/accountant/partly-money-receive" routerLinkActive="active" class="dropdown-item"><i class="far fa-circle" aria-hidden="true"></i> Partly Receive</a>
+            <a routerLink="/accountant/receive-payments" routerLinkActive="active" class="dropdown-item"><i class="far fa-circle" aria-hidden="true"></i> Receive Payments</a>
+            <a routerLink="/accountant/re-print-money-receipt" routerLinkActive="active" class="dropdown-item"><i class="far fa-circle" aria-hidden="true"></i> Re-print M.R.</a>
+        </div>
+    </li>
+
+    <li class="nav-item dropdown">
+        <a [ngClass]="{'active': poChild.isActive}" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-fw fa-tachometer-alt" aria-hidden="true"></i>
+            <span> Purchase Order</span>
+        </a>
+        <div #poChild="routerLinkActive" routerLinkActive="active" class="dropdown-menu" aria-labelledby="pagesDropdown">
+            <a routerLink="/accountant/po/initiate" routerLinkActive="active" class="dropdown-item"><i class="far fa-circle" aria-hidden="true"></i> Initiate</a>
+            <a routerLink="/accountant/po/re-print" routerLinkActive="active" class="dropdown-item"><i class="far fa-circle" aria-hidden="true"></i> Re-print</a>
+            <a routerLink="/accountant/po/cancellation" routerLinkActive="active" class="dropdown-item"><i class="far fa-circle" aria-hidden="true"></i> Cancellation</a>
+            <a routerLink="/accountant/po/report" routerLinkActive="active" class="dropdown-item"><i class="far fa-circle" aria-hidden="true"></i> Cancelled Orders</a>
+        </div>
+    </li>
+    <li class="nav-item dropdown">
+        <a [ngClass]="{'active': mrrChild.isActive}" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-fw fa-tachometer-alt" aria-hidden="true"></i>
+            <span > Material Receipt Report <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(MRR)</span>
+        </a>
+        <div #mrrChild="routerLinkActive" class="dropdown-menu" aria-labelledby="pagesDropdown" routerLinkActive="active">
+            <a class="dropdown-item" routerLink="/accountant/generate-mrr" routerLinkActive="active"><i class="far fa-circle" aria-hidden="true"></i> Generate</a>
+            <a class="dropdown-item" routerLink="/accountant/re-print-mrr" routerLinkActive="active"><i class="far fa-circle" aria-hidden="true"></i> Re-print</a>
+        </div>
+    </li>
+    <li class="nav-item dropdown">
+        <a [ngClass]="{'active': invoiceChild.isActive}" class="nav-link dropdown-toggle" id="deliveryLink" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-fw fa-tachometer-alt" aria-hidden="true"></i>
+            <span> Invoice</span>
+        </a>
+        <div #invoiceChild="routerLinkActive" class="dropdown-menu" aria-labelledby="pagesDropdown" id="deliveryDropDown" routerLinkActive="active">
+            <a routerLink="/accountant/deliver-Generate-Invoice" routerLinkActive="active" class="dropdown-item" ><i class="far fa-circle" aria-hidden="true"></i> Deliver & Generate<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Invoice</a>
+            <a routerLink="/accountant/reprint" routerLinkActive="active" class="dropdown-item"><i class="far fa-circle" aria-hidden="true"></i> Re-print</a>
+        </div>
+    </li>
+    <li class="nav-item dropdown">
+        <a [ngClass]="{'active': vendorPayChild.isActive}" class="nav-link dropdown-toggle" id="dealerPayLink" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-fw fa-tachometer-alt" aria-hidden="true"></i>
+            <span> Vendor pay</span>
+        </a>
+        <div #vendorPayChild="routerLinkActive" class="dropdown-menu" aria-labelledby="pagesDropdown" id="dealerPayDropDown" routerLinkActive="active">
+            <a routerLink="/accountant/Pay-to-vendor" routerLinkActive="active" class="dropdown-item" id="payToDealerSubItem"><i class="far fa-circle" aria-hidden="true"></i> Pay to Vendor</a>
+            <a routerLink="/accountant/Vendor-Part-Payment" routerLinkActive="active" class="dropdown-item"  id="dealerPartPaymentSubItem"><i class="far fa-circle" aria-hidden="true"></i> Part Payment</a>
+            <a routerLink="/accountant/Pay-To-Vendor-Report" routerLinkActive="active" class="dropdown-item" id="dealerPayReportSubItem"><i class="far fa-circle" aria-hidden="true"></i> Report</a>
+        </div>
+    </li>
+
+    <li class="nav-item dropdown">
+        <a [ngClass]="{'active': ledgerChild.isActive}" class="nav-link dropdown-toggle" id="ledgerLink" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-fw fa-tachometer-alt" aria-hidden="true"></i>
+            <span> Ledger</span>
+        </a>
+        <div #ledgerChild="routerLinkActive" routerLinkActive="active" class="dropdown-menu" aria-labelledby="pagesDropdown">
+            <a routerLink="/accountant/project-wise-ledger" routerLinkActive="active" class="dropdown-item"><i class="far fa-circle" aria-hidden="true"></i> Project wise</a>
+            <a routerLink="/accountant/vendor-wise-ledger" routerLinkActive="active" class="dropdown-item"><i class="far fa-circle" aria-hidden="true"></i> Vendor wise</a>
+            <a routerLink="/accountant/global-ledger" routerLinkActive="active" class="dropdown-item"><i class="far fa-circle" aria-hidden="true"></i> Global</a>
+        </div>
+    </li>
+    <li class="nav-item dropdown">
+        <a [ngClass]="{'active': cashBookChild.isActive}" class="nav-link dropdown-toggle" id="cashBookLink" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-fw fa-tachometer-alt" aria-hidden="true"></i>
+            <span> Cash Book</span>
+        </a>
+        <div #cashBookChild="routerLinkActive" routerLinkActive="active" class="dropdown-menu" aria-labelledby="pagesDropdown" id="cashBookDropDown">
+            <a routerLink="/accountant/receipts" routerLinkActive="active" class="dropdown-item"><i class="far fa-circle" aria-hidden="true"></i> Receipt</a>
+            <a routerLink="/accountant/payments" routerLinkActive="active" class="dropdown-item"><i class="far fa-circle" aria-hidden="true"></i> Payments</a>
+            <a routerLink="/accountant/consolidated-cashbook" routerLinkActive="active" class="dropdown-item"><i class="far fa-circle" aria-hidden="true"></i> Consolidated</a>
+        </div>
+    </li>
+    <li class="nav-item dropdown">
+        <a [ngClass]="{'active': backlogBalanceChild.isActive}" class="nav-link dropdown-toggle" id="backlogBalanceLink" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-fw fa-tachometer-alt" aria-hidden="true"></i>
+            <span> Backlog balance</span>
+        </a>
+        <div #backlogBalanceChild="routerLinkActive" routerLinkActive="active" class="dropdown-menu" aria-labelledby="pagesDropdown">
+            <a routerLink="/accountant/recieve-opening-balance" routerLinkActive="active" class="dropdown-item"><i class="far fa-circle" aria-hidden="true"></i> Receive money</a>
+            <a routerLink="/accountant/paid-opening-balance" routerLinkActive="active" class="dropdown-item"><i class="far fa-circle" aria-hidden="true"></i> Pay money</a>
+        </div>
+    </li>
+    <li class="nav-item">
+        <a routerLink="/accountant/stock" routerLinkActive="active" class="nav-link">
+            <i class="fas fa-fw fa-tachometer-alt" aria-hidden="true"></i>
+            <span> Stock</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a routerLink="/accountant/job-book" routerLinkActive="active" class="nav-link">
+            <i class="fas fa-fw fa-table" aria-hidden="true"></i>
+            <span> Job Book</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a routerLink="/accountant/miscellaneous-expenses" routerLinkActive="active" class="nav-link" >
+            <i class="fas fa-fw fa-tachometer-alt" aria-hidden="true"></i>
+            <span> Miscellaneous Expenses</span>
+        </a>
+    </li>
+</ul>

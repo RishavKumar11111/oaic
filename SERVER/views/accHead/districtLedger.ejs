@@ -1,0 +1,189 @@
+<%- include('common/header.ejs') -%>
+
+<!-- ====================================== HEADER PART START ====================================== -->
+
+
+<div class="mybox" ng-show="header">
+  <div class="mybox-header">
+    <span>
+      <strong>
+        <label>DISTRICT LEDGER</label>
+      </strong>
+    </span>
+  </div>
+  <div class="middle">
+    <div class="row">
+      <div class="col-lg-3">
+        <label>Financial year :</label>
+        <select class="form-control" ng-options="x for x in fin_year_list" ng-model="fin_year" ng-change="getAllDistrictLedgerData()">
+          <option value="" disabled>--Select--</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====================================== HEADER PART ENDS ====================================== -->
+
+<!-- ====================================== LOADER PART START ====================================== -->
+
+<div class="loader">
+  <div ng-show="loader" class="spinner-border text-info"></div>
+</div>
+
+<!-- ====================================== LOADER PART ENDS ====================================== -->
+
+<!-- ====================================== DISTRICT LEDGER LIST TABLE PART START ====================================== -->
+
+<div class="mybox" ng-show="page1">
+  <div class="mybox-header">
+    <span>
+      <strong>
+        <label>DISTRICT LEDGER LIST</label>
+      </strong>
+    </span>
+  </div>
+  <div >
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered table-hover" id="orderListTable">
+        <caption></caption>
+        <thead>
+          <tr>
+            <th scope="col">SL.</th>
+            <th scope="col">District name</th>
+            <th scope="col">Credit(&#8377;)</th>
+            <th scope="col">Debit(&#8377;)</th>
+            <th scope="col">View ledger</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="x in distLedgerList">
+            <td>{{ $index + 1 }}</td>
+            <td>{{ x.dist_name }}</td>
+            <td>{{ x.credit | number :'2' }}</td>
+            <td>{{ x.debit | number :'2' }}</td>
+            <td><button class="btn btn-outline-info" ng-click="showDistWiseLedger(x.dist_id);"><i class="fas fa-arrow-right" aria-hidden="true"></i></button></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td style="text-align: right;"><strong>Total (&#8377;) :</strong></td>
+            <td>{{ TDLCredit | number : 2 }}</td>
+            <td>{{ TDLDebit | number : 2 }}</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ====================================== DISTRICT LEDGER LIST TABLE PART ENDS ====================================== -->
+
+<!-- ====================================== TRANSACTION TABLE PART START ====================================== -->
+
+<div ng-show="ledgerTable">
+    <button class="btn btn-info btn-sm topBack" ng-click="back();"><i class="fas fa-arrow-left" aria-hidden="true"></i></button>
+    <div class="mybox">
+      <div class="mybox-header">
+        <span>
+          <strong>
+            <label>TRANSACTIONS</label>
+          </strong>
+        </span>
+      </div>
+      <div >
+          <div ng-show="ledgers.length == 0" class="no-record">
+            No record found on financial year {{ fin_year }}.
+          </div>
+          <div ng-show="ledgers.length != 0">
+            <div class="table-responsive fixed-height-table">
+            <table class="table table-striped table-bordered table-hover table-head-fixed" id="orderListTable">
+              <caption></caption>
+              <thead>
+                <tr>
+                  <th scope="col">SL.</th>
+                  <th scope="col">System</th>
+                  <th scope="col">Date</th>
+                  <th scope="col">Reference no.</th>
+                  <th scope="col">From</th>
+                  <th scope="col">To</th>
+                  <th scope="col">Credit(&#8377;)</th>
+                  <th scope="col">Debit(&#8377;)</th>
+                  <th scope="col">Balance(&#8377;)</th>
+                  <th scope="col">Purpose</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-hide="opening_balance == 0">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td ></td>
+                  <td ></td>
+                  <td >Opening balance:</td>
+                  <td style="width: 12%;">{{ opening_balance | number : 2 }}</td>
+                  <td></td>
+                </tr>
+                <tr ng-repeat="x in ledgers | dateRangeFrom : fromDate : this | dateRangeTo : toDate : this ">
+                  <td>{{ $index + 1 }}</td>
+                  <td>{{ x.system }}</td>
+                  <td>{{ x.date | date: 'dd-MM-yyyy' }}</td>
+                  <td>{{ x.reference_no }}</td>
+                  <td>{{ x.from_name }}</td>
+                  <td>{{ x.to_name }}</td>
+                  <td>{{ x.credit | number :'2' }}</td>
+                  <td>{{ x.debit | number :'2' }}</td>
+                  <td>{{ x.balance  | number :'2' }}</td>
+                  <td>{{ x.purpose || upercase }}</td>
+                </tr>
+                <!-- <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>
+                    <strong>Sub-total(&#8377;)</strong>
+                  </td>
+                  <td style="width: 12%;">{{ totalCredit | number : 2 }}</td>
+                  <td style="width: 12%;">{{ totalDebit | number : 2 }}</td>
+                  <td></td>
+                  <td></td>
+                </tr> -->
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td style="text-align: right;"><strong>Total (&#8377;)</strong></td>
+                  <td style="width: 12%;">{{ total_credit | number : 2 }}</td>
+                  <td style="width: 12%;">{{ total_debit | number : 2 }}</td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+            </div>
+          </div>
+          <div class="bottomBack">
+            <button class="btn btn-info btn-sm topBack" ng-click="back();"><i class="fas fa-arrow-left" aria-hidden="true"></i></button>
+          </div>  
+      </div>
+    </div>
+</div>
+
+<!-- ====================================== TRANSACTION TABLE PART ENDS ====================================== -->
+
+
+
+<script>
+  var c_fin_year = "<%= c_fin_year %>";
+</script>
+<script>
+  document.getElementById('distLedger').classList.add("active");
+</script>
+<script src="/controller/accHead/districtLedger.js"></script>
+<%- include('common/footer.ejs') -%>

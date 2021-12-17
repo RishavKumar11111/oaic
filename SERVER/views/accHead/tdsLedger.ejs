@@ -1,0 +1,48 @@
+<%- include('common/header.ejs') -%>
+
+    <!-- ====================================== HEADER PART START ====================================== -->
+
+
+    <div class="mybox" ng-show="header">
+        <div class="mybox-header">
+            <span>
+      <strong>
+        <label>TDS</label>
+      </strong>
+    </span>
+        </div>
+        <div class="middle">
+            <div class="row">
+                <div class="col-lg-3">
+                    <label>Financial year :</label>
+                    <select class="form-control" ng-options="x for x in fin_year_list" ng-model="fin_year" ng-change="getAllDistrictLedgerData()">
+          <option value="" disabled>--Select--</option>
+        </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================================== HEADER PART ENDS ====================================== -->
+
+    <!-- ====================================== LOADER PART START ====================================== -->
+
+    <div class="loader">
+        <div ng-show="loader" class="spinner-border text-info"></div>
+    </div>
+
+    <!-- ====================================== LOADER PART ENDS ====================================== -->
+
+
+
+
+
+
+    <script>
+        var c_fin_year = "<%= c_fin_year %>";
+    </script>
+    <script>
+        document.getElementById('tdsLedger').classList.add("active");
+    </script>
+    <script src="/controller/accHead/tdsLedger.js"></script>
+    <%- include('common/footer.ejs') -%>

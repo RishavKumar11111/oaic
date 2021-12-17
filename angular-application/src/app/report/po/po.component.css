@@ -1,0 +1,26 @@
+
+          .heading {
+            border-bottom: 1px solid;
+            border-top: 1px solid;
+            padding: 1%;
+          }
+          .col-6, .col-4{
+            padding: 0;
+          }
+          .body {
+            padding: 1%;
+          }
+          .main-page {
+            border: 1px solid;
+          }
+          .row {
+            margin-left: 0;
+            margin-right: 0;
+            margin-bottom: 0;
+          }
+          .dark-background {
+            background-color: #e4e4f7;
+          }
+          h6, h3 {
+            font-weight: bold;
+          }

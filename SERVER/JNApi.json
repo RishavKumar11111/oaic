@@ -1,0 +1,133 @@
+// ADD CLUSTER DETAILS
+{
+	"dist_id":"01",
+	"dist_name":"ANGUL",
+	"cluster_id":"N1120009",
+	"farmers":[
+		{
+			"farmer_id":"lkl/129",
+			"farmer_name":"KUMAR SAnu",
+			"farmer_block":"BBBB",
+			"farmer_gp":"gpName",
+			"farmer_village":"village FR",
+			"implement":"JKJKJK",
+			"make":"mmkmkm",
+			"model":"MDLMDL"
+		},
+		{
+			"farmer_id":"KL/0091",
+			"farmer_name":"KUMAR SAnu",
+			"farmer_block":"BBBB",
+			"farmer_gp":"gpName",
+			"farmer_village":"village FR",
+			"implement":"JKJKJK",
+			"make":"mmkmkm",
+			"model":"MDLMDL"
+		},
+		{
+			"farmer_id":"JZ/9871",
+			"farmer_name":"KUMAR SAnu",
+			"farmer_block":"BBBB",
+			"farmer_gp":"gpName",
+			"farmer_village":"village FR",
+			"implement":"JKJKJK",
+			"make":"mmkmkm",
+			"model":"MDLMDL"
+		}
+		
+		]
+}
+// Payments
+{
+	"purpose": "farmerAdvancePaymentJN",
+	"dist_id": "01",
+	"farmer_id":"FAR13233",
+	"cluster_id":"CL897987",
+	"ammount": 9000,
+	"payment_date":"2019-11-12T06:56:45.318Z",
+	"payment_type":"cash",
+	"payment_no":"REFERENCE123",
+	"remark":"Good"
+}
+
+
+{
+	"purpose": "billFromDealerJN",
+	"dist_id": "01",
+	"dl_id":"01",
+	"po_no":"PO1211",
+	"cluster_ids":["CL1217", "CL665", "CL888", "CL121"],
+	"ammount": 150000,
+	"remark":"Good"
+}
+
+
+
+{
+	"purpose": "payToDealerJN",
+	"dist_id": "01",
+	"dl_id":"01",
+	"po_no":"PO1211",
+	"cluster_ids":["CL1217", "CL665", "CL888", "CL121"],
+	"ammount": 150000,
+	"payment_date":"2019-11-12T06:56:45.318Z",
+	"payment_type":"cash",
+	"payment_no":"REFERENCE123",
+	"remark":"Good"
+}
+
+{
+	"purpose": "expenditureOnHead",
+	"dist_id": "01",
+	"dl_id":"01",
+	"head":"head1",
+	"sub_head":"Sub Head 1",
+	"po_no":"PO1990",
+	"cluster_id":"1111CL",
+	"ammount": 250000,
+	"remark":"Good",
+	"items": [
+		{
+			"item_name":"item 1",
+			"item_price":"15000",
+			"quantity":"3"
+		},
+		{
+			"item_name":"item 2",
+			"item_price":"18000",
+			"quantity":"2"
+		},
+		{
+			"item_name":"item 3",
+			"item_price":"9900",
+			"quantity":"6"
+		}
+		]
+}
+
+// STOCK
+// http://localhost:1020/jn/addReceivedOrder
+{
+	"dist_id":"01",
+	"dl_id":"01",
+	"dl_name":"NANMENHJHJ",
+	"po_no":"PO_980",
+	"cluster_id":"N1120009",
+	"farmer_id":"JZ/9871",
+	"farmer_name":"NMNNNMNMNMNMNM",
+	"implement":"IMIMIM1123",
+	"make":"MKMKM",
+	"model":"MDMMD"
+}
+
+// http://localhost:1020/jn/orderDeliveredToCustomer
+{
+	"po_no":"po123",
+	"cluster_id":"125321",
+	"farmer_id":"far937009",
+	"implement":"PIPE",
+	"make":"SerSSS",
+	"model":"QW3122",
+	"engine_no":"90en211",
+	"chassic_no":""
+}
